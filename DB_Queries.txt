@@ -1,0 +1,158 @@
+Users table  // created by user
+--------------------------------------------------------------------
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    mobile VARCHAR(15) NOT NULL UNIQUE,
+    gender ENUM('male','female','others') NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+To-Do:
+Alter table to add the address col.
+
+
+---------------------------------------------------------------------
+Vendors table  // handle by admin
+---------------------------------------------------------------------
+CREATE TABLE vendors (
+    vendor_id INT AUTO_INCREMENT PRIMARY KEY,
+    vendor_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    mobile VARCHAR(15) NOT NULL UNIQUE,
+    subscription_status ENUM('active','inactive') DEFAULT 'inactive',
+    commission_rate DECIMAL(5,2) DEFAULT 0.00,  -- percentage (like 10.00%)
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+To-Do
+Alter table add vendor company name.
+
+UI flow - At the landing page website
+
+1️⃣ User clicks “Sell Now” → opens Vendor Registration Form
+Vendor fills name, email, phone, address, and subscription type: 'monthly' or 'commission'.
+On submit → request stored in a temporary/pending state.
+
+2️⃣ Admin Panel
+Admin sees pending vendor requests.
+Sets commission % or monthly fee.
+Clicks “Approve”.
+
+3️⃣ Email Notification
+Vendor receives an email:
+“Admin approved your registration. Commission: 10% / Monthly fee: ₹1000. Click here to accept.”
+
+4️⃣ Vendor Accepts
+On click → system verifies email link → marks vendor as active.
+Vendor’s final details get inserted into the main vendors table.
+
+----------------------------------------------------------------------
+Products table
+----------------------------------------------------------------------
+
+CREATE TABLE products (
+    productId INT AUTO_INCREMENT PRIMARY KEY,
+    vendorId INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    description TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    stock INT DEFAULT 0,
+    status ENUM ('continue','discontinue'),
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (vendorId) REFERENCES vendors(vendorId)
+);
+
+To-do
+- add image col
+
+----------------------------------------------------------------------
+Orders table
+----------------------------------------------------------------------
+
+CREATE TABLE orders (
+    orderId INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT NOT NULL,
+    totalAmount DECIMAL(10,2) NOT NULL,
+    paymentStatus ENUM('pending','paid','failed') DEFAULT 'pending',
+    orderStatus ENUM('placed','shipped','delivered','cancelled') DEFAULT 'placed',
+    deliveryAddress VARCHAR(255) NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (userId) REFERENCES users(userId)
+);
+
+
+----------------------------------------------------------------------
+OrderDetails table
+----------------------------------------------------------------------
+CREATE TABLE order_details (
+    orderDetailId INT AUTO_INCREMENT PRIMARY KEY,
+    orderId INT NOT NULL,
+    productId INT NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,  -- store price snapshot at order time
+    subtotal DECIMAL(10,2) AS (quantity * price) STORED,
+    FOREIGN KEY (orderId) REFERENCES orders(orderId),
+    FOREIGN KEY (productId) REFERENCES products(productId)
+);
+
+
+----------------------------------------------------------------------
+Delivery table
+----------------------------------------------------------------------
+
+CREATE TABLE delivery (
+    deliveryId INT AUTO_INCREMENT PRIMARY KEY,
+    orderId INT NOT NULL,
+    vendorId INT NOT NULL,
+    deliveryStatus ENUM('pending','out_for_delivery','delivered','returned') DEFAULT 'pending',
+    estimatedDeliveryDate DATE,
+    actualDeliveryDate DATE,
+    trackingNumber VARCHAR(100),
+    FOREIGN KEY (orderId) REFERENCES orders(orderId),
+    FOREIGN KEY (vendorId) REFERENCES vendors(vendorId)
+);
+
+
+--------------------------------------------------------------------------------------
+Categories table
+--------------------------------------------------------------------------------------
+
+CREATE TABLE categories (
+    categoryId INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+--------------------------------------------------------------------------------------
+SubCategories table
+--------------------------------------------------------------------------------------
+
+CREATE TABLE subcategories (
+    subCategoryId INT AUTO_INCREMENT PRIMARY KEY,
+    categoryId INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (categoryId) REFERENCES categories(categoryId) ON DELETE CASCADE
+);
+
+
+
+--------------------------------------------------------------------------------------
+Entity-Relationship
+--------------------------------------------------------------------------------------
+
+| Relationship          | Type | Description                              |
+| --------------------- | ---- | ---------------------------------------- |
+| user → orders         | 1:N  | One user can have multiple orders        |
+| order → orderdetails  | 1:N  | Each order can contain multiple products |
+| product → vendor      | N:1  | Each product belongs to one vendor       |
+| vendor → products     | 1:N  | Vendor can have multiple products        |
+| order → delivery      | 1:1  | One delivery per order                   |
+| vendor → delivery     | 1:N  | A vendor can handle multiple deliveries  |
+
+
