@@ -8,11 +8,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    @Query("select u from User u where u.email = :email")
-    public User getUserByEmail(@Param("email") String email);
+//    @Query("select u from User u where u.email = :email")
+//    Optional<User> getUserByEmail(@Param("email") String email);
 
 //    @Query("UPDATE User u SET u.firstName = :firstName, u.lastName = :lastName WHERE u.userId = :userId")
 //    public User findUserByName(String firstName,String lastName,int userId);
