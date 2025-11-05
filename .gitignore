@@ -1,0 +1,4 @@
+# Ignore Word and RTF files
+*.doc
+*.docx
+*.rtf
