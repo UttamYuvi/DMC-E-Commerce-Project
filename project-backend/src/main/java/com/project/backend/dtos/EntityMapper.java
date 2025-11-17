@@ -3,6 +3,7 @@ package com.project.backend.dtos;
 import com.project.backend.entities.*;
 import com.project.backend.repository.CategoryRepository;
 import com.project.backend.repository.SubCategoryRepository;
+import com.project.backend.repository.UserRepository;
 import com.project.backend.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,10 +20,14 @@ public class EntityMapper {
     private CategoryRepository categoryRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private SubCategoryRepository subCategoryRepository;
 
     @Autowired
     private VendorRepository vendorRepository;
+
 
     public ProductRespDTO productToProductRespDTO(Products products) {
         ProductRespDTO productRespDTO = new ProductRespDTO();
@@ -144,5 +149,16 @@ public class EntityMapper {
         orderDetailsRespDTO.setQuantity(orderDetail.getQuantity());
         orderDetailsRespDTO.setSubtotal(orderDetail.getSubtotal());
         return orderDetailsRespDTO;
+    }
+
+    public User userProfileToUser(UserProfileReqDTO userProfileReqDTO) {
+        User user = userRepository.getUserByEmail(userProfileReqDTO.getEmail()).get();
+        user.setFirstName(userProfileReqDTO.getFirstName());
+        user.setLastName(userProfileReqDTO.getLastName());
+        user.setGender(userProfileReqDTO.getGender());
+        user.setMobile(userProfileReqDTO.getMobile());
+        user.setAddress(userProfileReqDTO.getAddress());
+        user.setFirstName(user.getFirstName());
+        return user;
     }
 }

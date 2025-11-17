@@ -13,6 +13,7 @@ CREATE TABLE users (
 
 To-Do:
 Alter table to add the address col.
+alter table users add column role varchar(50) default 'USER';
 
 
 ---------------------------------------------------------------------

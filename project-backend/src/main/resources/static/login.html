@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+
+<h2>Login with JWT</h2>
+
+<input id="email" placeholder="Email"><br><br>
+<input id="password" placeholder="Password" type="password"><br><br>
+
+<button onclick="login()">Login</button>
+
+<p id="msg" style="color:red;"></p>
+
+<script>
+    function login() {
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
+        console.log(email)
+
+        fetch("http://localhost:8080/api/auth/login", {  // ⚠️ update this path based on your API
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: email,
+                password: password
+            })
+        })
+        .then(res => {
+            if (!res.ok) {
+            console.log("fetched")
+            console.log(email)
+            console.log(password)
+                document.getElementById("msg").innerText = "Invalid Credentials!";
+                throw new Error("Login failed");
+            }
+            return res.json();
+        })
+        .then(data => {
+            // Save token
+            localStorage.setItem("token", data.token);
+            sessionStorage.setItem("token", data.token);
+
+            // Redirect after login
+            window.location.href = "/products.html";   // static products page
+        })
+        .catch(err => {
+            console.log(err);
+        });
+        sessionStorage.setItem("token", data.token);
+    }
+</script>
+
+</body>
+</html>

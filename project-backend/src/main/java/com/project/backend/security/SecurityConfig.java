@@ -2,72 +2,67 @@ package com.project.backend.security;
 
 import com.project.backend.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableAutoConfiguration
 public class SecurityConfig {
 
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService userDetailsService;
+    @Autowired
+    private final JwtTokenProvider tokenProvider;
+    @Autowired
+    private final JwtAuthenticationEntryPoint unauthorizedHandler;
+
+    @Autowired
+    public SecurityConfig(CustomUserDetailsService userDetailsService,
+                          JwtTokenProvider tokenProvider,
+                          JwtAuthenticationEntryPoint unauthorizedHandler) {
+        this.userDetailsService = userDetailsService;
+        this.tokenProvider = tokenProvider;
+        this.unauthorizedHandler = unauthorizedHandler;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // BCrypt is highly recommended for securely hashing passwords
-        System.out.println("Testing 5");
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(customUserDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        System.out.println("Testing 6");
-        return authProvider;
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println("Testing 1");
-        http.
-                csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        // Allow public access to welcome, login pages, and related URLs
-                        .requestMatchers("/", "/login", "/perform_login", "/logout","/register", "/perform_register").permitAll()
-                        // Require authentication for any other request
-                        .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/login") // The URL for the custom login page (GET request)
-                        .loginProcessingUrl("/perform_login") // The URL where the form submits (POST request)
-                        .defaultSuccessUrl("/home", true) // Redirect after successful login
-                        .failureUrl("/login?error=true") // Redirect after failed login
-                        .permitAll() // Ensure login URLs are publicly accessible
-                )
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(tokenProvider, userDetailsService);
+    }
 
-                // Configure the logout mechanism
-                .logout(logout -> logout
-                        .logoutUrl("/logout") // The URL to trigger logout
-                        .logoutSuccessUrl("/") // Redirect after successful logout
-                        .permitAll() // Ensure logout URL is public
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**", "/", "/login","/login.html", "/register").permitAll()
+                        .anyRequest().authenticated()
                 );
-        System.out.println("Testing 2");
-        http.authenticationProvider(authenticationProvider());
+
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 }
-
-
-
 
 
 
