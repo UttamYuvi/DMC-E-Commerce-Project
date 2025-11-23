@@ -17,6 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Autowired
     private final CustomUserDetailsService userDetailsService;
     @Autowired
     private final JwtTokenProvider tokenProvider;
@@ -26,9 +28,11 @@ public class SecurityConfig {
     @Autowired
     public SecurityConfig(CustomUserDetailsService userDetailsService,
                           JwtTokenProvider tokenProvider,
+                          JwtAuthenticationFilter jwtAuthenticationFilter,
                           JwtAuthenticationEntryPoint unauthorizedHandler) {
         this.userDetailsService = userDetailsService;
         this.tokenProvider = tokenProvider;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.unauthorizedHandler = unauthorizedHandler;
     }
 
@@ -42,10 +46,10 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(tokenProvider, userDetailsService);
-    }
+//    @Bean
+//    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+//        return new JwtAuthenticationFilter(tokenProvider, userDetailsService);
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,11 +58,13 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/", "/login","/login.html", "/register").permitAll()
+                        .requestMatchers("/api/auth/**", "/", "/login","/login.html", "/register","/register/vendor").permitAll()
+                        .requestMatchers("/user/**").hasAuthority("USER")
+                        .requestMatchers("/vendor/**","/products/category").hasAuthority("VENDOR")
                         .anyRequest().authenticated()
                 );
 
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

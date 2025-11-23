@@ -17,11 +17,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select u from User u where u.email = :email")
     Optional<User> getUserByEmail(@Param("email") String email);
 
+    User findByEmail(String email);
+
     @Modifying
     @Transactional
-    @Query("UPDATE User u SET u.firstName = :firstName, u.lastName = :lastName WHERE u.userId = :userId")
+    @Query("UPDATE User u SET u.firstName = :firstName, u.lastName = :lastName WHERE u.email = :email")
     public int updateUserName(@Param("firstName") String firstName,
                        @Param("lastName") String lastName,
-                       @Param("userId") int userId);
+                       @Param("email") String username);
 
 }

@@ -19,16 +19,16 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private final JwtTokenProvider tokenProvider;
+    private JwtTokenProvider tokenProvider;
 
     @Autowired
-    private final CustomUserDetailsService userDetailsService;
+    private CustomUserDetailsService userDetailsService;
 
-    public JwtAuthenticationFilter(JwtTokenProvider tokenProvider,
-                                   CustomUserDetailsService userDetailsService) {
-        this.tokenProvider = tokenProvider;
-        this.userDetailsService = userDetailsService;
-    }
+//    public JwtAuthenticationFilter(JwtTokenProvider tokenProvider,
+//                                   CustomUserDetailsService userDetailsService) {
+//        this.tokenProvider = tokenProvider;
+//        this.userDetailsService = userDetailsService;
+//    }
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearer = request.getHeader("Authorization");

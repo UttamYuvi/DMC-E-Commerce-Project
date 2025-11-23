@@ -8,6 +8,7 @@ import com.project.backend.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,8 @@ public class EntityMapper {
 
     Products product = new Products();
 
+
+//    Principal principal;
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -28,6 +31,24 @@ public class EntityMapper {
     @Autowired
     private VendorRepository vendorRepository;
 
+
+//    public User userToUserName(UserNameDTO userNameDTO) {
+//        User newUser =new User();
+//        newUser.setPassword();
+//        User user = userRepository.findByEmail(principal.getName());
+//        System.out.println(principal.getName());
+//
+//
+//    }
+
+    public Vendor vendorRequestToVendor(VendorRequestDTO vendorRequestDTO) {
+        Vendor vendor = new Vendor();
+        vendor.setVendorName(vendorRequestDTO.getVendorName());
+        vendor.setEmail(vendorRequestDTO.getEmail());
+        vendor.setPassword(vendorRequestDTO.getPassword());
+        vendor.setMobile(vendorRequestDTO.getMobile());
+        return vendor;
+    }
 
     public ProductRespDTO productToProductRespDTO(Products products) {
         ProductRespDTO productRespDTO = new ProductRespDTO();
