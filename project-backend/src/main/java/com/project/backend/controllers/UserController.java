@@ -17,7 +17,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -42,9 +42,10 @@ public class UserController {
 
     //@PreAuthorize("isAuthenticated()")
     @PreAuthorize("isAuthenticated()")
-    @PatchMapping()
+    @PatchMapping("/name")
     public ResponseEntity<?> updateUser(@RequestBody UserNameDTO userNameDTO, Principal principal) {
         String userName = principal.getName();
+        System.out.println(userName);
         userService.updateUserName(userNameDTO.getFirstName(),userNameDTO.getLastName(),userName);
         return ResponseEntity.ok("updated");
     }

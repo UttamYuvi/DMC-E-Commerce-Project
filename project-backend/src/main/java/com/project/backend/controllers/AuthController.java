@@ -23,66 +23,86 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider tokenProvider;
+    private AuthenticationManager authenticationManager;
     @Autowired
-    private final UserRepository userRepository;
+    private JwtTokenProvider tokenProvider;
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private VendorRepository vendorRepository;
     @Autowired
-    private final PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
-    @Autowired
-    public AuthController(AuthenticationManager authenticationManager,
-                          JwtTokenProvider tokenProvider,
-                          UserRepository userRepository,
-                          VendorRepository vendorRepository,
-                          PasswordEncoder passwordEncoder) {
-        this.authenticationManager = authenticationManager;
-        this.tokenProvider = tokenProvider;
-        this.userRepository = userRepository;
-        this.vendorRepository = vendorRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody AuthRequestDTO loginRequest) {
+    @PostMapping("/vendor/login")
+    public ResponseEntity<?> authenticateVendor(@RequestBody AuthRequestDTO loginRequest) {
         try {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
             );
+//            Vendor vendor = (Vendor) auth.getPrincipal();
+//
+//            String username = vendor.getUsername();
+//            String role = vendor.getAuthorities().stream().findFirst().get().getAuthority();
 
             Object principal = auth.getPrincipal();
             String username;
             String role;
 
-            if(principal instanceof User) {
-                User user = (User) principal;
-                username = user.getUsername();
-                role = user.getAuthorities().stream().findFirst().get().getAuthority();
-            }
-            else if(principal instanceof Vendor) {
+            if (principal instanceof Vendor) {
                 Vendor vendor = (Vendor) principal;
                 username = vendor.getUsername();
                 role = vendor.getAuthorities().stream().findFirst().get().getAuthority();
-            }
-            else if (principal instanceof UserDetails) {
+            } else if (principal instanceof UserDetails) {
                 UserDetails ud = (UserDetails) principal;
                 username = ud.getUsername();
                 role = ud.getAuthorities().stream().findFirst().get().getAuthority();
             } else {
-                username = loginRequest.getUsername();
-                role = "USER";
+                return ResponseEntity.status(401).body("Invalid principal type");
             }
 
             String token = tokenProvider.createToken(username,role);
             return ResponseEntity.ok(new AuthResponseDTO(token));
 
+        } catch (BadCredentialsException ex) {
+            return ResponseEntity.status(401).body("Invalid username/password");
+        } catch (AuthenticationException ex) {
+            return ResponseEntity.status(401).body("Authentication failed: " + ex.getMessage());
+        }
+    }
+
+    @PostMapping("/user/login")
+    public ResponseEntity<?> authenticateUser(@RequestBody AuthRequestDTO loginRequest) {
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+            );
 //            User user = (User) auth.getPrincipal();
-//            System.out.println(user.getUsername());
-//            System.out.println("Token: "+token);
+//
+//            String username = user.getUsername();
+//            String role = user.getAuthorities().stream().findFirst().get().getAuthority();
+
+            Object principal = auth.getPrincipal();
+            String username;
+            String role;
+
+            if (principal instanceof User) {
+                User user = (User) principal;
+                username = user.getUsername();
+                role = user.getAuthorities().stream().findFirst().get().getAuthority();
+            } else if (principal instanceof UserDetails) {
+                UserDetails ud = (UserDetails) principal;
+                username = ud.getUsername();
+                role = ud.getAuthorities().stream().findFirst().get().getAuthority();
+            } else {
+                return ResponseEntity.status(401).body("Invalid principal type");
+            }
+
+            String token = tokenProvider.createToken(username,role);
+            return ResponseEntity.ok(new AuthResponseDTO(token));
+
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(401).body("Invalid username/password");
         } catch (AuthenticationException ex) {

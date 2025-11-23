@@ -1,10 +1,13 @@
 package com.project.backend.security;
 
 import com.project.backend.services.CustomUserDetailsService;
+import com.project.backend.services.CustomVendorDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,22 +22,24 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
-    private final CustomUserDetailsService userDetailsService;
+    private CustomUserDetailsService userDetailsService;
     @Autowired
-    private final JwtTokenProvider tokenProvider;
+    private CustomVendorDetailsService vendorDetailsService;
     @Autowired
-    private final JwtAuthenticationEntryPoint unauthorizedHandler;
+    private JwtTokenProvider tokenProvider;
+    @Autowired
+    private JwtAuthenticationEntryPoint unauthorizedHandler;
 
-    @Autowired
-    public SecurityConfig(CustomUserDetailsService userDetailsService,
-                          JwtTokenProvider tokenProvider,
-                          JwtAuthenticationFilter jwtAuthenticationFilter,
-                          JwtAuthenticationEntryPoint unauthorizedHandler) {
-        this.userDetailsService = userDetailsService;
-        this.tokenProvider = tokenProvider;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.unauthorizedHandler = unauthorizedHandler;
-    }
+//    @Autowired
+//    public SecurityConfig(CustomUserDetailsService userDetailsService,
+//                          JwtTokenProvider tokenProvider,
+//                          JwtAuthenticationFilter jwtAuthenticationFilter,
+//                          JwtAuthenticationEntryPoint unauthorizedHandler) {
+//        this.userDetailsService = userDetailsService;
+//        this.tokenProvider = tokenProvider;
+//        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+//        this.unauthorizedHandler = unauthorizedHandler;
+//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,14 +47,32 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder builder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        builder.authenticationProvider(userAuthProvider());
+        builder.authenticationProvider(vendorAuthProvider());
+
+        return builder.build();
     }
 
-//    @Bean
-//    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-//        return new JwtAuthenticationFilter(tokenProvider, userDetailsService);
-//    }
+    @Bean
+    public DaoAuthenticationProvider userAuthProvider() {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(userDetailsService);
+        auth.setPasswordEncoder(passwordEncoder());
+        return auth;
+    }
+
+    @Bean
+    public DaoAuthenticationProvider vendorAuthProvider() {
+        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+        auth.setUserDetailsService(vendorDetailsService);
+        auth.setPasswordEncoder(passwordEncoder());
+        return auth;
+    }
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -58,8 +81,8 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/", "/login","/login.html", "/register","/register/vendor").permitAll()
-                        .requestMatchers("/user/**").hasAuthority("USER")
+                        .requestMatchers("/api/auth/**", "/", "/user/login","/vendor/login", "/register","/register/vendor").permitAll()
+                        .requestMatchers("/user/**" ,"/name").hasAuthority("USER")
                         .requestMatchers("/vendor/**","/products/category").hasAuthority("VENDOR")
                         .anyRequest().authenticated()
                 );

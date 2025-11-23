@@ -31,7 +31,7 @@ public class Vendor implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(() -> "ROLE_" + role);
+        return List.of(() -> role);
     }
 
     @Override
