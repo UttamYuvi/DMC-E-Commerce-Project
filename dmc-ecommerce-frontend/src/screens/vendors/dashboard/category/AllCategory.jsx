@@ -2,13 +2,10 @@ import { useEffect } from "react";
 import { AppHeader } from "../../../../utils/AppText";
 
 export default function AllCategory() {
-
-    useEffect(()=>{
-        
-    },[])
+  useEffect(() => {}, []);
   return (
     <>
-      <AppHeader>All Categories</AppHeader>
+      <AppHeader>All Category</AppHeader>
 
       <table class="table table-striped">
         <thead>
