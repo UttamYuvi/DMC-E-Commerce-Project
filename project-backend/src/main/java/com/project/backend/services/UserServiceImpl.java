@@ -5,6 +5,7 @@ import com.project.backend.dtos.UserProfileReqDTO;
 import com.project.backend.repository.UserRepository;
 import com.project.backend.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,9 +30,14 @@ public class UserServiceImpl {
 //        return userRepository.save(user);
 //    }
 
-    public void updateUserName(String firstName, String lastName,int userId) {
-        userRepository.updateUserName(firstName, lastName, userId);
+    @PreAuthorize("isAuthenticated()")
+    public void updateUserName(String firstName, String lastName,String username) {
+        System.out.println("service"+username);
+        System.out.println(userRepository.updateUserName(firstName,lastName,username));
     }
+//    public void updateUserName(String firstName, String lastName,int userId) {
+//        userRepository.updateUserName(firstName, lastName, userId);
+//    }
 
     public void updateUserProfile(UserProfileReqDTO userProfileReqDTO) {
         User user = mapper.userProfileToUser(userProfileReqDTO);

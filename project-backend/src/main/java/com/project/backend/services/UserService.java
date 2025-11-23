@@ -14,5 +14,6 @@ public interface UserService {
 
     void updateUserProfile(UserProfileReqDTO userProfileReqDTO);
 
-    void updateUserName(String firstName, String lastName, int userId);
+//    void updateUserName(String firstName, String lastName, int userId);
+    void updateUserName(String firstName, String lastName,String username);
 }
