@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { registerVendor } from "../../../services/vendor";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { Grid, Paper, TextField, Button } from "@mui/material";
 
 function Register() {
   const navigate = useNavigate();
@@ -40,8 +41,113 @@ function Register() {
   };
 
   return (
-    <div className="container w-50">
-      <div className="mb-3 mt-3">
+    <div
+      className="container w-100"
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Paper
+        elevation={3}
+        style={{ width: "70%" }}
+        // className=" w-lg-75 w-md-100"
+      >
+        <div style={{ padding: "16px", display: "flex" }}>
+          <div className=" col-lg-6 d-none d-md-block align-content-center">
+            <img src="signup.png" width={"100%"} />
+          </div>
+
+          <div className=" col-lg-6">
+            <Grid container spacing={3}>
+              <Grid size={12}>Join us</Grid>
+              <Grid size={6}>
+                <TextField
+                  id="firstName"
+                  type="text"
+                  label="First name"
+                  variant="outlined"
+                  placeholder="Enter first name"
+                  onChange={(e) => setFirstName(e.target.value)}
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid size={6}>
+                <TextField
+                  id="lastName"
+                  type="text"
+                  label="Last name"
+                  variant="outlined"
+                  placeholder="Enter last name"
+                  onChange={(e) => setLastName(e.target.value)}
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid size={12}>
+                <TextField
+                  id="phone"
+                  type="text"
+                  label="Phone"
+                  variant="outlined"
+                  placeholder="Enter phone number"
+                  onChange={(e) => setMobile(e.target.value)}
+                  fullWidth
+                />
+              </Grid>
+              <Grid size={12}>
+                <TextField
+                  id="email"
+                  type="email"
+                  label="Email Address"
+                  variant="outlined"
+                  placeholder="Enter email address"
+                  onChange={(e) => setEmail(e.target.value)}
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid size={12}>
+                <TextField
+                  id="password"
+                  type="password"
+                  label="Password"
+                  variant="outlined"
+                  placeholder="Enter password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid size={12}>
+                <Button
+                  variant="contained"
+                  sx={{ textTransform: "none" }}
+                  onClick={signup}
+                >
+                  Sign up
+                </Button>
+              </Grid>
+
+              <Grid size={12}>
+                <label> Already have an account?</label>
+                <Link to="/"> Login in</Link>
+              </Grid>
+            </Grid>
+          </div>
+        </div>
+      </Paper>
+    </div>
+  );
+}
+
+export default Register;
+
+{
+  /* <div className="mb-3 mt-3">
         <label for="firstName" className="form-label">
           First name
         </label>
@@ -122,13 +228,5 @@ function Register() {
         <button className="btn btn-success" onClick={signup}>
           Signin
         </button>
-      </div>
-      <div>
-        <label> Don't have an account ?</label>
-        <Link to="/register"> Click Here</Link>
-      </div>
-    </div>
-  );
+      </div> */
 }
-
-export default Register;
