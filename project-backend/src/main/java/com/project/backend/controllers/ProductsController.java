@@ -6,52 +6,55 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
-@RequestMapping("/vendors/products")
+@RequestMapping("/products")
 public class ProductsController {
 
     @Autowired
     private ProductsServiceImpl productsService;
 
-    @GetMapping
+    @GetMapping("/user")
     public ResponseEntity<?> getAllProducts() {
         return  ResponseEntity.ok(productsService.getAllProducts());
     }
 
-    @GetMapping("/{pid}")
+    @GetMapping("/user/{pid}")
     public ResponseEntity<?> getProductById(@PathVariable("pid") int pid) {
         return ResponseEntity.ok(productsService.getProductById(pid));
     }
 
-    @PostMapping
+    @PostMapping("/vendor")
     public ResponseEntity<?> saveProduct(@RequestBody ProductReqDTO productReqDTO) {
         return ResponseEntity.ok(productsService.saveProduct(productReqDTO));
     }
 
-    @PutMapping("/{pid}")
+    @PutMapping("/vendor/{pid}")
     public ResponseEntity<?> updateProduct(@PathVariable("pid") int pid, @RequestBody ProductReqDTO productReqDTO) {
         return ResponseEntity.ok(productsService.updateProduct(pid,productReqDTO));
     }
 
-    @GetMapping("/category")
+    @GetMapping("/user/category")
     public ResponseEntity<?> getAllCategories() {
         return ResponseEntity.ok(productsService.getAllCategory());
     }
 
-    @GetMapping("/category/{cid}")
+    @GetMapping("/user/category/{cid}")
     public ResponseEntity<?> getAllSubCategories(@PathVariable("cid") int cid) {
         return ResponseEntity.ok(productsService.getAllSubCategoryByCategoryId(cid));
     }
 
-    @GetMapping("/subcategory/{scid}")
+    @GetMapping("/user/subcategory/{scid}")
     public ResponseEntity<?> getAllProductsBySubCategoryId(@PathVariable("scid") int scid) {
         return ResponseEntity.ok(productsService.getAllProductsBySubCategoryId(scid));
     }
 
-    @GetMapping("/vendors/{vid}")
-    public ResponseEntity<?> getAllProductsByVendorId(@PathVariable("vid") int vid) {
-        return ResponseEntity.ok(productsService.findProductsByVendorId(vid));
+    @GetMapping("/vendor")
+    public ResponseEntity<?> getAllProductsByVendorId(Principal principal) {
+        String email = principal.getName();
+        return ResponseEntity.ok(productsService.findProductsByVendorEmail(email));
     }
 
 //    @PostMapping("/category")

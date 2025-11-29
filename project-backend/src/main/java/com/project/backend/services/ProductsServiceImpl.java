@@ -75,8 +75,8 @@ public class ProductsServiceImpl implements ProductsService{
         return mapper.subCategoriesToSubCategoriesRespDTO(subCategories);
     }
 
-    public List<ProductRespDTO> findProductsByVendorId(int vid) {
-        List<Products> products = productsRepository.findProductsByVendorId(vid);
+    public List<ProductRespDTO> findProductsByVendorEmail(String email) {
+        List<Products> products = productsRepository.findProductsByVendorEmail(email);
         List<ProductRespDTO> productRespDTOList = new ArrayList<>();
         for(Products product : products) {
             productRespDTOList.add(mapper.productToProductRespDTO(product));

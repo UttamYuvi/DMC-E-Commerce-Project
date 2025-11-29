@@ -13,7 +13,7 @@ public interface ProductsRepository extends JpaRepository<Products,Integer> {
     @Query("SELECT p FROM Products p WHERE p.subCategory.subCategoryId = :subCategoryId")
     List<Products> getAllProductsBySubCategoryId(@Param("subCategoryId") int scid);
 
-    @Query("SELECT p FROM Products p WHERE p.vendor.vendorId = :vendorId")
-    List<Products> findProductsByVendorId(int vendorId);
+    @Query("SELECT p FROM Products p WHERE p.vendor.email = :email")
+    List<Products> findProductsByVendorEmail(String email);
 
 }

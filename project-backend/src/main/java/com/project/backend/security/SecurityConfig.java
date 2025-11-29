@@ -81,9 +81,10 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/", "/user/login","/vendor/login", "/register","/register/vendor").permitAll()
+                        .requestMatchers("/api/auth/**", "/", "/user/login","/vendor/login", "/register","/register/vendor","/products/user"
+                        ,"products/user/category","products/user/subcategory").permitAll()
                         .requestMatchers("/user/**" ,"/name").hasAuthority("USER")
-                        .requestMatchers("/vendor/**","/products/category").hasAuthority("VENDOR")
+                        .requestMatchers("/vendor/**","/products/category","products/vendor").hasAuthority("VENDOR")
                         .anyRequest().authenticated()
                 );
 

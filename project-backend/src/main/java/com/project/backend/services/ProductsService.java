@@ -21,7 +21,7 @@ public interface ProductsService  {
 
     public List<ProductRespDTO> getAllProductsBySubCategoryId(int scid);
 
-    List<ProductRespDTO> findProductsByVendorId(int vid);
+    List<ProductRespDTO> findProductsByVendorEmail(String email);
 
 
     // Category
