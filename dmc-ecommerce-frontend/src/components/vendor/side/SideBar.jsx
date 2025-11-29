@@ -71,7 +71,7 @@ function SideBar() {
                     <div style={{ marginLeft: "20px", marginTop: "5px" }}>
                       <SubItem
                         name="Category"
-                        to="/page/category"
+                        to="/page/allcategory"
                         active={location.pathname.endsWith("category")}
                       />
                       <SubItem

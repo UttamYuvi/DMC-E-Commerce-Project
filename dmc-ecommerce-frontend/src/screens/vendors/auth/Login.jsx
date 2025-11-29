@@ -3,25 +3,31 @@ import { Link, useNavigate } from "react-router";
 import { loginVendor } from "../../../services/vendor";
 import { toast } from "react-toastify";
 import { VendorContext } from "./VendorContext";
+import { setToken, saveVendorToStorage } from "../../../utils/LocalStorage";
 
 function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const { setVendor } = useContext(VendorContext);
 
   const signin = async () => {
     try {
       const result = await loginVendor(email, password);
-      console.log("Testing ", result);
       if (result.status) {
-        localStorage.setItem("token", JSON.stringify(result.data.token));
-        setVendor({
+        setToken(result.data.token);
+
+        const vendorObj = {
           firstName: result.data.firstName,
           lastName: result.data.lastName,
           email: result.data.email,
           mobile: result.data.mobile,
-        });
+        };
+
+        saveVendorToStorage(vendorObj);
+        setVendor(vendorObj);
+
         toast.success(`Hi ${result.data.firstName}! Welcome to Shopifi😊`);
         navigate("/page/dashboard");
       } else {
