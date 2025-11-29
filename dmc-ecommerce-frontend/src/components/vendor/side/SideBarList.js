@@ -17,31 +17,4 @@ export const sideList = [
     name: "Sales",
     nav: "sales",
   },
-
-  {
-    name: "Sales",
-    nav: "sales",
-  },
-
-  {
-    name: "Sales",
-    nav: "sales",
-  },
-
-  {
-    name: "Sales",
-    nav: "sales",
-  },
-  {
-    name: "Sales",
-    nav: "sales",
-  },
-  {
-    name: "Sales",
-    nav: "sales",
-  },
-  {
-    name: "Sales",
-    nav: "sales",
-  },
 ];

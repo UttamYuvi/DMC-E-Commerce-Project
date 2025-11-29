@@ -1,0 +1,57 @@
+Alter TABLE categories 
+ADD COLUMN vendorId INT After categoryId,
+ADD CONSTRAINT fk_vendor_category
+Foreign key (vendorId)
+References vendors(vendorId)
+On DELETE CASCADE
+On Update CASCADE;
+
+
+CREATE TABLE addresses (
+    addressId INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT NOT NULL,
+    addressLine VARCHAR(255) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    pincode VARCHAR(10) NOT NULL,
+    landmark VARCHAR(150),
+    addressType ENUM('home', 'work', 'other') DEFAULT 'home',
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT chk_pincode_length CHECK (CHAR_LENGTH(pincode) BETWEEN 4 AND 10),
+    CONSTRAINT fk_address_user FOREIGN KEY (userId) REFERENCES users(userId)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+
+
+ALTER TABLE vendors
+    ADD COLUMN firstName VARCHAR(45) NOT NULL AFTER vendorId,
+    ADD COLUMN lastName VARCHAR(45) NOT NULL AFTER firstName,
+    ADD COLUMN password VARCHAR(55) NOT NULL AFTER email,
+    ADD COLUMN updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    DROP COLUMN vendorName;
+
+
+ALTER TABLE `infinohop`.`vendors` 
+CHANGE COLUMN `password` `password` TEXT NOT NULL ;
+
+ALTER TABLE `infinohop`.`vendors` 
+ADD UNIQUE INDEX `vendorId_UNIQUE` (`vendorId` ASC) VISIBLE,
+DROP INDEX `mobile` ;
+;
+
+
+alter table vendors add column role varchar(25) DEFAULT "VENDOR";
+
+alter table users add column role varchar(25) DEFAULT "USER";
+
+ALTER TABLE `infinohop`.`users` 
+CHANGE COLUMN `firstName` `firstName` VARCHAR(50) NULL ,
+CHANGE COLUMN `lastName` `lastName` VARCHAR(50) NULL ,
+CHANGE COLUMN `mobile` `mobile` VARCHAR(15) NULL ,
+CHANGE COLUMN `gender` `gender` ENUM('male', 'female', 'others') NULL ,
+CHANGE COLUMN `createdAt` `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+CHANGE COLUMN `role` `role` VARCHAR(25) NOT NULL DEFAULT 'USER' ;
+
