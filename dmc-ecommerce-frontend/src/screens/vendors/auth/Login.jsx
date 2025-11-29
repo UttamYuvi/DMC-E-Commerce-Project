@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { loginVendor } from "../../../services/vendor";
 import { toast } from "react-toastify";
 import { VendorContext } from "./VendorContext";
+import { Grid, Paper, TextField, Button } from "@mui/material";
 
 function Login() {
   const navigate = useNavigate();
@@ -34,40 +35,70 @@ function Login() {
   };
 
   return (
-    <div className="container w-50">
-      <div className="mb-3 mt-3">
-        <label for="inputEmail" className="form-label">
-          Email address
-        </label>
-        <input
-          type="email"
-          className="form-control"
-          id="inputEmail"
-          placeholder="name@example.com"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </div>
-      <div className="mb-3">
-        <label for="inputPassword" className="form-label">
-          Password
-        </label>
-        <input
-          type="password"
-          id="inputPassword"
-          className="form-control"
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <div className="mb-3">
-        <button className="btn btn-success" onClick={signin}>
-          Signin
-        </button>
-      </div>
-      <div>
-        <label> Don't have an account ?</label>
-        <Link to="/register"> Click Here</Link>
-      </div>
+    <div
+      className="container w-100"
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Paper
+        elevation={3}
+        style={{ width: "70%" }}
+        // className=" w-lg-75 w-md-100"
+      >
+        <div style={{ padding: "16px", display: "flex" }}>
+          <div className=" col-lg-6 d-none d-md-block align-content-center">
+            <img src="signin.png" width={"100%"} />
+          </div>
+          <div className=" col-lg-6">
+            <Grid container spacing={3}>
+              <Grid size={12}>Welcome</Grid>
+              <Grid size={12}>
+                <TextField
+                  id="email"
+                  type="email"
+                  label="Email Address"
+                  variant="outlined"
+                  placeholder="Enter email address"
+                  onChange={(e) => setEmail(e.target.value)}
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid size={12}>
+                <TextField
+                  id="password"
+                  type="password"
+                  label="Password"
+                  variant="outlined"
+                  placeholder="Enter password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  fullWidth
+                />
+              </Grid>
+
+              <Grid size={12}>
+                <Button
+                  variant="contained"
+                  sx={{ textTransform: "none" }}
+                  onClick={signin}
+                >
+                  Sign in
+                </Button>
+              </Grid>
+
+              <Grid size={12}>
+                <label> Don't have an account?</label>
+                <Link to="/register"> Register here </Link>
+                <label>for free</label>
+              </Grid>
+            </Grid>
+          </div>
+        </div>
+      </Paper>
     </div>
   );
 }
