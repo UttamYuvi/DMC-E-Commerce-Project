@@ -25,7 +25,7 @@ function Register() {
       if (result.status) {
         toast.success("Register successfully");
 
-        navigate("/");
+        navigate("/login");
       } else {
         Swal.fire({
           position: "top-end",
@@ -134,7 +134,7 @@ function Register() {
 
               <Grid size={12}>
                 <label> Already have an account?</label>
-                <Link to="/"> Login in</Link>
+                <Link to="/login"> Login in</Link>
               </Grid>
             </Grid>
           </div>

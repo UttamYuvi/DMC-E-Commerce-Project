@@ -1,0 +1,48 @@
+.p-container {
+  max-width: 420px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.p-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: #222;
+}
+
+.p-form, .profile-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.p-form .inp,
+.profile-card .inp {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.p-button {
+  width: 100%;
+  padding: 12px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.p-button:hover {
+  opacity: 0.85;
+}
+
+.profile-card p {
+  margin-bottom: 10px;
+  font-size: 15px;
+}

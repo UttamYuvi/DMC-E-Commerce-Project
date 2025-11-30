@@ -33,7 +33,7 @@ function Login() {
         navigate("/page/dashboard");
       } else {
         toast.error(result.error);
-        navigate("/");
+        navigate("/login");
       }
     } catch (ex) {
       console.log(ex);
