@@ -122,7 +122,6 @@ function SideBar() {
 export default SideBar;
 
 const SubItem = ({ name, to, active }) => {
-  console.log(name, to, active);
   return (
     <Link
       to={to}

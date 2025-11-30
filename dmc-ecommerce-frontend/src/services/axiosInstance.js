@@ -3,7 +3,7 @@ import { getToken } from "../utils/LocalStorage";
 import { base_url } from "../utils/config";
 
 const axiosInstance = axios.create({
-  baseURL: base_url,
+  baseURL: base_url.url,
   timeout: 15000,
 });
 
@@ -11,7 +11,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((config) => {
   const token = getToken();
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    // config.headers.token = `Bearer ${token}`;
+    config.headers.token = token;
   }
   return config;
 });

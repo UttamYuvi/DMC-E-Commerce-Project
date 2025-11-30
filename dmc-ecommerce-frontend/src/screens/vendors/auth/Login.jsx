@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { VendorContext } from "./VendorContext";
 import { setToken, saveVendorToStorage } from "../../../utils/LocalStorage";
 import { Grid, Paper, TextField, Button } from "@mui/material";
+import { AppSubHeader, AppText } from "../../../utils/AppText";
 
 function Login() {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ function Login() {
         navigate("/");
       }
     } catch (ex) {
-      console.log(ex);
+      toast.error(ex);
     }
   };
 
@@ -61,7 +62,9 @@ function Login() {
           </div>
           <div className=" col-lg-6">
             <Grid container spacing={3}>
-              <Grid size={12}>Welcome</Grid>
+              <Grid size={12}>
+                <AppSubHeader>Welcome</AppSubHeader>
+              </Grid>
               <Grid size={12}>
                 <TextField
                   id="email"
@@ -97,9 +100,11 @@ function Login() {
               </Grid>
 
               <Grid size={12}>
-                <label> Don't have an account?</label>
-                <Link to="/register"> Register here </Link>
-                <label>for free</label>
+                <AppText>
+                  <label> Don't have an account?</label>
+                  <Link to="/register"> Register here </Link>
+                  <label>for free</label>
+                </AppText>
               </Grid>
             </Grid>
           </div>

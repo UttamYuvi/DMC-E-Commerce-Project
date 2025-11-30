@@ -6,11 +6,8 @@ const VendorProvider = ({ children }) => {
   // INITIALIZE DIRECTLY FROM LOCALSTORAGE
   const [vendor, setVendor] = useState(() => getVendorFromStorage());
 
-  console.log("VendorProvider rendered!");
-
   useEffect(() => {
     const storedVendor = getVendorFromStorage();
-    console.log("inside the stored Vendor Provider: ", storedVendor);
     if (storedVendor) {
       setVendor(storedVendor);
     }

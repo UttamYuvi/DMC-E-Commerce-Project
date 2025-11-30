@@ -4,6 +4,7 @@ import { registerVendor } from "../../../services/vendor";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { Grid, Paper, TextField, Button } from "@mui/material";
+import { AppSubHeader, AppText } from "../../../utils/AppText";
 
 function Register() {
   const navigate = useNavigate();
@@ -24,7 +25,6 @@ function Register() {
       );
       if (result.status) {
         toast.success("Register successfully");
-
         navigate("/");
       } else {
         Swal.fire({
@@ -36,7 +36,7 @@ function Register() {
         });
       }
     } catch (ex) {
-      console.log(ex);
+      toast.error(ex);
     }
   };
 
@@ -62,7 +62,9 @@ function Register() {
 
           <div className=" col-lg-6">
             <Grid container spacing={3}>
-              <Grid size={12}>Join us</Grid>
+              <Grid size={12}>
+                <AppSubHeader>Join us</AppSubHeader>
+              </Grid>
               <Grid size={6}>
                 <TextField
                   id="firstName"
@@ -133,8 +135,10 @@ function Register() {
               </Grid>
 
               <Grid size={12}>
-                <label> Already have an account?</label>
-                <Link to="/"> Login in</Link>
+                <AppText>
+                  <label> Already have an account?</label>
+                  <Link to="/"> Login in</Link>
+                </AppText>
               </Grid>
             </Grid>
           </div>

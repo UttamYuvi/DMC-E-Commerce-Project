@@ -1,6 +1,5 @@
 // Store token
 export const setToken = (token) => {
-  console.log("Inside the LocalStorage: ", token);
   localStorage.setItem("token", token);
 };
 
@@ -16,7 +15,6 @@ export const removeToken = () => {
 
 // Store vendor object
 export const saveVendorToStorage = (vendor) => {
-  console.log("Inside the LocalStorage: ", vendor);
   localStorage.setItem("vendor", JSON.stringify(vendor));
 };
 
