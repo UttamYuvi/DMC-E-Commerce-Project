@@ -8,11 +8,12 @@ import Register from "./screens/vendors/auth/Register";
 import { ToastContainer } from "react-toastify";
 import MainPage from "./screens/vendors/dashboard/MainPage";
 import Category from "./screens/vendors/dashboard/category/Category";
-import SubCategory from "./screens/vendors/dashboard/SubCategory";
+import SubCategory from "./screens/vendors/dashboard/subcategory/SubCategory";
 import Product from "./screens/vendors/dashboard/Product";
 import { useContext } from "react";
 import { VendorContext } from "./screens/vendors/auth/VendorContext";
 import AllCategory from "./screens/vendors/dashboard/category/AllCategory";
+import AllSubCategory from "./screens/vendors/dashboard/subcategory/AllSubCategory";
 
 function App() {
   const { vendor } = useContext(VendorContext);
@@ -32,6 +33,7 @@ function App() {
           <Route path="product" element={<Product />} />
           <Route path="category" element={<Category />} />
           <Route path="allcategory" element={<AllCategory />} />
+          <Route path="allsubcategory" element={<AllSubCategory />} />
           <Route path="subcategory" element={<SubCategory />} />
           <Route path="sales" element={<Sales />} />
           <Route path="profile" element={<Profile />} />

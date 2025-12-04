@@ -2,6 +2,7 @@ import ApiEndpoint from "./ApiEndpoint";
 import Server from "./callServer";
 
 const serverData = {
+  // Category CURD
   allCategories: async (filters = {}) => {
     return Server.get(ApiEndpoint.getAllCategories, filters);
   },
@@ -13,6 +14,19 @@ const serverData = {
   },
   deleteCategory: async (filters = {}) => {
     return Server.post(ApiEndpoint.deleteCategoryApi, filters);
+  },
+  //SubCategory CURD
+  addSubCategory: async (formData) => {
+    return Server.post(ApiEndpoint.addSubCategoryApi, formData, true);
+  },
+  allSubCategories: async (filters = {}) => {
+    return Server.get(ApiEndpoint.getAllSubCategories, filters);
+  },
+  deleteSubCategory: async (filters = {}) => {
+    return Server.post(ApiEndpoint.deleteSubCategoryApi, filters);
+  },
+  updateSubCategory: async (formData) => {
+    return Server.post(ApiEndpoint.updateSubCategoryApi, formData, true);
   },
 };
 

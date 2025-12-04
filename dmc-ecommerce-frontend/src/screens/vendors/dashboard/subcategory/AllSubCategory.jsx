@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { AppHeader, AppSubHeader, AppText } from "../../../../utils/AppText";
 import CategoryIcon from "@mui/icons-material/Category";
-import { IconButton } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import { useNavigate } from "react-router";
 import serverData from "../../../../services/ServerData";
 import { Toast } from "bootstrap";
@@ -12,38 +19,59 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import { PhotoCamera } from "@mui/icons-material";
 import { Avatar, Grid, TextField, Button } from "@mui/material";
-import Server from "../../../../services/callServer";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
-export default function AllCategory() {
+export default function AllSubCategory() {
   const navigate = useNavigate();
 
   const [categoryId, setCategoryId] = useState("");
-  const [categoryName, setCategoryName] = useState("");
+  const [subCategoryId, setSubCategoryId] = useState("");
 
-  const [categoryLogo, setCategoryLogo] = useState({
+  const [subCategoryName, setSubCategoryName] = useState("");
+
+  const [categories, setCategories] = useState(null);
+
+  const [subCategoryLogo, setSubCategoryLogo] = useState({
     fileName: "/src/assets/small-logo.jpeg",
     bytes: "",
   });
 
-  const [categories, setCategories] = useState([]);
+  const [subcategories, subSubCategories] = useState([]);
   const [openEditDialog, setOpenEditDialog] = useState(false);
 
-  const fetchCategoryData = async () => {
+  const fetchSubCategoryData = async () => {
     try {
-      const response = await serverData.allCategories();
+      const response = await serverData.allSubCategories();
       if (response.data.status) {
-        setCategories(response.data.data);
-      } else Toast("Error");
+        subSubCategories(response.data.data);
+      } else toast.error("Error");
     } catch (error) {
       toast.error(error);
     }
   };
 
   useEffect(() => {
-    fetchCategoryData();
+    fetchSubCategoryData();
   }, []);
+
+  useEffect(
+    function () {
+      getAllCategory();
+    },
+    [openEditDialog]
+  );
+
+  const getAllCategory = async () => {
+    try {
+      const response = await serverData.allCategories();
+      if (response.data.status) {
+        setCategories(response.data.data);
+      } else toast.error("Error");
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   const handleDelete = (e, item) => {
     Swal.fire({
@@ -54,27 +82,28 @@ export default function AllCategory() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const response = await serverData.deleteCategory({
-            categoryId: item.categoryId,
+          const response = await serverData.deleteSubCategory({
+            subCategoryId: item.subCategoryId,
           });
           if (response.data.status) {
-            Swal.fire("Category deleted successfully", "", "success");
-            fetchCategoryData();
+            Swal.fire("SubCategory deleted successfully", "", "success");
+            fetchSubCategoryData();
           }
         } catch (error) {
           toast.error(error);
         }
       } else if (result.isDenied) {
-        Swal.fire("Abort deleting category", "", "info");
+        Swal.fire("Abort deleting SubCategory", "", "info");
       }
     });
   };
 
   const handleOpenEditDialog = (event, item) => {
+    setSubCategoryId(item.subCategoryId);
     setCategoryId(item.categoryId);
-    setCategoryName(item.name);
+    setSubCategoryName(item.name);
 
-    setCategoryLogo({
+    setSubCategoryLogo({
       fileName: `${base_url.url}/images/${item.image}`,
       bytes: "",
     });
@@ -82,13 +111,13 @@ export default function AllCategory() {
     setOpenEditDialog(true);
   };
 
-  const showCategoryData = () => {
+  const showSubCategoryData = () => {
     return (
       <>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <AppHeader>All Category</AppHeader>
+          <AppHeader>All SubCategory</AppHeader>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <IconButton onClick={() => navigate("/page/category")}>
+            <IconButton onClick={() => navigate("/page/subcategory")}>
               <CategoryIcon />
             </IconButton>
           </div>
@@ -102,6 +131,11 @@ export default function AllCategory() {
                 </AppSubHeader>
               </th>
               <th>
+                <AppSubHeader style={{ fontSize: "16px" }}>
+                  SubCategory
+                </AppSubHeader>
+              </th>
+              <th>
                 <AppSubHeader style={{ fontSize: "16px" }}>Image</AppSubHeader>
               </th>
               <th style={{ display: "flex", justifyContent: "right" }}>
@@ -110,8 +144,11 @@ export default function AllCategory() {
             </tr>
           </thead>
           <tbody>
-            {categories.map((item, i) => (
+            {subcategories.map((item, i) => (
               <tr key={i}>
+                <td style={{ alignContent: "center" }}>
+                  <AppText>{item.categoryName}</AppText>
+                </td>
                 <td style={{ alignContent: "center" }}>
                   <AppText>{item.name}</AppText>
                 </td>
@@ -158,22 +195,23 @@ export default function AllCategory() {
     try {
       const formData = new FormData();
       formData.append("categoryId", categoryId);
-      formData.append("name", categoryName);
+      formData.append("subCategoryId", subCategoryId);
+      formData.append("name", subCategoryName);
 
-      if (categoryLogo.bytes) {
-        formData.append("image", categoryLogo.bytes);
+      if (subCategoryLogo.bytes) {
+        formData.append("image", subCategoryLogo.bytes);
       } else {
         formData.append("image", null);
       }
 
-      const response = await serverData.updateCategory(formData);
+      const response = await serverData.updateSubCategory(formData);
 
       if (response.data.status) {
-        toast.success("Category updated successfully");
+        toast.success("SubCategory updated successfully");
         handleClose();
-        fetchCategoryData();
+        fetchSubCategoryData();
       } else {
-        toast.error("Category update failed");
+        toast.error("SubCategory update failed");
       }
     } catch (error) {
       toast.error(error);
@@ -181,13 +219,17 @@ export default function AllCategory() {
   };
 
   const handleImage = (event) => {
-    setCategoryLogo({
+    setSubCategoryLogo({
       fileName: URL.createObjectURL(event.target.files[0]),
       bytes: event.target.files[0],
     });
   };
 
-  const editCategoryDialog = () => {
+  const handleChange = (event) => {
+    setCategoryId(event.target.value);
+  };
+
+  const editSubCategoryDialog = () => {
     return (
       <React.Fragment>
         <Dialog
@@ -201,13 +243,33 @@ export default function AllCategory() {
               <Grid size={12}>
                 <AppSubHeader>Update category</AppSubHeader>
               </Grid>
-              <Grid size={12}>
+
+              <Grid size={6}>
+                <Box sx={{ minWidth: 120 }}>
+                  <FormControl fullWidth>
+                    <InputLabel id="category-label">Category</InputLabel>
+                    <Select
+                      labelId="category-label"
+                      id="Category"
+                      value={categoryId}
+                      label="Category"
+                      onChange={handleChange}
+                    >
+                      {categories?.map((item) => (
+                        <MenuItem value={item.categoryId}>{item.name}</MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Box>
+              </Grid>
+
+              <Grid size={6}>
                 <TextField
                   variant="outlined"
                   label="Category"
                   fullWidth
-                  value={categoryName}
-                  onChange={(e) => setCategoryName(e.target.value)}
+                  value={subCategoryName}
+                  onChange={(e) => setSubCategoryName(e.target.value)}
                   placeholder="Updated category name"
                 />
               </Grid>
@@ -238,7 +300,7 @@ export default function AllCategory() {
                 <Avatar
                   alt="Remy Sharp"
                   variant="rounded"
-                  src={categoryLogo.fileName}
+                  src={subCategoryLogo.fileName}
                   sx={{ width: 56, height: 56 }}
                 />
               </Grid>
@@ -269,8 +331,8 @@ export default function AllCategory() {
 
   return (
     <>
-      {showCategoryData()}
-      {editCategoryDialog()}
+      {showSubCategoryData()}
+      {editSubCategoryDialog()}
     </>
   );
 }
