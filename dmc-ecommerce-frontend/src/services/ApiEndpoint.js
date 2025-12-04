@@ -5,6 +5,10 @@ const ApiEndpoint = {
   addCategoryApi: base_url.url + "/category",
   updateCategoryApi: base_url.url + "/category/update",
   deleteCategoryApi: base_url.url + "/category/delete",
+  addSubCategoryApi: base_url.url + "/subcategory",
+  getAllSubCategories: base_url.url + "/subcategory",
+  deleteSubCategoryApi: base_url.url + "/subcategory/delete",
+  updateSubCategoryApi: base_url.url + "/subcategory/update",
 };
 
 export default ApiEndpoint;

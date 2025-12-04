@@ -76,7 +76,7 @@ function SideBar() {
                       />
                       <SubItem
                         name="Subcategory"
-                        to="/page/subcategory"
+                        to="/page/allsubcategory"
                         active={location.pathname.endsWith("subcategory")}
                       />
                       <SubItem

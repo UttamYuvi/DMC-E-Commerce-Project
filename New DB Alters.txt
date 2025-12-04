@@ -55,3 +55,11 @@ CHANGE COLUMN `gender` `gender` ENUM('male', 'female', 'others') NULL ,
 CHANGE COLUMN `createdAt` `createdAt` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
 CHANGE COLUMN `role` `role` VARCHAR(25) NOT NULL DEFAULT 'USER' ;
 
+ALTER TABLE subcategories
+ADD COLUMN vendorId INT;
+
+ALTER TABLE subcategories
+ADD CONSTRAINT fk_subcategory_vendor
+FOREIGN KEY (vendorId) REFERENCES vendors(vendorId)
+ON DELETE CASCADE;
+
