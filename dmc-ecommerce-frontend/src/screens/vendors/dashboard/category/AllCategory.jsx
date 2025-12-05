@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AppHeader, AppSubHeader, AppText } from "../../../../utils/AppText";
 import CategoryIcon from "@mui/icons-material/Category";
-import { IconButton } from "@mui/material";
-import { useNavigate } from "react-router";
+import { Box, CircularProgress, IconButton } from "@mui/material";
 import serverData from "../../../../services/ServerData";
 import { Toast } from "bootstrap";
 import { base_url } from "../../../../utils/config";
@@ -12,87 +11,183 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import { PhotoCamera } from "@mui/icons-material";
 import { Avatar, Grid, TextField, Button } from "@mui/material";
-import Server from "../../../../services/callServer";
+import Header from "../../../../components/vendor/headers/Header";
+
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import CategoryFields from "./CategoryFields";
+import emptyListImg from "../../../../assets/empty_box.png";
 
 export default function AllCategory() {
-  const navigate = useNavigate();
-
-  const [categoryId, setCategoryId] = useState("");
-  const [categoryName, setCategoryName] = useState("");
-
-  const [categoryLogo, setCategoryLogo] = useState({
-    fileName: "/src/assets/small-logo.jpeg",
-    bytes: "",
-  });
-
+  const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [editData, setEditData] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [openEditDialog, setOpenEditDialog] = useState(false);
 
-  const fetchCategoryData = async () => {
+  const loadCategories = async () => {
     try {
-      const response = await serverData.allCategories();
-      if (response.data.status) {
-        setCategories(response.data.data);
-      } else Toast("Error");
-    } catch (error) {
-      toast.error(error);
+      const res = await serverData.allCategories();
+      if (res.data.status) setCategories(res.data.data);
+    } catch {
+      toast.error("Failed to load categories");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (e, id) => {
+    const confirm = await Swal.fire({
+      title: "Delete?",
+      text: "deletion is not revertable.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    try {
+      const res = await serverData.deleteCategory(id);
+
+      if (res.data.status) {
+        toast.success("Deleted");
+        loadCategories();
+      }
+    } catch {
+      toast.error("Failed to delete");
     }
   };
 
   useEffect(() => {
-    fetchCategoryData();
+    loadCategories();
   }, []);
 
-  const handleDelete = (e, item) => {
-    Swal.fire({
-      title: "Are you sure?",
-      showDenyButton: true,
-      confirmButtonText: "Delete",
-      denyButtonText: "Cancel",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const response = await serverData.deleteCategory({
-            categoryId: item.categoryId,
-          });
-          if (response.data.status) {
-            Swal.fire("Category deleted successfully", "", "success");
-            fetchCategoryData();
-          }
-        } catch (error) {
-          toast.error(error);
-        }
-      } else if (result.isDenied) {
-        Swal.fire("Abort deleting category", "", "info");
-      }
-    });
-  };
+  // const handleUpdate = async () => {
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("categoryId", categoryId);
+  //     formData.append("name", categoryName);
 
-  const handleOpenEditDialog = (event, item) => {
-    setCategoryId(item.categoryId);
-    setCategoryName(item.name);
+  // if (categoryLogo.bytes) {
+  //   formData.append("image", categoryLogo.bytes);
+  // } else {
+  //   formData.append("image", null);
+  //     }
 
-    setCategoryLogo({
-      fileName: `${base_url.url}/images/${item.image}`,
-      bytes: "",
-    });
+  //     const response = await serverData.updateCategory(formData);
 
-    setOpenEditDialog(true);
-  };
+  //     if (response.data.status) {
+  //       toast.success("Category updated successfully");
+  //       handleClose();
+  //       fetchCategoryData();
+  //     } else {
+  //       toast.error("Category update failed");
+  //     }
+  //   } catch (error) {
+  //     toast.error(error);
+  //   }
+  // };
 
-  const showCategoryData = () => {
-    return (
-      <>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <AppHeader>All Category</AppHeader>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <IconButton onClick={() => navigate("/page/category")}>
-              <CategoryIcon />
-            </IconButton>
-          </div>
+  // const handleImage = (event) => {
+  //   setCategoryLogo({
+  //     fileName: URL.createObjectURL(event.target.files[0]),
+  //     bytes: event.target.files[0],
+  //   });
+  // };
+
+  // const editCategoryDialog = () => {
+  //   return (
+  //     <React.Fragment>
+  //       <Dialog
+  //         open={openEditDialog}
+  //         onClose={handleClose}
+  //         aria-labelledby="alert-dialog-title"
+  //         aria-describedby="alert-dialog-description"
+  //       >
+  //         <DialogContent>
+  //           <Grid container spacing={2}>
+  //             <Grid size={12}>
+  //               <AppSubHeader>Update category</AppSubHeader>
+  //             </Grid>
+  //             <Grid size={12}>
+  //               <TextField
+  //                 variant="outlined"
+  //                 label="Category"
+  //                 fullWidth
+  //                 value={categoryName}
+  //                 onChange={(e) => setCategoryName(e.target.value)}
+  //                 placeholder="Updated category name"
+  //               />
+  //             </Grid>
+
+  //             <Grid
+  //               item
+  //               xs={6}
+  //               style={{
+  //                 display: "flex",
+  //                 justifyContent: "space-around",
+  //                 width: "100%",
+  //               }}
+  //             >
+  //               <IconButton
+  //                 fullWidth
+  //                 color="primary"
+  //                 aria-label="upload picture"
+  //                 component="label"
+  //               >
+  //                 <input
+  //                   hidden
+  //                   accept="image/*"
+  //                   type="file"
+  //                   onChange={handleImage}
+  //                 />
+  //                 <PhotoCamera />
+  //               </IconButton>
+  //               <Avatar
+  //                 alt="Remy Sharp"
+  //                 variant="rounded"
+  //                 src={categoryLogo.fileName}
+  //                 sx={{ width: 56, height: 56 }}
+  //               />
+  //             </Grid>
+  //           </Grid>
+  //         </DialogContent>
+  //         <DialogActions>
+  //           <Button
+  //             onClick={handleClose}
+  //             color="error"
+  //             variant="outlined"
+  //             style={{ textTransform: "none" }}
+  //           >
+  //             Cancel
+  //           </Button>
+  //           <Button
+  //             onClick={handleUpdate}
+  //             autoFocus
+  //             variant="contained"
+  //             style={{ textTransform: "none" }}
+  //           >
+  //             Update
+  //           </Button>
+  //         </DialogActions>
+  //       </Dialog>
+  //     </React.Fragment>
+  //   );
+  // };
+
+  return (
+    <>
+      <Header title={"Category"} navigateTo={"category"} />
+
+      {loading ? (
+        <Box sx={{ textAlign: "center", py: 5 }}>
+          <CircularProgress />
+        </Box>
+      ) : categories.length === 0 ? (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <img src={emptyListImg} alt="empty-list" width={"200px"} />
         </div>
+      ) : (
         <table className="table table-striped">
           <thead>
             <tr>
@@ -136,7 +231,10 @@ export default function AllCategory() {
                   </div>
                   <div>
                     <IconButton
-                      onClick={(event) => handleOpenEditDialog(event, item)}
+                      onClick={() => {
+                        setEditData(item);
+                        setOpen(true);
+                      }}
                     >
                       <Edit />
                     </IconButton>
@@ -146,131 +244,24 @@ export default function AllCategory() {
             ))}
           </tbody>
         </table>
-      </>
-    );
-  };
+      )}
 
-  const handleClose = () => {
-    setOpenEditDialog(false);
-  };
-
-  const handleUpdate = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("categoryId", categoryId);
-      formData.append("name", categoryName);
-
-      if (categoryLogo.bytes) {
-        formData.append("image", categoryLogo.bytes);
-      } else {
-        formData.append("image", null);
-      }
-
-      const response = await serverData.updateCategory(formData);
-
-      if (response.data.status) {
-        toast.success("Category updated successfully");
-        handleClose();
-        fetchCategoryData();
-      } else {
-        toast.error("Category update failed");
-      }
-    } catch (error) {
-      toast.error(error);
-    }
-  };
-
-  const handleImage = (event) => {
-    setCategoryLogo({
-      fileName: URL.createObjectURL(event.target.files[0]),
-      bytes: event.target.files[0],
-    });
-  };
-
-  const editCategoryDialog = () => {
-    return (
-      <React.Fragment>
-        <Dialog
-          open={openEditDialog}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogContent>
-            <Grid container spacing={2}>
-              <Grid size={12}>
-                <AppSubHeader>Update category</AppSubHeader>
-              </Grid>
-              <Grid size={12}>
-                <TextField
-                  variant="outlined"
-                  label="Category"
-                  fullWidth
-                  value={categoryName}
-                  onChange={(e) => setCategoryName(e.target.value)}
-                  placeholder="Updated category name"
-                />
-              </Grid>
-
-              <Grid
-                item
-                xs={6}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-around",
-                  width: "100%",
-                }}
-              >
-                <IconButton
-                  fullWidth
-                  color="primary"
-                  aria-label="upload picture"
-                  component="label"
-                >
-                  <input
-                    hidden
-                    accept="image/*"
-                    type="file"
-                    onChange={handleImage}
-                  />
-                  <PhotoCamera />
-                </IconButton>
-                <Avatar
-                  alt="Remy Sharp"
-                  variant="rounded"
-                  src={categoryLogo.fileName}
-                  sx={{ width: 56, height: 56 }}
-                />
-              </Grid>
-            </Grid>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={handleClose}
-              color="error"
-              variant="outlined"
-              style={{ textTransform: "none" }}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleUpdate}
-              autoFocus
-              variant="contained"
-              style={{ textTransform: "none" }}
-            >
-              Update
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </React.Fragment>
-    );
-  };
-
-  return (
-    <>
-      {showCategoryData()}
-      {editCategoryDialog()}
+      {/* Update/Add Dialog */}
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogContent>
+          <CategoryFields
+            mode={editData ? "edit" : "add"}
+            data={editData}
+            onClose={() => setOpen(false)}
+            onSuccess={loadCategories}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
