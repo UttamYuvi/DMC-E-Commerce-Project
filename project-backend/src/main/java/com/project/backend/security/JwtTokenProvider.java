@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import java.security.Key;
 import java.util.Date;
 
@@ -21,6 +22,7 @@ public class JwtTokenProvider {
 
     public String createToken(String username, String role) {
         Claims claims = Jwts.claims().setSubject(username);
+        System.out.println("role" + role);
         claims.put("role", role);
 
         Date now = new Date();
@@ -33,6 +35,15 @@ public class JwtTokenProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
+
+    public Claims getAllClaimsFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -40,6 +51,10 @@ public class JwtTokenProvider {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    public String getRoleFromToken(String token) {
+        return (String) getAllClaimsFromToken(token).get("role");
     }
 
     public String getUsernameFromToken(String token) {

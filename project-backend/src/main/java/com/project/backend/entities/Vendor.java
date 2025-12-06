@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -21,7 +22,8 @@ public class Vendor implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int vendorId;
-    private String vendorName;
+    private String firstName;
+    private String lastName;
     private String email;
     private String mobile;
     private String subscriptionStatus;
@@ -31,7 +33,7 @@ public class Vendor implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> role);
+        return List.of(new SimpleGrantedAuthority("VENDOR"));
     }
 
     @Override

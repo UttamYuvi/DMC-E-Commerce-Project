@@ -1,12 +1,10 @@
 package com.project.backend.services;
 
-import com.project.backend.dtos.CategoryReqRespDTO;
-import com.project.backend.dtos.ProductReqDTO;
-import com.project.backend.dtos.ProductRespDTO;
-import com.project.backend.dtos.SubCategoryRespDTO;
+import com.project.backend.dtos.*;
+import com.project.backend.entities.Category;
 import com.project.backend.entities.Products;
-import com.project.backend.entities.Vendor;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface ProductsService  {
@@ -24,8 +22,13 @@ public interface ProductsService  {
     List<ProductRespDTO> findProductsByVendorEmail(String email);
 
 
+    public Category deleteCategory (int categoryId, int vendorId);
     // Category
-    public List<CategoryReqRespDTO> getAllCategory();
+    public int updateCategory(int categoryId,String name, String image);
+    public List<CategoryReqRespDTO> getAllCategory(int vendorId);
+
+    public Category addNewCategory(String name,String image, Principal principal);
+    //String image,
     // Sub-Category
     public List<SubCategoryRespDTO> getAllSubCategoryByCategoryId(int cid);
 

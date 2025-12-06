@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class VendorRequestDTO {
 
-    private String vendorName;
+    private String firstName;
+    private String lastName;
     private String email;
     private String mobile;
     private String password;

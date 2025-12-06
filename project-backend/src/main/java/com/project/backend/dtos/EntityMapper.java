@@ -1,16 +1,14 @@
 package com.project.backend.dtos;
 
 import com.project.backend.entities.*;
-import com.project.backend.repository.CategoryRepository;
-import com.project.backend.repository.SubCategoryRepository;
-import com.project.backend.repository.UserRepository;
-import com.project.backend.repository.VendorRepository;
+import com.project.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class EntityMapper {
@@ -21,6 +19,8 @@ public class EntityMapper {
 //    Principal principal;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private ProductsRepository productsRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -40,10 +40,14 @@ public class EntityMapper {
 //
 //
 //    }
+    public Vendor emailToId(String email){
+        return vendorRepository.getVendorByEmail(email).get();
+    }
 
     public Vendor vendorRequestToVendor(VendorRequestDTO vendorRequestDTO) {
         Vendor vendor = new Vendor();
-        vendor.setVendorName(vendorRequestDTO.getVendorName());
+        vendor.setFirstName(vendorRequestDTO.getFirstName());
+        vendor.setLastName(vendorRequestDTO.getLastName());
         vendor.setEmail(vendorRequestDTO.getEmail());
         vendor.setPassword(vendorRequestDTO.getPassword());
         vendor.setMobile(vendorRequestDTO.getMobile());
@@ -104,7 +108,9 @@ public class EntityMapper {
         List<CategoryReqRespDTO> categoryReqRespDTOList = new ArrayList<>();
         for(Category category : categories) {
             CategoryReqRespDTO categoryReqRespDTO = new CategoryReqRespDTO();
+            categoryReqRespDTO.setCategoryId(category.getCategoryId());
             categoryReqRespDTO.setName(category.getName());
+            categoryReqRespDTO.setImage(category.getImage());
             categoryReqRespDTOList.add(categoryReqRespDTO);
         }
         return categoryReqRespDTOList;

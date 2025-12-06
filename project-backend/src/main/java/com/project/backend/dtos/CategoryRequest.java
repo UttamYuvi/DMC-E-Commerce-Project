@@ -3,13 +3,14 @@ package com.project.backend.dtos;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryReqRespDTO {
+public class CategoryRequest {
 
-    private int categoryId;
     private String name;
-    private String image;
+    private MultipartFile image;
+
 }
