@@ -19,6 +19,11 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
     private String name;
+    private String image;
+
+    @ManyToOne
+    @JoinColumn(name = "vendorId")
+    private Vendor vendor;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<SubCategory> subCategories = new ArrayList<>();
 

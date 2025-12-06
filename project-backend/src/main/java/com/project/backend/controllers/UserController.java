@@ -23,7 +23,7 @@ public class UserController {
     @Autowired
     private UserServiceImpl userService;
 
-    @GetMapping
+    @GetMapping("all")
     public ResponseEntity<?> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);

@@ -1,6 +1,5 @@
 package com.project.backend.services;
 
-import com.project.backend.entities.Vendor;
 import com.project.backend.repository.CategoryRepository;
 import com.project.backend.repository.ProductsRepository;
 import com.project.backend.repository.SubCategoryRepository;
@@ -11,7 +10,9 @@ import com.project.backend.entities.SubCategory;
 import com.project.backend.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,10 +66,38 @@ public class ProductsServiceImpl implements ProductsService{
         return productRespDTOList;
     }
 
-    public List<CategoryReqRespDTO> getAllCategory() {
-        List<Category> categories = categoryRepository.findAll();
-        return mapper.categoriesToCategoriesRespDTO(categories);
+
+    // CATEGORYYYYY
+
+    public Category addNewCategory(String name, String image, Principal principal) {
+        Category category = new Category();
+        category.setName(name);
+        category.setImage(image);
+        category.setVendor(mapper.emailToId(principal.getName()));
+        System.out.println(mapper.emailToId(principal.getName()).getVendorId());
+        return categoryRepository.save(category);
     }
+    public List<CategoryReqRespDTO> getAllCategory(int vendorId) {
+        return mapper.categoriesToCategoriesRespDTO(categoryRepository.findAllByVendorId(vendorId));
+    }
+    @Transactional
+    public int updateCategory(int categoryId, String name, String image) {
+        return categoryRepository.updateCategory(name, image,categoryId);
+    }
+    @Transactional
+    public Category deleteCategory (int vendorId,int categoryId) {
+        Category category = categoryRepository.findById(categoryId).get();
+        System.out.println(categoryRepository.deleteByVendorIdAndCategoryId(vendorId,category.getCategoryId()));
+        return category;
+    }
+
+
+
+
+
+
+
+
 
     public List<SubCategoryRespDTO> getAllSubCategoryByCategoryId(int cid) {
         List<SubCategory> subCategories = subCategoryRepository.getAllSubCategoryByCategoryId(cid);
@@ -84,7 +113,4 @@ public class ProductsServiceImpl implements ProductsService{
         return productRespDTOList;
     }
 
-//    public CategoryReqRespDTO addNewCategory(CategoryReqRespDTO categoryReqRespDTO) {
-//
-//    }
 }

@@ -56,8 +56,8 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
         User user = userRepository.findById(userId).get();
         order.setUser(user);
-        order.setOrderStatus("shipped");
-        order.setPaymentStatus("paid");
+        order.setOrderStatus("pending");
+        order.setPaymentStatus("pending");
         order.setDeliveryAddress(user.getAddress());
         List<OrderDetails> orderDetailsList = new ArrayList<>();
         double total = 0;
