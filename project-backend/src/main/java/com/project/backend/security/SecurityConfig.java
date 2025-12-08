@@ -102,8 +102,7 @@ public class SecurityConfig {
                                 "/products/user/**"
                         ).permitAll()
                         .requestMatchers(
-                                "/category/vendor",
-                                "/category/vendor/update"
+                                "/vendor/**"
                         ).hasAuthority("VENDOR")
                         .requestMatchers("/user/**").hasAuthority("USER")
                         .anyRequest().authenticated()

@@ -57,16 +57,13 @@ public class AuthController {
                     Vendor vendor = (Vendor) principal;
                     username = vendor.getUsername();
                     role = vendor.getAuthorities().stream().findFirst().get().getAuthority();
-                    System.out.println("1"+role);
                 } else if (principal instanceof UserDetails) {
                     UserDetails ud = (UserDetails) principal;
                     username = ud.getUsername();
                     role = ud.getAuthorities().stream().findFirst().get().getAuthority();
-                    System.out.println("2"+role);
                 } else {
                     return ResponseEntity.status(401).body("Invalid principal type");
                 }
-                System.out.println("3"+role);
 
                 String token = tokenProvider.createToken(username,role);
                 VendorAuthResponseDTO finalVendor = new VendorAuthResponseDTO();
@@ -97,11 +94,6 @@ public class AuthController {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
             );
-//            User user = (User) auth.getPrincipal();
-//
-//            String username = user.getUsername();
-//            String role = user.getAuthorities().stream().findFirst().get().getAuthority();
-
             Object principal = auth.getPrincipal();
             String username;
             String role;

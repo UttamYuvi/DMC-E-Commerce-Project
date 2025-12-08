@@ -16,7 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
 
-@RequestMapping("/category")
+@RequestMapping("/vendor")
 @RestController
 public class CategoryController {
 
@@ -27,13 +27,13 @@ public class CategoryController {
     @Autowired
     private EntityMapper mapper;
 
-    @GetMapping("/vendor")
+    @GetMapping("/category")
     public ResponseEntity<?> getAllCategories(Principal principal) {
         int vendorId = mapper.emailToId(principal.getName()).getVendorId();
         return ResponseEntity.ok(productsService.getAllCategory(vendorId));
     }
 
-    @PostMapping(value="/vendor/update",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value="/category/update",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateCategory(@RequestParam("categoryId") int categoryId,
                                             @RequestParam("name") String name,
                                             @RequestParam("image") MultipartFile image) throws IOException {
@@ -48,11 +48,9 @@ public class CategoryController {
         return ResponseEntity.ok(productsService.updateCategory(categoryId,name, fileName));
     }
 
-    @PostMapping(value="/vendor", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value="/category", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> addCategory(@RequestParam("name") String name,
                                          @RequestParam("image") MultipartFile image, Principal principal) throws IOException {
-        System.out.println("Category Name: " + name);
-        System.out.println("Image File: " + image.getOriginalFilename());
         Path uploadDir = Paths.get("uploads");
         if (!Files.exists(uploadDir)) Files.createDirectories(uploadDir);
         String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
@@ -62,11 +60,9 @@ public class CategoryController {
         return ResponseEntity.ok("Category Added");
     }
 
-    @PostMapping("/vendor/delete")
+    @PostMapping("/category/delete")
     public ResponseEntity<?> deleteCategory(@RequestBody CategoryReqRespDTO categoryReqRespDTO, Principal principal) {
         int vendorId = mapper.emailToId(principal.getName()).getVendorId();
-        System.out.println("v : "+vendorId);
-        System.out.println("c: "+categoryReqRespDTO.getCategoryId());
         return ResponseEntity.ok(productsService.deleteCategory(vendorId,categoryReqRespDTO.getCategoryId()));
     }
 }
