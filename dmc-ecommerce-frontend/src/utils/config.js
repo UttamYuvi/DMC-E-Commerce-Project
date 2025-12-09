@@ -1,3 +1,3 @@
 export const base_url = {
-  url: "http://localhost:4000",
+  url: import.meta.env.VITE_APP_NODE_BACKEND_URL,
 };
