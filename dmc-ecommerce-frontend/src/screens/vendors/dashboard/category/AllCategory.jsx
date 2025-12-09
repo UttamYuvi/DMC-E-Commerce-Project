@@ -17,22 +17,54 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import CategoryFields from "./CategoryFields";
 import emptyListImg from "../../../../assets/empty_box.png";
+import { styled } from "@mui/material/styles";
+
+const HiddenInput = styled("input")({
+  display: "none",
+});
 
 export default function AllCategory() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [selectedImg, setSelectedImg] = useState({}); // Temporary preview per category
+  const [showActions, setShowActions] = useState({}); // To show Save / Cancel button per category
 
   const loadCategories = async () => {
     try {
       const res = await serverData.allCategories();
-      if (res.data.status) setCategories(res.data.data);
+      if (res.data) setCategories(res.data);
     } catch {
       toast.error("Failed to load categories");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleImage = (e, item) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Basic file validation (optional)
+    if (!file.type.startsWith("image/")) {
+      return toast.error("Only image files allowed");
+    }
+
+    const previewURL = URL.createObjectURL(file);
+
+    setSelectedImg((prev) => ({ ...prev, [item.id]: previewURL }));
+    setShowActions((prev) => ({ ...prev, [item.id]: true }));
+    // setImageFile((prev) => ({ ...prev, [item.id]: file }));
+  };
+
+  const handleCancel = (itemId) => {
+    setShowActions((prev) => ({ ...prev, [itemId]: false }));
+    setSelectedImg((prev) => {
+      const copy = { ...prev };
+      delete copy[itemId];
+      return copy;
+    });
   };
 
   const handleDelete = async (e, id) => {
@@ -49,8 +81,8 @@ export default function AllCategory() {
     try {
       const res = await serverData.deleteCategory(id);
 
-      if (res.data.status) {
-        toast.success("Deleted");
+      if (res.data) {
+        toast.success("Category deleted sucessfully");
         loadCategories();
       }
     } catch {
@@ -98,11 +130,61 @@ export default function AllCategory() {
                   <AppText>{item.name}</AppText>
                 </td>
                 <td>
-                  <img
-                    src={`${base_url.url}/images/${item.image}`}
-                    alt="category_img"
-                    width={"50px"}
-                  />
+                  <IconButton component="label">
+                    <HiddenInput
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImage}
+                    />
+                    <img
+                      src={
+                        selectedImg[item.id]
+                          ? selectedImg[item.id]
+                          : `${base_url.url}/uploads/${item.image}`
+                      }
+                      alt="category"
+                      width="50px"
+                    />
+                  </IconButton>
+
+                  {showActions[item.id] ? (
+                    <>
+                      <Button
+                        size="small"
+                        variant="contained"
+                        color="success"
+                        // onClick={() => handleSave(item.id)}
+                      >
+                        Save
+                      </Button>
+
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color="error"
+                        onClick={() => handleCancel(item.id)}
+                      >
+                        Cancel
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      {/* DELETE */}
+                      <IconButton onClick={(e) => handleDelete(e, item.id)}>
+                        <Delete />
+                      </IconButton>
+
+                      {/* EDIT */}
+                      <IconButton
+                        onClick={() => {
+                          setEditData(item);
+                          setOpen(true);
+                        }}
+                      >
+                        <Edit />
+                      </IconButton>
+                    </>
+                  )}
                 </td>
                 <td
                   style={{

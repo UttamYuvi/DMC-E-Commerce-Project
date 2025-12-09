@@ -14,7 +14,6 @@ const HiddenInput = styled("input")({
 });
 
 function CategoryFields({ mode = "add", data = null, onClose, onSuccess }) {
-  console.log("sdsdsdsd", data);
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -31,7 +30,7 @@ function CategoryFields({ mode = "add", data = null, onClose, onSuccess }) {
       setForm({
         name: data.name,
         file: null,
-        preview: `${base_url.url}/images/${data.image}`,
+        preview: `${base_url.url}/uploads/${data.image}`,
       });
     }
   }, [mode, data]);
@@ -71,8 +70,8 @@ function CategoryFields({ mode = "add", data = null, onClose, onSuccess }) {
         console.log("updating req: ", form);
         response = await serverData.updateCategory(fd);
       }
-
-      if (response.data.status) {
+      console.log(response);
+      if (response.data) {
         toast.success(
           mode === "add"
             ? "Category added successfully"

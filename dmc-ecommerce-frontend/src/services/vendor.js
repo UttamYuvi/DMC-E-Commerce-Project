@@ -4,8 +4,8 @@ import Swal from "sweetalert2";
 
 export async function loginVendor(email, password) {
   try {
-    const userBody = { email, password };
-    const url = base_url.url + "/vendor/signin";
+    const userBody = { username: email, password };
+    const url = base_url.url + "/api/auth/vendor/login";
     const response = await axios.post(url, userBody);
     return response.data;
   } catch (error) {

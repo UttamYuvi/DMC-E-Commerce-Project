@@ -29,6 +29,7 @@ public class CategoryController {
 
     @GetMapping("/vendor")
     public ResponseEntity<?> getAllCategories(Principal principal) {
+        System.out.println("Getting the Categories ");
         int vendorId = mapper.emailToId(principal.getName()).getVendorId();
         return ResponseEntity.ok(productsService.getAllCategory(vendorId));
     }
@@ -64,6 +65,7 @@ public class CategoryController {
 
     @PostMapping("/vendor/delete")
     public ResponseEntity<?> deleteCategory(@RequestBody CategoryReqRespDTO categoryReqRespDTO, Principal principal) {
+        System.out.println(categoryReqRespDTO);
         int vendorId = mapper.emailToId(principal.getName()).getVendorId();
         System.out.println("v : "+vendorId);
         System.out.println("c: "+categoryReqRespDTO.getCategoryId());

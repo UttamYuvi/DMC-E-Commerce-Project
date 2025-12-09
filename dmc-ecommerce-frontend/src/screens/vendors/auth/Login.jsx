@@ -17,20 +17,20 @@ function Login() {
   const signin = async () => {
     try {
       const result = await loginVendor(email, password);
-      if (result.status) {
-        setToken(result.data.token);
+      if (result.token) {
+        setToken(result.token);
 
         const vendorObj = {
-          firstName: result.data.firstName,
-          lastName: result.data.lastName,
-          email: result.data.email,
-          mobile: result.data.mobile,
+          firstName: result.firstName,
+          lastName: result.lastName,
+          email: result.email,
+          mobile: result.mobile,
         };
 
         saveVendorToStorage(vendorObj);
         setVendor(vendorObj);
 
-        toast.success(`Hi ${result.data.firstName}! Welcome to Shopifi😊`);
+        toast.success(`Hi ${result.firstName}! Welcome to Shopifi😊`);
         navigate("/page/dashboard");
       } else {
         toast.error(result.error);
