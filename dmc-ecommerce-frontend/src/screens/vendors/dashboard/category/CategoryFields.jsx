@@ -9,7 +9,6 @@ import { styled } from "@mui/material/styles";
 import defaultImage from "/src/assets/small-logo.jpeg";
 import { base_url } from "../../../../utils/config";
 
-// Hidden input for file selection
 const HiddenInput = styled("input")({
   display: "none",
 });
