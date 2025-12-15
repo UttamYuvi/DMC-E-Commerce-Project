@@ -1,7 +1,11 @@
 package com.project.backend.services;
 
+import com.project.backend.dtos.AddressReqDTO;
 import com.project.backend.dtos.EntityMapper;
 import com.project.backend.dtos.UserProfileReqDTO;
+import com.project.backend.dtos.UserProfileResponseDto;
+import com.project.backend.entities.Address;
+import com.project.backend.repository.AddressRepository;
 import com.project.backend.repository.UserRepository;
 import com.project.backend.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,36 +15,37 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private AddressRepository addressRepository;
 
     @Autowired
     private EntityMapper mapper;
 
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
-    }
-
-    public User getUserById(int uid) {
-        return userRepository.findById(uid).get();
-    }
-
-//    public User saveUser(User user) {
-//        return userRepository.save(user);
-//    }
-
-    @PreAuthorize("isAuthenticated()")
-    public void updateUserName(String firstName, String lastName,String username) {
-        System.out.println("service"+username);
-        System.out.println(userRepository.updateUserName(firstName,lastName,username));
-    }
-//    public void updateUserName(String firstName, String lastName,int userId) {
-//        userRepository.updateUserName(firstName, lastName, userId);
-//    }
-
-    public void updateUserProfile(UserProfileReqDTO userProfileReqDTO) {
-        User user = mapper.userProfileToUser(userProfileReqDTO);
+    public void updateUser(UserProfileReqDTO userProfileReqDTO, String email) {
+        User user = mapper.userProfileToUser(userProfileReqDTO, email);
         userRepository.save(user);
+    }
+
+    @Override
+    public UserProfileResponseDto getUserProfile(String email) {
+        User user = userRepository.getUserByEmail(email).get();
+        return mapper.userToUserProfileResponse(user);
+    }
+
+    public void addAddress(AddressReqDTO addressReqDTO, String email) {
+        User user = mapper.userEmailToId(email);
+        Address address = new Address();
+        address.setAddressLine(addressReqDTO.getAddressLine());
+        address.setUser(user);
+        address.setCity(addressReqDTO.getCity());
+        address.setState(addressReqDTO.getState());
+        address.setCountry(addressReqDTO.getCountry());
+        address.setPincode(addressReqDTO.getPincode());
+        address.setLandmark(addressReqDTO.getLandmark());
+        address.setAddressType(addressReqDTO.getAddressType());
+        addressRepository.save(address);
     }
 }

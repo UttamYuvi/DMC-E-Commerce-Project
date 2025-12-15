@@ -1,12 +1,17 @@
 package com.project.backend.controllers;
 
+import com.project.backend.dtos.EntityMapper;
 import com.project.backend.dtos.OrderDetailsReqDTO;
+import com.project.backend.dtos.OrderReqDTO;
 import com.project.backend.dtos.OrderRespDTO;
+import com.project.backend.entities.User;
+import com.project.backend.repository.UserRepository;
 import com.project.backend.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -15,6 +20,10 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private EntityMapper mapper;
 
     @GetMapping
     public ResponseEntity<?> findAllOrders() {
@@ -26,9 +35,11 @@ public class OrderController {
         return ResponseEntity.ok(orderService.findOrderById(orderId));
     }
 
-    @PostMapping("/{uid}")
-    public ResponseEntity<?> placeOrder(@PathVariable("uid") int uid, @RequestBody List<OrderDetailsReqDTO> orderDetailsReqDTOs) {
-        return ResponseEntity.ok(orderService.placeOrder(uid,orderDetailsReqDTOs));
+    @PostMapping
+    public ResponseEntity<?> placeOrder(@RequestBody OrderReqDTO orderReqDTO, Principal principal) {
+        User user = mapper.userEmailToId(principal.getName());
+        orderService.placeOrder(user,orderReqDTO);
+        return ResponseEntity.ok("Order Placed");
     }
 
     @GetMapping("/details/{orderId}")

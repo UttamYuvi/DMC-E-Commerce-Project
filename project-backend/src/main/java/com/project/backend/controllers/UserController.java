@@ -1,20 +1,15 @@
 package com.project.backend.controllers;
 
-import com.project.backend.dtos.UserNameDTO;
+import com.project.backend.dtos.AddressReqDTO;
 import com.project.backend.dtos.UserProfileReqDTO;
-import com.project.backend.entities.User;
-import com.project.backend.security.SecurityConfig;
-import com.project.backend.services.CustomUserDetailsService;
 import com.project.backend.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
-import java.util.List;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 @Controller
 @RequestMapping("/user")
@@ -23,30 +18,20 @@ public class UserController {
     @Autowired
     private UserServiceImpl userService;
 
-    @GetMapping("all")
-    public ResponseEntity<?> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
-    }
-
-    @GetMapping("/{uid}")
-    public ResponseEntity<?> getUserById(@PathVariable("uid") int uid) {
-        return ResponseEntity.ok(userService.getUserById(uid));
-    }
-
     @PostMapping("/update")
-    public ResponseEntity<?> updateUserProfile(@RequestBody UserProfileReqDTO userProfileReqDTO) {
-        userService.updateUserProfile(userProfileReqDTO);
-        return ResponseEntity.ok("");
+    public ResponseEntity<?> updateUser(@RequestBody UserProfileReqDTO userProfileReqDTO, Principal principal) {
+        userService.updateUser(userProfileReqDTO,principal.getName());
+        return ok("User updated");
     }
 
-    //@PreAuthorize("isAuthenticated()")
-    @PreAuthorize("isAuthenticated()")
-    @PatchMapping("/name")
-    public ResponseEntity<?> updateUser(@RequestBody UserNameDTO userNameDTO, Principal principal) {
-        String userName = principal.getName();
-        System.out.println(userName);
-        userService.updateUserName(userNameDTO.getFirstName(),userNameDTO.getLastName(),userName);
-        return ResponseEntity.ok("updated");
+    @PostMapping("/address")
+    public ResponseEntity<?> addAddress(@RequestBody AddressReqDTO addressReqDTO, Principal principal){
+        userService.addAddress(addressReqDTO, principal.getName());
+        return ok("Address Added with email :"+principal.getName());
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<?> getUserProfile(Principal principal) {
+        return ok(userService.getUserProfile(principal.getName()));
     }
 }

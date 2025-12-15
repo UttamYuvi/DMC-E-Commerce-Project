@@ -11,6 +11,4 @@ public interface VendorService {
 
     public Vendor getVendorById(int vid);
 
-//    public List<User> getAllUsersByVendorId(int vid);
-
 }

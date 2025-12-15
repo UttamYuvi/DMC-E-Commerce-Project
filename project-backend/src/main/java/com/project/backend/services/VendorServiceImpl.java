@@ -26,7 +26,4 @@ public class VendorServiceImpl implements VendorService {
         return vendorRepository.findById(vid).get();
     }
 
-//    public List<User> getAllUsersByVendorId(int vid) {
-//        return userRepository.findUserByVendorId(vid);
-//    }
 }

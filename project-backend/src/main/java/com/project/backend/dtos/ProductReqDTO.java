@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductReqDTO {
 
-    private int vendorId;
     private int categoryId;
     private int subCategoryId;
     private String name;

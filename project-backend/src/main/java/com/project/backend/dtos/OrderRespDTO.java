@@ -2,6 +2,7 @@ package com.project.backend.dtos;
 
 import java.util.List;
 
+import com.project.backend.entities.Address;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,11 +13,10 @@ import lombok.NoArgsConstructor;
 public class OrderRespDTO {
 
     private int orderId;
-    private int userId;
     private double totalAmount;
     private String paymentStatus;
     private String orderStatus;
-    private String deliveryAddress;
+    private Address deliveryAddress;
     private List<OrderDetailsRespDTO> orderDetails;
 
 }

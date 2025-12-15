@@ -24,7 +24,9 @@ public class Order {
     private double totalAmount;
     private String paymentStatus;
     private String orderStatus;
-    private String deliveryAddress;
+    @ManyToOne
+    @JoinColumn(name = "addressId", nullable = false)
+    private Address deliveryAddress;
     @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
     @JsonManagedReference
     private List<OrderDetails> orderDetails;

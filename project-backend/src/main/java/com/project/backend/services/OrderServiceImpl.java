@@ -1,17 +1,8 @@
 package com.project.backend.services;
 
-import com.project.backend.dtos.EntityMapper;
-import com.project.backend.dtos.OrderDetailsReqDTO;
-import com.project.backend.dtos.OrderDetailsRespDTO;
-import com.project.backend.dtos.OrderRespDTO;
-import com.project.backend.entities.Order;
-import com.project.backend.entities.OrderDetails;
-import com.project.backend.entities.Products;
-import com.project.backend.entities.User;
-import com.project.backend.repository.OrderDetailsRepository;
-import com.project.backend.repository.OrderRepository;
-import com.project.backend.repository.ProductsRepository;
-import com.project.backend.repository.UserRepository;
+import com.project.backend.dtos.*;
+import com.project.backend.entities.*;
+import com.project.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +25,9 @@ public class OrderServiceImpl implements OrderService {
     private ProductsRepository productsRepository;
 
     @Autowired
+    private AddressRepository addressRepository;
+
+    @Autowired
     private EntityMapper mapper;
 
 
@@ -52,16 +46,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderRespDTO placeOrder(int userId, List<OrderDetailsReqDTO> orderDetailsReqDTOS) {
+    public OrderRespDTO placeOrder(User user, OrderReqDTO orderReqDTO) {
         Order order = new Order();
-        User user = userRepository.findById(userId).get();
+        System.out.println(orderReqDTO.getAddressId());
+        Address address = addressRepository.findById(orderReqDTO.getAddressId()).get();
+        System.out.println(address.getAddressLine());
         order.setUser(user);
-        order.setOrderStatus("pending");
+
+        order.setOrderStatus("shipped");
         order.setPaymentStatus("pending");
-        order.setDeliveryAddress(user.getAddress());
+        order.setDeliveryAddress(address);
         List<OrderDetails> orderDetailsList = new ArrayList<>();
         double total = 0;
-        for(OrderDetailsReqDTO orderDetailsReqDTO : orderDetailsReqDTOS) {
+        for(OrderDetailsReqDTO orderDetailsReqDTO : orderReqDTO.getOrderDetailsReqDTOList()) {
             Products product = productsRepository.findById(orderDetailsReqDTO.getProductId()).get();
 
             int quantity = orderDetailsReqDTO.getQuantity();

@@ -9,6 +9,7 @@ import com.project.backend.entities.Vendor;
 import com.project.backend.repository.UserRepository;
 import com.project.backend.repository.VendorRepository;
 import com.project.backend.security.JwtTokenProvider;
+import com.project.backend.security.SecurityConfig;
 import com.project.backend.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +19,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-//@CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("/api/auth")
+//@RequestMapping("/login")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
     @Autowired
     private JwtTokenProvider tokenProvider;
     @Autowired
@@ -35,52 +33,22 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private SecurityConfig securityConfig;
 
 
-        @PostMapping("/vendor/login")
+        @PostMapping("/login/vendor")
         public ResponseEntity<?> authenticateVendor(@RequestBody AuthRequestDTO loginRequest) {
-            System.out.println("name: "+loginRequest.getUsername());
             try {
-                Authentication auth = authenticationManager.authenticate(
+                AuthenticationManager manager = securityConfig.vendorAuthManager(securityConfig.vendorAuthProvider()) ;
+                Authentication auth = manager.authenticate(
                         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
                 );
-    //            Vendor vendor = (Vendor) auth.getPrincipal();
-    //
-    //            String username = vendor.getUsername();
-    //            String role = vendor.getAuthorities().stream().findFirst().get().getAuthority();
-
-                Object principal = auth.getPrincipal();
-                String username;
-                String role;
-
-                if (principal instanceof Vendor) {
-                    Vendor vendor = (Vendor) principal;
-                    username = vendor.getUsername();
-                    role = vendor.getAuthorities().stream().findFirst().get().getAuthority();
-                } else if (principal instanceof UserDetails) {
-                    UserDetails ud = (UserDetails) principal;
-                    username = ud.getUsername();
-                    role = ud.getAuthorities().stream().findFirst().get().getAuthority();
-                } else {
-                    return ResponseEntity.status(401).body("Invalid principal type");
-                }
-
-                String token = tokenProvider.createToken(username,role);
-                VendorAuthResponseDTO finalVendor = new VendorAuthResponseDTO();
-                Vendor vendor = vendorRepository.findByEmail(username).get();
-
-                finalVendor.setVendorId(vendor.getVendorId());
-                finalVendor.setFirstName(vendor.getFirstName());
-                finalVendor.setLastName(vendor.getLastName());
-                finalVendor.setMobile(vendor.getMobile());
-                finalVendor.setEmail(vendor.getEmail());
-                finalVendor.setRole(vendor.getRole());
-                finalVendor.setPassword(vendor.getPassword());
-                finalVendor.setToken(token);
-                finalVendor.setCommissionRate(vendor.getCommissionRate());
-
-                return ResponseEntity.ok(finalVendor);
-
+                Vendor vendor = (Vendor) auth.getPrincipal();
+                String role = vendor.getAuthorities().stream().findFirst().get().getAuthority();
+                String token = tokenProvider.createToken(vendor.getEmail(), role);
+                AuthResponseDTO responseDTO = new AuthResponseDTO(token,role);
+                return ResponseEntity.ok(responseDTO);
             } catch (BadCredentialsException ex) {
                 return ResponseEntity.status(401).body("Invalid username/password");
             } catch (AuthenticationException ex) {
@@ -88,31 +56,24 @@ public class AuthController {
             }
         }
 
-    @PostMapping("/user/login")
+    @PostMapping("/login/user")
     public ResponseEntity<?> authenticateUser(@RequestBody AuthRequestDTO loginRequest) {
+        User user = new User();
+        if(userRepository.getUserByEmail(loginRequest.getUsername()).isEmpty()) {
+            user.setEmail(loginRequest.getUsername());
+            user.setPassword(passwordEncoder.encode(loginRequest.getPassword()));
+            userRepository.save(user);
+        }
         try {
-            Authentication auth = authenticationManager.authenticate(
+            AuthenticationManager manager = securityConfig.userAuthManager(securityConfig.userAuthProvider());
+            Authentication auth = manager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
             );
-            Object principal = auth.getPrincipal();
-            String username;
-            String role;
-
-            if (principal instanceof User) {
-                User user = (User) principal;
-                username = user.getUsername();
-                role = user.getAuthorities().stream().findFirst().get().getAuthority();
-            } else if (principal instanceof UserDetails) {
-                UserDetails ud = (UserDetails) principal;
-                username = ud.getUsername();
-                role = ud.getAuthorities().stream().findFirst().get().getAuthority();
-            } else {
-                return ResponseEntity.status(401).body("Invalid principal type");
-            }
-
-            String token = tokenProvider.createToken(username,role);
-            return ResponseEntity.ok(new AuthResponseDTO(token));
-
+            user = (User) auth.getPrincipal();
+            String role = user.getAuthorities().stream().findFirst().get().getAuthority();
+            String token = tokenProvider.createToken(user.getEmail(), role);
+            AuthResponseDTO responseDTO = new AuthResponseDTO(token,role);
+            return ResponseEntity.ok(responseDTO);
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(401).body("Invalid username/password");
         } catch (AuthenticationException ex) {

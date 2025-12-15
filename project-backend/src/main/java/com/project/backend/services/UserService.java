@@ -1,19 +1,14 @@
 package com.project.backend.services;
 
 import com.project.backend.dtos.UserProfileReqDTO;
+import com.project.backend.dtos.UserProfileResponseDto;
 import com.project.backend.entities.User;
 import java.util.List;
 
 public interface UserService {
 
-    List<User> getAllUsers();
+    void updateUser(UserProfileReqDTO userProfileReqDTO, String email);
 
-    User getUserById(int uid);
+    UserProfileResponseDto getUserProfile(String email);
 
-    User saveUser(User user);
-
-    void updateUserProfile(UserProfileReqDTO userProfileReqDTO);
-
-//    void updateUserName(String firstName, String lastName, int userId);
-    void updateUserName(String firstName, String lastName,String username);
 }

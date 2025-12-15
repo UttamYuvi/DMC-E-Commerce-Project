@@ -3,14 +3,15 @@ package com.project.backend.dtos;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryRequest {
+public class OrderReqDTO {
 
-    private String name;
-    private MultipartFile image;
+    private int addressId;
+    private List<OrderDetailsReqDTO> orderDetailsReqDTOList;
 
 }

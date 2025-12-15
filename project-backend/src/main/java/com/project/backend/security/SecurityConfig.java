@@ -2,15 +2,12 @@ package com.project.backend.security;
 
 import com.project.backend.services.CustomUserDetailsService;
 import com.project.backend.services.CustomVendorDetailsService;
-import org.apache.catalina.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -42,17 +41,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder builder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
-
-        builder.authenticationProvider(vendorAuthProvider());
-        builder.authenticationProvider(userAuthProvider());
-
-        return builder.build();
+    public AuthenticationManager userAuthManager(DaoAuthenticationProvider daoAuthenticationProvider) {
+        return new ProviderManager(List.of(userAuthProvider()));
     }
 
+    public AuthenticationManager vendorAuthManager(DaoAuthenticationProvider daoAuthenticationProvider) {
+        return new ProviderManager(List.of(vendorAuthProvider()));
+    }
     @Bean
     public DaoAuthenticationProvider userAuthProvider() {
         DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
@@ -93,18 +88,21 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // PUBLIC ENDPOINTS
                         .requestMatchers(
-                                "/api/auth/**",
                                 "/uploads/**",
-                                "/vendor/login",
-                                "/user/login",
-                                "/register",
-                                "/register/vendor",
-                                "/products/user/**"
+                                "/login/**",
+                                "/register/**",
+                                "/products/**"
                         ).permitAll()
                         .requestMatchers(
-                                "/vendor/**"
+                                "/category/vendor/**",
+                                "/subcategory/vendor/**",
+                                "/products/vendor/**"
                         ).hasAuthority("VENDOR")
-                        .requestMatchers("/user/**").hasAuthority("USER")
+                        .requestMatchers("/user/**",
+                                "/category/user",
+                                "/subcategory/**",
+                                "/orders/**"
+                        ).hasAuthority("USER")
                         .anyRequest().authenticated()
                 );
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

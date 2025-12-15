@@ -16,9 +16,6 @@ public class EntityMapper {
     Products product = new Products();
 
 
-//    Principal principal;
-    @Autowired
-    private CategoryRepository categoryRepository;
     @Autowired
     private ProductsRepository productsRepository;
 
@@ -26,22 +23,39 @@ public class EntityMapper {
     private UserRepository userRepository;
 
     @Autowired
-    private SubCategoryRepository subCategoryRepository;
-
-    @Autowired
     private VendorRepository vendorRepository;
 
-
-//    public User userToUserName(UserNameDTO userNameDTO) {
-//        User newUser =new User();
-//        newUser.setPassword();
-//        User user = userRepository.findByEmail(principal.getName());
-//        System.out.println(principal.getName());
-//
-//
-//    }
     public Vendor emailToId(String email){
         return vendorRepository.getVendorByEmail(email).get();
+    }
+
+    public User userEmailToId(String email){
+        return userRepository.getUserByEmail(email).get();
+    }
+
+    public UserProfileResponseDto userToUserProfileResponse(User user) {
+        UserProfileResponseDto userProfileResponseDto = new UserProfileResponseDto();
+        userProfileResponseDto.setFirstName(user.getFirstName());
+        userProfileResponseDto.setLastName(user.getLastName());
+        userProfileResponseDto.setEmail(user.getEmail());
+        userProfileResponseDto.setMobile(user.getMobile());
+        userProfileResponseDto.setGender(user.getGender());
+        List<Address> addressList = user.getAddresses();
+        List<AddressReqDTO> addressReqDTOList = new ArrayList<>();
+        for(Address address : addressList) {
+            AddressReqDTO addressReqDTO = new AddressReqDTO();
+            addressReqDTO.setAddressLine(address.getAddressLine());
+            addressReqDTO.setCity(address.getCity());
+            addressReqDTO.setState(address.getState());
+            addressReqDTO.setCountry(address.getCountry());
+            addressReqDTO.setPincode(address.getPincode());
+            addressReqDTO.setLandmark(address.getLandmark());
+            addressReqDTO.setAddressType(address.getAddressType());
+            addressReqDTOList.add(addressReqDTO);
+        }
+        userProfileResponseDto.setAddressList(addressReqDTOList);
+        return userProfileResponseDto;
+
     }
 
     public Vendor vendorRequestToVendor(VendorRequestDTO vendorRequestDTO) {
@@ -63,73 +77,37 @@ public class EntityMapper {
         return productRespDTO;
     }
 
-    public Products productReqToProducts(ProductReqDTO productReqDTO) {
+    public Products productReqToProducts(ProductReqDTO productReqDTO, int vendorId) {
         product.setStatus("continue");
 //        product.setVendorId(productReqDTO.getVendorId());
         product.setName(productReqDTO.getName());
         product.setDescription(productReqDTO.getDescription());
         product.setPrice(productReqDTO.getPrice());
         product.setStock(productReqDTO.getStock());
-        Vendor vendor = vendorRepository.findById(productReqDTO.getVendorId())
+        Vendor vendor = vendorRepository.findById(vendorId)
                 .orElseThrow(() -> new RuntimeException("Vendor not found"));
-        Category category = categoryRepository.findById(productReqDTO.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-        SubCategory subCategory = subCategoryRepository.findById(productReqDTO.getSubCategoryId())
-                .orElseThrow(() -> new RuntimeException("SubCategory not found"));
         product.setVendor(vendor);
-        product.setCategory(category);
-        product.setSubCategory(subCategory);
+        product.setCategoryId(productReqDTO.getCategoryId());
+        product.setSubCategoryId(productReqDTO.getSubCategoryId());
         return product;
     }
 
-    public Products productReqDtoToUpdatedProduct(ProductReqDTO productReqDTO) {
+    public Products productReqDtoToUpdatedProduct(int pid,ProductReqDTO productReqDTO) {
+        Products newProduct = productsRepository.findById(pid).get();
         if(productReqDTO.getStock() == 0)
-            product.setStatus("discontinue");
+            newProduct.setStatus("discontinue");
         else
-            product.setStatus("continue");
-//        product.setVendorId(productReqDTO.getVendorId());
-        product.setName(productReqDTO.getName());
-        product.setDescription(productReqDTO.getDescription());
-        product.setPrice(productReqDTO.getPrice());
-        product.setStock(productReqDTO.getStock());
-        Vendor vendor = vendorRepository.findById(productReqDTO.getVendorId())
-                .orElseThrow(() -> new RuntimeException("Vendor not found"));
-        Category category = categoryRepository.findById(productReqDTO.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-        SubCategory subCategory = subCategoryRepository.findById(productReqDTO.getSubCategoryId())
-                .orElseThrow(() -> new RuntimeException("SubCategory not found"));
-        product.setVendor(vendor);
-        product.setCategory(category);
-        product.setSubCategory(subCategory);
-        return product;
-    }
-
-    public List<CategoryReqRespDTO> categoriesToCategoriesRespDTO(List<Category> categories) {
-        List<CategoryReqRespDTO> categoryReqRespDTOList = new ArrayList<>();
-        for(Category category : categories) {
-            CategoryReqRespDTO categoryReqRespDTO = new CategoryReqRespDTO();
-            categoryReqRespDTO.setCategoryId(category.getCategoryId());
-            categoryReqRespDTO.setName(category.getName());
-            categoryReqRespDTO.setImage(category.getImage());
-            categoryReqRespDTOList.add(categoryReqRespDTO);
-        }
-        return categoryReqRespDTOList;
-    }
-
-    public List<SubCategoryRespDTO> subCategoriesToSubCategoriesRespDTO(List<SubCategory> subCategories) {
-        List<SubCategoryRespDTO> subCategoryRespDTOList = new ArrayList<>();
-        for(SubCategory subCategory : subCategories) {
-            SubCategoryRespDTO subCategoryRespDTO = new SubCategoryRespDTO();
-            subCategoryRespDTO.setName(subCategory.getName());
-            subCategoryRespDTOList.add(subCategoryRespDTO);
-        }
-        return subCategoryRespDTOList;
+            newProduct.setStatus("continue");
+        newProduct.setName(productReqDTO.getName());
+        newProduct.setDescription(productReqDTO.getDescription());
+        newProduct.setPrice(productReqDTO.getPrice());
+        newProduct.setStock(productReqDTO.getStock());
+        return newProduct;
     }
 
     public OrderRespDTO newOrderToOrderRespDTO(Order order) {
         OrderRespDTO orderRespDTO = new OrderRespDTO();
         orderRespDTO.setOrderId(order.getOrderId());
-        orderRespDTO.setUserId(order.getUser().getUserId());
         orderRespDTO.setOrderStatus(order.getOrderStatus());
         orderRespDTO.setPaymentStatus(order.getPaymentStatus());
         orderRespDTO.setTotalAmount(order.getTotalAmount());
@@ -137,17 +115,6 @@ public class EntityMapper {
 
         List<OrderDetails> orderDetails = order.getOrderDetails();
         List<OrderDetailsRespDTO> orderDetailsRespDTOList = getAllOrderDetailsRespDto(orderDetails);
-//        orderDetailsRespDTOList = new ArrayList<>();
-//        for(OrderDetails orderDetail : orderDetails) {
-//            OrderDetailsRespDTO orderDetailsRespDTO = new OrderDetailsRespDTO();
-//            orderDetailsRespDTO.setOrderId(orderDetail.getOrder().getOrderId());
-//            orderDetailsRespDTO.setOrderDetailId(orderDetail.getOrderDetailId());
-//            orderDetailsRespDTO.setProductId(orderDetail.getProduct().getProductId());
-//            orderDetailsRespDTO.setPrice(orderDetail.getPrice());
-//            orderDetailsRespDTO.setQuantity(orderDetail.getQuantity());
-//            orderDetailsRespDTO.setSubtotal(orderDetail.getSubtotal());
-//            orderDetailsRespDTOList.add(orderDetailsRespDTO);
-//        }
         orderRespDTO.setOrderDetails(orderDetailsRespDTOList);
         return orderRespDTO;
     }
@@ -156,8 +123,8 @@ public class EntityMapper {
         List<OrderDetailsRespDTO> orderDetailsRespDTOList = new ArrayList<>();
         for(OrderDetails orderDetail : orderDetails) {
             OrderDetailsRespDTO orderDetailsRespDTO = new OrderDetailsRespDTO();
-            orderDetailsRespDTO.setOrderId(orderDetail.getOrder().getOrderId());
-            orderDetailsRespDTO.setOrderDetailId(orderDetail.getOrderDetailId());
+//            orderDetailsRespDTO.setOrderId(orderDetail.getOrder().getOrderId());
+//            orderDetailsRespDTO.setOrderDetailId(orderDetail.getOrderDetailId());
             orderDetailsRespDTO.setProductId(orderDetail.getProduct().getProductId());
             orderDetailsRespDTO.setPrice(orderDetail.getPrice());
             orderDetailsRespDTO.setQuantity(orderDetail.getQuantity());
@@ -169,8 +136,8 @@ public class EntityMapper {
 
     public OrderDetailsRespDTO getOrderDetailByOrderDetailId(OrderDetails orderDetail) {
         OrderDetailsRespDTO orderDetailsRespDTO = new OrderDetailsRespDTO();
-        orderDetailsRespDTO.setOrderId(orderDetail.getOrder().getOrderId());
-        orderDetailsRespDTO.setOrderDetailId(orderDetail.getOrderDetailId());
+//        orderDetailsRespDTO.setOrderId(orderDetail.getOrder().getOrderId());
+//        orderDetailsRespDTO.setOrderDetailId(orderDetail.getOrderDetailId());
         orderDetailsRespDTO.setProductId(orderDetail.getProduct().getProductId());
         orderDetailsRespDTO.setPrice(orderDetail.getPrice());
         orderDetailsRespDTO.setQuantity(orderDetail.getQuantity());
@@ -178,14 +145,12 @@ public class EntityMapper {
         return orderDetailsRespDTO;
     }
 
-    public User userProfileToUser(UserProfileReqDTO userProfileReqDTO) {
-        User user = userRepository.getUserByEmail(userProfileReqDTO.getEmail()).get();
+    public User userProfileToUser(UserProfileReqDTO userProfileReqDTO, String email) {
+        User user = userRepository.getUserByEmail(email).get();
         user.setFirstName(userProfileReqDTO.getFirstName());
         user.setLastName(userProfileReqDTO.getLastName());
         user.setGender(userProfileReqDTO.getGender());
         user.setMobile(userProfileReqDTO.getMobile());
-        user.setAddress(userProfileReqDTO.getAddress());
-        user.setFirstName(user.getFirstName());
         return user;
     }
 }
