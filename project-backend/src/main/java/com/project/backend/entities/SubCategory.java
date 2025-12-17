@@ -6,30 +6,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="products")
-public class Products {
+@Table(name="subcategories")
+public class SubCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int productId;
-    @ManyToOne
-    @JoinColumn(name="vendorId")
-    @JsonIgnore
-    private Vendor vendor;
+    private int subCategoryId;
+    private String name;
+    private String image;
     @ManyToOne
     @JoinColumn(name = "categoryId")
+    @JsonIgnore
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "subCategoryId")
-    private SubCategory subCategory;
-    private String name;
-    private String description;
-    private double price;
-    private int stock;
-    private String status;
+    @OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Products> products = new ArrayList<>();
 }

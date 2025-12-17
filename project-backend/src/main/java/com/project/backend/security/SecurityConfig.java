@@ -96,7 +96,8 @@ public class SecurityConfig {
                         .requestMatchers("/vendors/**",
                                 "/category/vendor/**",
                                 "/subcategory/vendor/**",
-                                "/products/vendor/**"
+                                "/products/vendor/**",
+                                "/products/category"
                         ).hasAuthority("VENDOR")
                         .requestMatchers("/user/**",
                                 "/category/user",

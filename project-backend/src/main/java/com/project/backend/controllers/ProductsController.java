@@ -5,9 +5,15 @@ import com.project.backend.dtos.ProductReqDTO;
 //import com.project.backend.entities.Category;
 import com.project.backend.services.ProductsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 
 @RestController
@@ -52,5 +58,28 @@ public class ProductsController {
         return ResponseEntity.ok(productsService.updateProduct(pid,productReqDTO));
     }
 
+    //sub category
+    @PostMapping(value = "/category", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> addNewCategory(@RequestParam("categoryId") int categoryId,
+                                            @RequestParam("name") String name,
+                                            @RequestParam("image") MultipartFile image) throws IOException {
 
+//        int categoryId = subCategoryReqDTO.getCategoryId();
+//        String name = subCategoryReqDTO.getName();
+        System.out.println(name);
+
+        String uploadDir = "uploads/subcategories/";
+        Files.createDirectories(Paths.get(uploadDir));
+
+        String fileName = image.getOriginalFilename();
+        Path filePath = Paths.get(uploadDir + fileName);
+        Files.write(filePath, image.getBytes());
+        productsService.addSubCategory(categoryId,name,fileName);
+        return ResponseEntity.ok("Sub Category added");
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<?> getAllSubCategory(@RequestParam("categoryId") int categoryId) {
+        return ResponseEntity.ok(productsService.getAllSubcategories(categoryId));
+    }
 }

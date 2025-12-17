@@ -87,8 +87,8 @@ public class EntityMapper {
         Vendor vendor = vendorRepository.findById(vendorId)
                 .orElseThrow(() -> new RuntimeException("Vendor not found"));
         product.setVendor(vendor);
-        product.setCategoryId(productReqDTO.getCategoryId());
-        product.setSubCategoryId(productReqDTO.getSubCategoryId());
+//        product.setCategoryId(productReqDTO.getCategoryId());
+//        product.setSubCategoryId(productReqDTO.getSubCategoryId());
         return product;
     }
 

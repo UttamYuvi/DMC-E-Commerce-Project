@@ -1,8 +1,12 @@
 package com.project.backend.services;
 
+import com.project.backend.entities.Category;
+import com.project.backend.entities.SubCategory;
+import com.project.backend.repository.CategoryRepository;
 import com.project.backend.repository.ProductsRepository;
 import com.project.backend.dtos.*;
 import com.project.backend.entities.Products;
+import com.project.backend.repository.SubCategoryRepository;
 import com.project.backend.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
@@ -21,6 +25,10 @@ public class ProductsServiceImpl implements ProductsService{
 
     @Autowired
     private VendorRepository vendorRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private SubCategoryRepository subCategoryRepository;
 
     //done  /user
     public List<ProductRespDTO> getAllProducts() {
@@ -53,5 +61,17 @@ public class ProductsServiceImpl implements ProductsService{
         return mapper.productToProductRespDTO(product);
     }
 
+    public void addSubCategory(int categoryId, String name, String image) {
+        Category category = categoryRepository.findById(categoryId).get();
+        SubCategory subCategory = new SubCategory();
+        subCategory.setCategory(category);
+        subCategory.setName(name);
+        subCategory.setImage(image);
+        subCategoryRepository.save(subCategory);
+    }
+
+    public List<SubCategory> getAllSubcategories(int categoryId) {
+        return subCategoryRepository.getAllSubCategories(categoryId);
+    }
 
 }
