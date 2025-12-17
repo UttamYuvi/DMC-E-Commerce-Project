@@ -7,7 +7,7 @@ const app = express();
 
 app.use(express.json());
 
-// app.use(authorization);
+app.use(authorization);
 app.use("/admin", adminRouter);
 app.use("/vendor", vendorRouter);
 

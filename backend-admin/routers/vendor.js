@@ -35,8 +35,8 @@ router.post("/updateVendorStatus", verifyAdminAuth, (req, res) => {
   const adminId = req.adminId;
   const { vendorId, status } = req.body;
   console.log("requesting ", req.body, req.adminId);
-  const sql = "update vendors set status=? where vendorId=? and adminId=?";
-  pool.query(sql, [status, vendorId, adminId], (err, data) => {
+  const sql = "update vendors set status=?, adminId=? where vendorId=?";
+  pool.query(sql, [status, adminId, vendorId], (err, data) => {
     if (data) return res.send(result.createResult(null, data));
     else return res.send(result.createResult(err));
   });
