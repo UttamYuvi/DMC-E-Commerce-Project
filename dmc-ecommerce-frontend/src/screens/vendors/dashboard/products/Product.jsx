@@ -1,13 +1,13 @@
 import { Paper, Box } from "@mui/material";
 
-import Header from "../../../../components/vendor/headers/Header";
-import CategoryFields from "./CategoryFields";
+import AddHeader from "../../../../components/vendor/headers/Header";
+import ProductFields from "./ProductFields";
 
-export default function Category() {
+export default function Product() {
   return (
     <>
       {/* Page Header */}
-      <Header title={"Category"} navigateTo={"allcategory"} type={"add"} />
+      <AddHeader title={"Products"} navigateTo={"allproducts"} type={"add"} />
 
       {/* Form Section */}
       <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -16,11 +16,11 @@ export default function Category() {
           sx={{
             width: "60%",
             p: 3,
-            mt: 3,
+            margin: "30px 0px 30px 0px",
           }}
         >
           {/* category fields*/}
-          <CategoryFields mode={"add"} data={null} />
+          <ProductFields mode={"add"} data={null} />
         </Paper>
       </Box>
     </>
