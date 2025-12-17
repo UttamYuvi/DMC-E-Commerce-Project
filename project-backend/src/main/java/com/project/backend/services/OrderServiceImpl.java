@@ -58,9 +58,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderRespDTO placeOrder(User user, OrderReqDTO orderReqDTO) {
         Order order = new Order();
-        System.out.println(orderReqDTO.getAddressId());
         Address address = addressRepository.findById(orderReqDTO.getAddressId()).get();
-        System.out.println(address.getAddressLine());
         order.setUser(user);
 
         order.setOrderStatus("shipped");

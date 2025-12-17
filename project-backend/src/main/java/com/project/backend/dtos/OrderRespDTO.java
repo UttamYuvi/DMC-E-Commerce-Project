@@ -17,6 +17,8 @@ public class OrderRespDTO {
     private String paymentStatus;
     private String orderStatus;
     private Address deliveryAddress;
+    private String customerName;
+    private String customerMobile;
     private List<OrderDetailsRespDTO> orderDetails;
 
 }

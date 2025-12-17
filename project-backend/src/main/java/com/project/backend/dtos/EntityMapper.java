@@ -111,6 +111,8 @@ public class EntityMapper {
         orderRespDTO.setOrderStatus(order.getOrderStatus());
         orderRespDTO.setPaymentStatus(order.getPaymentStatus());
         orderRespDTO.setTotalAmount(order.getTotalAmount());
+        orderRespDTO.setCustomerName(order.getUser().getFirstName()+" "+order.getUser().getLastName());
+        orderRespDTO.setCustomerMobile(order.getUser().getMobile());
         orderRespDTO.setDeliveryAddress(order.getDeliveryAddress());
 
         List<OrderDetails> orderDetails = order.getOrderDetails();
@@ -123,8 +125,6 @@ public class EntityMapper {
         List<OrderDetailsRespDTO> orderDetailsRespDTOList = new ArrayList<>();
         for(OrderDetails orderDetail : orderDetails) {
             OrderDetailsRespDTO orderDetailsRespDTO = new OrderDetailsRespDTO();
-//            orderDetailsRespDTO.setOrderId(orderDetail.getOrder().getOrderId());
-//            orderDetailsRespDTO.setOrderDetailId(orderDetail.getOrderDetailId());
             orderDetailsRespDTO.setProductId(orderDetail.getProduct().getProductId());
             orderDetailsRespDTO.setPrice(orderDetail.getPrice());
             orderDetailsRespDTO.setQuantity(orderDetail.getQuantity());
