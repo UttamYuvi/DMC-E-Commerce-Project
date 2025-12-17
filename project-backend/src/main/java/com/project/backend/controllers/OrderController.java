@@ -25,16 +25,28 @@ public class OrderController {
     @Autowired
     private EntityMapper mapper;
 
+    //done  //user
     @GetMapping
-    public ResponseEntity<?> findAllOrders() {
-        return ResponseEntity.ok(orderService.findAllOrders());
+    public ResponseEntity<?> findAllOrders(Principal principal) {
+        int userId = mapper.userEmailToId(principal.getName()).getUserId();
+        return ResponseEntity.ok(orderService.findOrdersByUserId(userId));
     }
 
+    //done  //user
     @GetMapping("/{oid}")
-    public ResponseEntity<?> findOrderById(@PathVariable("oid") int orderId) {
-        return ResponseEntity.ok(orderService.findOrderById(orderId));
+    public ResponseEntity<?> findOrderById(@PathVariable("oid") int orderId,Principal principal) {
+        int userId = mapper.userEmailToId(principal.getName()).getUserId();
+        return ResponseEntity.ok(orderService.findOrderByOrderIdAndUserId(orderId,userId));
     }
 
+    //done  //user
+    @GetMapping("/cancel/{oid}")
+    public ResponseEntity<?> cancelOrderById(@PathVariable("oid") int orderId,Principal principal) {
+//        int userId = mapper.userEmailToId(principal.getName()).getUserId();
+        return ResponseEntity.ok(orderService.cancelOrder(orderId));
+    }
+
+    //done  //user
     @PostMapping
     public ResponseEntity<?> placeOrder(@RequestBody OrderReqDTO orderReqDTO, Principal principal) {
         User user = mapper.userEmailToId(principal.getName());

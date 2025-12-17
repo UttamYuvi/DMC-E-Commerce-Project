@@ -45,6 +45,7 @@ public class ProductsController {
 
     }
 
+    //done  //vendor
     @PutMapping("/vendor/{pid}")
     public ResponseEntity<?> updateProduct(@PathVariable("pid") int pid, @RequestBody ProductReqDTO productReqDTO, Principal principal) {
         int vendorId = mapper.emailToId(principal.getName()).getVendorId();

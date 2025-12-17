@@ -31,20 +31,30 @@ public class OrderServiceImpl implements OrderService {
     private EntityMapper mapper;
 
 
-    @Override
-    public List<OrderRespDTO> findAllOrders() {
-        List<Order> orders = orderRepository.findAll();
+    //done  //user
+    public OrderRespDTO findOrderByOrderIdAndUserId(int orderId, int userId) {
+        return mapper.newOrderToOrderRespDTO(orderRepository.findOrderByOrderIdAndUserId(orderId,userId));
+    }
+
+    //done  //user
+    public List<OrderRespDTO> findOrdersByUserId(int userId) {
+        List<Order> orders = orderRepository.findOrdersByUserId(userId);
         List<OrderRespDTO> orderRespDTOList = new ArrayList<>();
         for(Order order : orders) {
             orderRespDTOList.add(mapper.newOrderToOrderRespDTO(order));
         }
-        return orderRespDTOList;
+        return  orderRespDTOList;
+
     }
 
-    public OrderRespDTO findOrderById(int orderId) {
-        return mapper.newOrderToOrderRespDTO(orderRepository.findById(orderId).get());
+    public String cancelOrder(int orderId) {
+        int count = orderRepository.cancelOrder(orderId);
+        if(count == 1)
+            return "Order Cancelled";
+        return "Something went wrong";
     }
 
+    //done  //user
     @Override
     public OrderRespDTO placeOrder(User user, OrderReqDTO orderReqDTO) {
         Order order = new Order();
