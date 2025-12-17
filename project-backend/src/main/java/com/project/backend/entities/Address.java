@@ -1,6 +1,7 @@
 package com.project.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,7 @@ public class Address {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userId")
+    @JsonIgnore
     private User user;
 
     private String addressLine;
@@ -35,6 +37,7 @@ public class Address {
 
     @OneToMany(mappedBy = "deliveryAddress")
     @JsonBackReference
+    @JsonIgnore
     private List<Order> orders;
 
 }

@@ -93,7 +93,7 @@ public class SecurityConfig {
                                 "/register/**",
                                 "/products/**"
                         ).permitAll()
-                        .requestMatchers(
+                        .requestMatchers("/vendors/**",
                                 "/category/vendor/**",
                                 "/subcategory/vendor/**",
                                 "/products/vendor/**"

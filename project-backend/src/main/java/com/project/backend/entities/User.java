@@ -1,4 +1,5 @@
 package com.project.backend.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,6 +30,7 @@ public class User implements UserDetails {
 //    private String address;
     private String role = "USER";
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Address> addresses;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
