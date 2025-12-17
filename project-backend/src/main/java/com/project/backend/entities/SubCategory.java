@@ -20,7 +20,7 @@ public class SubCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int subCategoryId;
     private String name;
-
+    private String image;
     @ManyToOne
     @JoinColumn(name = "categoryId")
     @JsonIgnore

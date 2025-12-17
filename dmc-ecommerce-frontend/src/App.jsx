@@ -19,6 +19,7 @@ import AboutUs from "./screens/users/AboutUs";
 import Orders from "./screens/users/orders";
 import Help from "./screens/users/Help";
 import Cart from "./screens/users/Cart";
+import CategoryUser from "./screens/users/CategoryUser";
 // import { getVendorFromStorage } from "./utils/LocalStorage";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/profile" element={<Profile/>}/>
+        <Route path="/category/:categoryId" element={<CategoryUser/>}/>
         <Route path="/aboutus" element={<AboutUs/>}/>
         <Route path="/orders" element={<Orders/>}/>
         <Route path="/help" element={<Help/>}/>

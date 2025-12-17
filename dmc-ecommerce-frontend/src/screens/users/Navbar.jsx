@@ -3,14 +3,21 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 
 function MyNavbar() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const categories = [
+    { id: 1, name: "Mens" },
+    { id: 2, name: "Womens" },
+    { id: 3, name: "Boys" },
+    { id: 4, name: "Girls" },
+    { id: 5, name: "Kids" },
+  ];
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const cart =() => {
-    navigate('/cart')
-  }
+  const cart = () => {
+    navigate("/cart");
+  };
   return (
-    
     <nav class="navbar">
       <div class="container-fluid navbar-container">
         <div class="left">
@@ -22,18 +29,14 @@ function MyNavbar() {
             <button className="dropdown-btn">Categories ▼</button>
 
             <div className="dropdown-content">
-              <Link to="/orders">
-                <p>Mens</p>
-              </Link>
-              <Link to="/orders">
-                <p>Womens</p>
-              </Link>
-              <Link to="/orders">
-                <p>Kids</p>
-              </Link>
-              <Link to="/orders">
-                <p>Footwear</p>
-              </Link>
+              {categories.map((category) => (
+                <Link
+                  key={category.id}
+                  to={`/category/${category.id}`}
+                  className="dropdown-item">
+                  <p>{category.name}</p>
+                </Link>
+              ))}
             </div>
           </div>
         </div>
@@ -48,10 +51,14 @@ function MyNavbar() {
           <button className="btn btn-outline-dark ">Search</button>
           {/* mr-4 */}
         </div>
-        
 
         <div class="right-icons">
-          <img src="/src/assets/cart.png" width="30" height="30" onClick={cart}/>
+          <img
+            src="/src/assets/cart.png"
+            width="30"
+            height="30"
+            onClick={cart}
+          />
           <img
             src="/src/assets/menu.png"
             width="30"
