@@ -5,7 +5,7 @@ export const sideList = [
   },
   {
     name: "Product",
-    nav: "product",
+    nav: "allproducts",
   },
 
   {

@@ -28,6 +28,13 @@ const serverData = {
   updateSubCategory: async (formData) => {
     return Server.post(ApiEndpoint.updateSubCategoryApi, formData, true);
   },
+  //products
+  addProduct: async (formData) => {
+    return Server.post(ApiEndpoint.addProductApi, formData, true);
+  },
+  allProductList: async (filters = {}) => {
+    return Server.get(ApiEndpoint.getAllProductApi, filters);
+  },
 };
 
 export default serverData;
