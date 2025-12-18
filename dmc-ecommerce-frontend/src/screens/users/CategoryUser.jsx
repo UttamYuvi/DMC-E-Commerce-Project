@@ -1,11 +1,19 @@
+<<<<<<< HEAD
 import React from "react";
 import { useParams } from "react-router";
 import "./css/CategoryUser.css";
+=======
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import "./css/CategoryUser.css";
+import { getCategoryAll } from "../../services/UserService";
+>>>>>>> SubCategory_USER
 // import shirts from "../../assets/subCategories/shirt.jpg";
 // import tshirts from "../../assets/subCategories/tshirt.jpg";
 
 function CategoryUser() {
   const { categoryId } = useParams();
+<<<<<<< HEAD
 
   /*const subCategories = [
     Mens (1)
@@ -92,6 +100,30 @@ function CategoryUser() {
   //   "T-Shirts": tshirts
   // };
   const filteredSubCategories = subCategories.filter(
+=======
+  const [subCategory,setSubCategory] = useState([])
+
+  const getAllCategory = async() => {
+    const response =  await getCategoryAll(categoryId)
+    setSubCategory(response)
+    return response
+  }
+
+  console.log(subCategory)
+
+  useEffect(() => {
+    console.log("hii")
+    getAllCategory()
+  },[])
+  // useEffect(() => {
+  //   getAllCategory()
+  //     .then(setSubCategory)
+  //     .catch(console.error);
+  // }, [categoryId]);
+
+  
+  const filteredSubCategories = subCategory.filter(
+>>>>>>> SubCategory_USER
     (sub) => sub.categoryId === Number(categoryId)
   );
 
@@ -100,10 +132,17 @@ function CategoryUser() {
       <h2 className="category-title">Sub Categories</h2>
 
       <div className="subcategory-grid">
+<<<<<<< HEAD
         {filteredSubCategories.map((sub) => (
           <div key={sub.id} className="subcategory-card">
             <img
               src={`http://localhost:8080${sub.image}`}
+=======
+        {subCategory.map((sub) => (
+          <div key={sub.id} className="subcategory-card">
+            <img
+              src={"http://localhost:8080/uploads/subcategories/mens/"+sub.image}
+>>>>>>> SubCategory_USER
               alt={sub.name}
               className="subcategory-img"
             />

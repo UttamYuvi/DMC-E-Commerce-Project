@@ -46,7 +46,7 @@ public class ProductsServiceImpl implements ProductsService{
 
     // done  //vendor
     public Products saveProduct(ProductReqDTO productReqDTO,int vendorId) {
-        return productsRepository.save(mapper.productReqToProducts(productReqDTO,vendorId));
+        return productsRepository.save(new Products()); //mapper.productReqToProducts(productReqDTO,vendorId)
     }
 
     //done  //vendor
@@ -61,6 +61,7 @@ public class ProductsServiceImpl implements ProductsService{
         return mapper.productToProductRespDTO(product);
     }
 
+<<<<<<< HEAD
     public void addSubCategory(int categoryId, String name, String image) {
         Category category = categoryRepository.findById(categoryId).get();
         SubCategory subCategory = new SubCategory();
@@ -73,5 +74,21 @@ public class ProductsServiceImpl implements ProductsService{
     public List<SubCategory> getAllSubcategories(int categoryId) {
         return subCategoryRepository.getAllSubCategories(categoryId);
     }
+=======
+    public List<SubCategory> getAllSubcategories(int categoryId) {
+        System.out.println("service"+categoryId);
+        List<SubCategory> s = subCategoryRepository.getAllSubcategory(categoryId);
+        return s;
+    }
+
+    public void addSubcategory(int cid, String name, String image) {
+        SubCategory subCategory = new SubCategory();
+        subCategory.setImage(image);
+        subCategory.setName(name);
+        subCategory.setCategory(categoryRepository.findById(cid).get());
+        subCategoryRepository.save(subCategory);
+    }
+
+>>>>>>> SubCategory_USER
 
 }
