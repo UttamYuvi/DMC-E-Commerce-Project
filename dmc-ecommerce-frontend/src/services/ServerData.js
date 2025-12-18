@@ -35,6 +35,15 @@ const serverData = {
   allProductList: async (filters = {}) => {
     return Server.get(ApiEndpoint.getAllProductApi, filters);
   },
+  deleteProduct: async (filters = {}) => {
+    return Server.post(ApiEndpoint.deleteProductApi, filters);
+  },
+  updateProduct: async (filters) => {
+    return Server.post(ApiEndpoint.updateProductApi, filters);
+  },
+  updateProductImages: async (formData) => {
+    return Server.post(ApiEndpoint.updateProductImagesApi, formData, true);
+  },
 };
 
 export default serverData;
