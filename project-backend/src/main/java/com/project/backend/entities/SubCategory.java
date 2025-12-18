@@ -5,10 +5,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-<<<<<<< HEAD
-=======
+
 import lombok.ToString;
->>>>>>> SubCategory_USER
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-<<<<<<< HEAD
-@Table(name="subcategories")
-=======
 @Table(name = "subcategories")
->>>>>>> SubCategory_USER
 public class SubCategory {
 
     @Id
@@ -32,14 +26,6 @@ public class SubCategory {
     @ManyToOne
     @JoinColumn(name = "categoryId")
     @JsonIgnore
-<<<<<<< HEAD
-    private Category category;
-
-    @OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Products> products = new ArrayList<>();
-}
-=======
     @ToString.Exclude
     private Category category;
     @OneToMany(mappedBy = "subCategory", cascade = CascadeType.ALL)
@@ -47,4 +33,3 @@ public class SubCategory {
     @ToString.Exclude
     private List<Products> products = new ArrayList<>();
 }
->>>>>>> SubCategory_USER

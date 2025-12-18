@@ -22,18 +22,11 @@ public class Products {
     private Vendor vendor;
     @ManyToOne
     @JoinColumn(name = "categoryId")
-<<<<<<< HEAD
-    private Category category;
-
-    @ManyToOne
-    @JoinColumn(name = "subCategoryId")
-=======
     @JsonIgnore
     private Category category;
     @ManyToOne
     @JoinColumn(name = "subCategoryId")
     @JsonIgnore
->>>>>>> SubCategory_USER
     private SubCategory subCategory;
     private String name;
     private String description;

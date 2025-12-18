@@ -27,7 +27,7 @@ function App() {
       <Routes>
         <Route path="*" element={<Home/>} />  
         <Route path="/register" element={<Register />} />
-        <Route path="/category/:categoryId" element={<CategoryUser/>} />
+        <Route path="/category/:categoryId/:categoryName" element={<CategoryUser/>} />
 
         <Route
           path="/page"

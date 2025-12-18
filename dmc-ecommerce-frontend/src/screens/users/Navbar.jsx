@@ -33,7 +33,7 @@ function MyNavbar() {
               {categories.map((category) => (
                 <Link
                   key={category.id}
-                  to={`/category/${category.id}`}
+                  to={`/category/${category.id}/${category.name}`}
                   className="dropdown-item">
                   {category.name}
                 </Link>
