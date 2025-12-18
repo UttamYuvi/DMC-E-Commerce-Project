@@ -11,6 +11,9 @@ const ApiEndpoint = {
   updateSubCategoryApi: base_url.url + "/subcategory/update",
   addProductApi: base_url.url + "/product",
   getAllProductApi: base_url.url + "/product",
+  deleteProductApi: base_url.url + "/product/delete",
+  updateProductApi: base_url.url + "/product/update",
+  updateProductImagesApi: base_url.url + "/product/updateProductImages",
 };
 
 export default ApiEndpoint;

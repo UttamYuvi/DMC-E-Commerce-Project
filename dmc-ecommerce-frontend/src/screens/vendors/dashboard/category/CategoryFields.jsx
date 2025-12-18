@@ -14,7 +14,6 @@ const HiddenInput = styled("input")({
 });
 
 function CategoryFields({ mode = "add", data = null, onClose, onSuccess }) {
-  console.log("sdsdsdsd", data);
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -22,8 +21,6 @@ function CategoryFields({ mode = "add", data = null, onClose, onSuccess }) {
     file: null,
     preview: defaultImage,
   });
-
-  console.log("update tesing", form);
 
   // Prefill when editing
   useEffect(() => {
