@@ -16,6 +16,8 @@ import AllCategory from "./screens/vendors/dashboard/category/AllCategory";
 import AllSubCategory from "./screens/vendors/dashboard/subcategory/AllSubCategory";
 import Orders from "./screens/vendors/dashboard/Orders";
 import AllProducts from "./screens/vendors/dashboard/products/AllProducts";
+import Home from "./screens/users/Home";
+import CategoryUser from "./screens/users/CategoryUser";
 
 function App() {
   const { vendor } = useContext(VendorContext);
@@ -23,8 +25,9 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="*" element={<Login />} />
+        <Route path="*" element={<Home/>} />  
         <Route path="/register" element={<Register />} />
+        <Route path="/category/:categoryId" element={<CategoryUser/>} />
 
         <Route
           path="/page"

@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import defaultImage from "/src/assets/small-logo.jpeg";
 import { base_url, categories, subCategories } from "../../../../utils/config";
-import Dropzone from "react-dropzone";
+// import Dropzone from "react-dropzone";
 import serverData from "../../../../services/ServerData";
 
 function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {

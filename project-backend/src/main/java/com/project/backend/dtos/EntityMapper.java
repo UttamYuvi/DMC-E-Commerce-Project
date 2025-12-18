@@ -77,20 +77,20 @@ public class EntityMapper {
         return productRespDTO;
     }
 
-    public Products productReqToProducts(ProductReqDTO productReqDTO, int vendorId) {
-        product.setStatus("continue");
-//        product.setVendorId(productReqDTO.getVendorId());
-        product.setName(productReqDTO.getName());
-        product.setDescription(productReqDTO.getDescription());
-        product.setPrice(productReqDTO.getPrice());
-        product.setStock(productReqDTO.getStock());
-        Vendor vendor = vendorRepository.findById(vendorId)
-                .orElseThrow(() -> new RuntimeException("Vendor not found"));
-        product.setVendor(vendor);
-        product.setCategoryId(productReqDTO.getCategoryId());
-        product.setSubCategoryId(productReqDTO.getSubCategoryId());
-        return product;
-    }
+//    public Products productReqToProducts(ProductReqDTO productReqDTO, int vendorId) {
+//        product.setStatus("continue");
+////        product.setVendorId(productReqDTO.getVendorId());
+//        product.setName(productReqDTO.getName());
+//        product.setDescription(productReqDTO.getDescription());
+//        product.setPrice(productReqDTO.getPrice());
+//        product.setStock(productReqDTO.getStock());
+//        Vendor vendor = vendorRepository.findById(vendorId)
+//                .orElseThrow(() -> new RuntimeException("Vendor not found"));
+//        product.setVendor(vendor);
+//        product.setCategoryId(productReqDTO.getCategoryId());
+//        product.setSubCategoryId(productReqDTO.getSubCategoryId());
+//        return product;
+//    }
 
     public Products productReqDtoToUpdatedProduct(int pid,ProductReqDTO productReqDTO) {
         Products newProduct = productsRepository.findById(pid).get();
