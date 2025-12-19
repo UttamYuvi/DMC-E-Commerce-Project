@@ -38,7 +38,7 @@ export default function AllProducts() {
   const loadProducts = async () => {
     try {
       const res = await serverData?.allProductList();
-      if (res.data) {
+      if (res) {
         setProducts(res.data);
       }
     } catch {
@@ -48,7 +48,8 @@ export default function AllProducts() {
     }
   };
 
-  const handleDelete = async (e, id) => {
+  const handleDelete = async (e, item) => {
+    console.log(item.id);
     const confirm = await Swal.fire({
       title: "Delete?",
       text: "deletion is not revertable.",
@@ -60,9 +61,9 @@ export default function AllProducts() {
     if (!confirm.isConfirmed) return;
 
     try {
-      const res = await serverData.deleteProduct(id);
-
-      if (res.data.status) {
+      const res = await serverData.deleteProduct(item.id);
+      console.log("ress: ", res);
+      if (res) {
         toast.success("Deleted");
         loadProducts();
       }
@@ -144,19 +145,21 @@ export default function AllProducts() {
               let imageArray = [];
 
               try {
-                imageArray = item.images ? JSON.parse(item.images) : [];
+                // imageArray = item.images ? JSON.parse(item.images) : [];
+                imageArray = item.images.split(",");
               } catch (e) {
                 imageArray = [];
                 console.log(imageArray, e);
               }
+              console.log(`imgggg: `, imageArray);
 
               return (
                 <tr key={i}>
                   <td style={{ alignContent: "center" }}>
                     <AppText style={{ fontSize: "10px", fontWeight: "bold" }}>
-                      {item.categoryName}
+                      {item.category}
                     </AppText>
-                    <AppText>{item.subCategoryName}</AppText>
+                    <AppText>{item.subCategory}</AppText>
                   </td>
 
                   <td style={{ alignContent: "center" }}>
@@ -180,14 +183,17 @@ export default function AllProducts() {
                     style={{ alignContent: "center", cursor: "pointer" }}
                   >
                     <Box sx={{ display: "flex", gap: 1 }}>
-                      {imageArray.map((img, index) => (
-                        <Avatar
-                          key={index}
-                          src={`${base_url.url}/images/${img}`}
-                          variant="rounded"
-                          sx={{ width: 40, height: 40 }}
-                        />
-                      ))}
+                      {imageArray.map((img, index) => {
+                        console.log(img);
+                        return (
+                          <Avatar
+                            key={index}
+                            src={`${base_url.url}/uploads/products/${img}`}
+                            variant="rounded"
+                            sx={{ width: 40, height: 40 }}
+                          />
+                        );
+                      })}
                     </Box>
                   </td>
                   <td style={{ alignContent: "center" }}>
@@ -237,7 +243,6 @@ export default function AllProducts() {
             mode={editData ? "edit" : "add"}
             data={editData}
             onClose={() => setOpen(false)}
-            onSuccess={loadProducts}
           />
         </DialogContent>
       </Dialog>

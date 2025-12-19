@@ -8,6 +8,7 @@ import com.project.backend.entities.Products;
 import com.project.backend.entities.Vendor;
 import com.project.backend.services.ProductsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +54,8 @@ public class ProductsController {
             Principal principal, @RequestParam int categoryId, @RequestParam int subCategoryId, @RequestParam String name, @RequestParam String description,
             @RequestParam double price, @RequestParam int stock, @RequestParam String status, @RequestParam("images") MultipartFile[] images
     ) throws IOException {
+
+        System.out.println(status);
         Files.createDirectories(Paths.get(UPLOAD_DIR));
         List<String> imagePaths = new ArrayList<>();
 
@@ -79,6 +82,7 @@ public class ProductsController {
     @GetMapping("/vendor")
     public ResponseEntity<?> getAllProductsOfVendor(Principal principal){
         int vendorId = mapper.emailToId(principal.getName()).getVendorId();
+
         return ResponseEntity.ok(productsService.getAllProductsOfVendor(vendorId));
 
     }
@@ -93,6 +97,17 @@ public class ProductsController {
         public ResponseEntity<?> getAllSubcategory(@PathVariable("cid") int cid) {
         System.out.println("category api called"+cid);
         return ResponseEntity.ok(productsService.getAllSubcategories(cid));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteProduct(@PathVariable("id") int id){
+        System.out.println(id);
+        productsService.deleteProduct(id);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> updateProducts(@RequestBody ProductReqDTO productReqDTO) {
+        return ResponseEntity.ok(productsService.updateProduct(productReqDTO));
     }
 
 

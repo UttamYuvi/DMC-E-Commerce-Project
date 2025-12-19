@@ -13,9 +13,13 @@ public interface ProductsService  {
 
     Products saveProduct(ProductReqDTO productReqDTO, int vendorId); // done user
 
-    List<Products> getAllProductsOfVendor(int vendorId); // done vendor
+    List<ProductRespDTO> getAllProductsOfVendor(int vendorId); // done vendor
 
     ProductRespDTO updateProduct(int pid, ProductReqDTO productReqDTO);
+
+    void deleteProduct(int id);
+
+    ProductRespDTO updateProduct(ProductReqDTO productReqDTO);
 
 
 }

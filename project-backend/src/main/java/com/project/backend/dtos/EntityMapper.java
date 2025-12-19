@@ -77,30 +77,41 @@ public class EntityMapper {
         ProductRespDTO productRespDTO = new ProductRespDTO();
         String categoryName = products.getCategory().getName();
         String subCategoryName = products.getSubCategory().getName();
+        productRespDTO.setId(products.getProductId());
+        productRespDTO.setCategoryId(products.getCategory().getCategoryId());
+        productRespDTO.setSubCategoryId(products.getSubCategory().getSubCategoryId());
         productRespDTO.setName(products.getName());
         productRespDTO.setDescription(products.getDescription());
         productRespDTO.setPrice(products.getPrice());
         productRespDTO.setStock(products.getStock());
+        productRespDTO.setImages(products.getImages());
+        productRespDTO.setCreatedAt(products.getCreatedAt());
         productRespDTO.setCategory(categoryName);
         productRespDTO.setSubCategory(subCategoryName);
-        productRespDTO.setStatus(productRespDTO.getStatus());
-        productRespDTO.setImages(productRespDTO.getImages());
+        productRespDTO.setStatus(products.getStatus());
+//        productRespDTO.setImages(productRespDTO.getImages());
         return productRespDTO;
     }
 
-    public Products productReqToProducts(ProductReqDTO productReqDTO, int vendorId) {
-        product.setStatus("continue");
-//        product.setVendorId(productReqDTO.getVendorId());
-        product.setName(productReqDTO.getName());
-        product.setDescription(productReqDTO.getDescription());
-        product.setPrice(productReqDTO.getPrice());
-        product.setStock(productReqDTO.getStock());
-        Vendor vendor = vendorRepository.findById(vendorId)
+    public Products productReqToProducts(ProductReqDTO productReqDTO) {
+        Products products = productsRepository.findById(productReqDTO.getProductId()).get();
+        products.setStatus("continue");
+//        products.setVendorId(productReqDTO.getVendorId());
+        products.setName(productReqDTO.getName());
+        products.setDescription(productReqDTO.getDescription());
+        products.setPrice(productReqDTO.getPrice());
+        products.setStock(productReqDTO.getStock());
+        products.setStatus(productReqDTO.getStatus());
+        Vendor vendor = vendorRepository.findById(products.getVendor().getVendorId())
                 .orElseThrow(() -> new RuntimeException("Vendor not found"));
-        product.setVendor(vendor);
-//        product.setCategoryId(productReqDTO.getCategoryId());
-//        product.setSubCategoryId(productReqDTO.getSubCategoryId());
-        return product;
+        Category category = categoryRepository.findById(products.getCategory().getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        SubCategory subCategory = subCategoryRepository.findById(products.getSubCategory().getSubCategoryId())
+                .orElseThrow(() -> new RuntimeException("SubCategory not found"));
+        products.setVendor(vendor);
+        products.setCategory(category);
+        products.setSubCategory(subCategory);
+        return products;
     }
 
     public Products productReqDtoToUpdatedProduct(int pid,ProductReqDTO productReqDTO) {

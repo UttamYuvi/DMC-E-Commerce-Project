@@ -20,11 +20,10 @@ import serverData from "../../../../services/ServerData";
 import { useNavigate } from "react-router";
 import defaultImage from "/src/assets/small-logo.jpeg";
 import { base_url, categories, subCategories } from "../../../../utils/config";
-import Dropzone from "react-dropzone";
 import ProductImageDropzone from "./ProductImageDropzone";
 
-function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
-  console.log(data);
+function ProductFields({ mode = "add", data = null, onClose }) {
+  console.log("ProductFields", data);
 
   const navigate = useNavigate();
   const [filteredSubCategories, setFilteredSubCategories] = React.useState([]);
@@ -36,7 +35,7 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
     description: "",
     price: "",
     stock: "",
-    status: true,
+    status: "continue",
     images: [],
     previews: [],
   });
@@ -82,9 +81,9 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
     console.log(form.stock);
     if (!form.categoryId) return toast.error("Select category first");
     if (!form.subCategoryId) return toast.error("Select subcategory");
-    if (!form.product.trim()) return toast.error("Product name is required");
-    if (!form.description.trim()) return toast.error("Description is required");
-    if (!form.price.trim()) return toast.error("Price is required");
+    if (!form.product) return toast.error("Product name is required");
+    if (!form.description) return toast.error("Description is required");
+    if (!form.price) return toast.error("Price is required");
     if (!form.stock) return toast.error("Stock is required");
 
     try {
@@ -95,24 +94,24 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
 
         fd.append("categoryId", form.categoryId);
         fd.append("subCategoryId", form.subCategoryId);
-        fd.append("product", form.product);
+        fd.append("name", form.product);
         fd.append("description", form.description);
         fd.append("price", form.price);
         fd.append("stock", form.stock);
         fd.append("status", form.status);
 
-        form.images.forEach((file, index) => {
-          fd.append(`images[${index}]`, file);
+        form.images.forEach((file) => {
+          fd.append("images", file);
         });
 
         console.log("Adding product:", form);
         response = await serverData.addProduct(fd);
       } else {
         const body = {
-          productId: data.productId,
+          productId: data.id,
           categoryId: form.categoryId,
           subCategoryId: form.subCategoryId,
-          product: form.product,
+          name: form.product,
           description: form.description,
           price: form.price,
           stock: form.stock,
@@ -123,7 +122,7 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
         response = await serverData.updateProduct(body);
       }
 
-      if (response?.data?.status) {
+      if (response?.data) {
         toast.success(
           mode === "add"
             ? "Product added successfully"
@@ -135,8 +134,6 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
         } else {
           onClose();
         }
-
-        onSuccess();
       } else {
         toast.error(response?.data?.message || "Operation failed");
       }
@@ -180,7 +177,8 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
             labelId="category-label"
             value={form.categoryId}
             label="Category"
-            onChange={handleCategoryChange}>
+            onChange={handleCategoryChange}
+          >
             {categories.map((cat) => (
               <MenuItem key={cat.id} value={cat.id}>
                 {cat.name}
@@ -198,7 +196,8 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
             label="Sub Category"
             disabled={!form.categoryId}
             value={form.subCategoryId}
-            onChange={handleSubCategoryChange}>
+            onChange={handleSubCategoryChange}
+          >
             {filteredSubCategories.map((sub) => (
               <MenuItem key={sub.id} value={sub.id}>
                 {sub.name}
@@ -265,21 +264,23 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
         style={{
           display: "flex",
           justifyContent: "center",
-        }}>
+        }}
+      >
         <FormControlLabel
           sx={{ margin: 0 }}
-          value="Status"
           control={
             <Switch
               color="primary"
-              checked={form.status}
+              checked={form.status === "continue"}
               onChange={(e) => {
-                setForm((prev) => ({ ...prev, status: e.target.checked }));
+                setForm((prev) => ({
+                  ...prev,
+                  status: e.target.checked ? "continue" : "discontinue",
+                }));
               }}
             />
           }
           label="Status"
-          labelPlacement="Status"
         />
       </Grid>
 

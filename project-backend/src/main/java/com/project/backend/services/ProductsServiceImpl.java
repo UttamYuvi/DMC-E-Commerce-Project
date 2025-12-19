@@ -57,7 +57,7 @@ public class ProductsServiceImpl implements ProductsService{
         products.setVendor(vendor);
         products.setName(name);
         products.setDescription(description);
-//        products.setStatus(status);
+        products.setStatus(status);
         products.setStock(stock);
         products.setPrice(price);
         products.setImages(images);
@@ -72,14 +72,33 @@ public class ProductsServiceImpl implements ProductsService{
 
     //done  //vendor
     @Override
-    public List<Products> getAllProductsOfVendor(int vendorId) {
-        return productsRepository.findProductsByVendorId(vendorId);
+    public List<ProductRespDTO> getAllProductsOfVendor(int vendorId) {
+
+        List<Products> products = productsRepository.findProductsByVendorId(vendorId);
+        List<ProductRespDTO> productRespDTOS = new ArrayList<>();
+        for ( Products product: products){
+            productRespDTOS.add(mapper.productToProductRespDTO(product));
+        }
+        return productRespDTOS;
+
+
     }
 
     public ProductRespDTO updateProduct(int pid, ProductReqDTO productReqDTO) {
         Products product = mapper.productReqDtoToUpdatedProduct(pid,productReqDTO);
         productsRepository.save(product);
         return mapper.productToProductRespDTO(product);
+    }
+
+    @Override
+    public void deleteProduct(int id) {
+        productsRepository.deleteById(id);
+
+    }
+    public ProductRespDTO updateProduct(ProductReqDTO productReqDTO) {
+        Products save = productsRepository.save(mapper.productReqToProducts(productReqDTO));
+        return mapper.productToProductRespDTO(save);
+
     }
 
     public List<SubCategory> getAllSubcategories(int categoryId) {

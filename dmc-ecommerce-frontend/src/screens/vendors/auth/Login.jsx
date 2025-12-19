@@ -17,11 +17,12 @@ function Login() {
   const signin = async () => {
     try {
       const result = await loginVendor(email, password);
-      if (result.status) {
+      console.log("result ", result);
+      if (result.status === 200) {
         setToken(result.data.token);
 
         const vendorObj = {
-          firstName: result.data.firstName,
+          firstName: result.data.firstname,
           lastName: result.data.lastName,
           email: result.data.email,
           mobile: result.data.mobile,

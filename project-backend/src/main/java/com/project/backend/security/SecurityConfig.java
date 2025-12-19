@@ -97,6 +97,7 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/vendors/**",
                                 "/products/**",
+                                "/products/delete/**",
                                 "/category/vendor/**",
                                 "/subcategory/vendor/**",
                                 "/products/vendor/**",

@@ -5,6 +5,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -35,4 +40,6 @@ public class Products {
     @Column(columnDefinition = "TEXT")
     private String images;
     private String status;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

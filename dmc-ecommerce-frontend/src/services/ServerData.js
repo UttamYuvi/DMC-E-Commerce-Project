@@ -35,8 +35,8 @@ const serverData = {
   allProductList: async (filters = {}) => {
     return Server.get(ApiEndpoint.getAllProductApi, filters);
   },
-  deleteProduct: async (filters = {}) => {
-    return Server.post(ApiEndpoint.deleteProductApi, filters);
+  deleteProduct: async (id) => {
+    return Server.delete(ApiEndpoint.deleteProductApi + id);
   },
   updateProduct: async (filters) => {
     return Server.post(ApiEndpoint.updateProductApi, filters);

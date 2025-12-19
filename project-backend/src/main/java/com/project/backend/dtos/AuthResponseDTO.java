@@ -1,25 +1,20 @@
 package com.project.backend.dtos;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class AuthResponseDTO {
 
     private String token;
     private String role;
+    private String firstname;
+    private String lastName;
+    private String email;
+    private String mobile;
 
-    public AuthResponseDTO(String token, String role) {
-        this.token = token;
-        this.role = role;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getToken() { return token; }
-
-    public void setToken(String token) { this.token = token; }
 
 }
