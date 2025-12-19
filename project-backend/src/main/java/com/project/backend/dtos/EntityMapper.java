@@ -5,6 +5,7 @@ import com.project.backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.smartcardio.CardTerminal;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,10 @@ public class EntityMapper {
     @Autowired
     private ProductsRepository productsRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private SubCategoryRepository subCategoryRepository;
     @Autowired
     private UserRepository userRepository;
 
@@ -70,10 +75,16 @@ public class EntityMapper {
 
     public ProductRespDTO productToProductRespDTO(Products products) {
         ProductRespDTO productRespDTO = new ProductRespDTO();
+        String categoryName = products.getCategory().getName();
+        String subCategoryName = products.getSubCategory().getName();
         productRespDTO.setName(products.getName());
         productRespDTO.setDescription(products.getDescription());
         productRespDTO.setPrice(products.getPrice());
         productRespDTO.setStock(products.getStock());
+        productRespDTO.setCategory(categoryName);
+        productRespDTO.setSubCategory(subCategoryName);
+        productRespDTO.setStatus(productRespDTO.getStatus());
+        productRespDTO.setImages(productRespDTO.getImages());
         return productRespDTO;
     }
 

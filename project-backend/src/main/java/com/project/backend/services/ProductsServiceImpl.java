@@ -2,6 +2,7 @@ package com.project.backend.services;
 
 import com.project.backend.entities.Category;
 import com.project.backend.entities.SubCategory;
+import com.project.backend.entities.Vendor;
 import com.project.backend.repository.CategoryRepository;
 import com.project.backend.repository.ProductsRepository;
 import com.project.backend.dtos.*;
@@ -42,6 +43,26 @@ public class ProductsServiceImpl implements ProductsService{
     //done  //user
     public ProductRespDTO getProductById(int id) {
         return mapper.productToProductRespDTO(productsRepository.findById(id).get());
+    }
+
+    public Products getProductByCatAndSubcat(int categoryId, int subCategoryId) {
+        return new Products();
+    }
+
+    public ProductRespDTO addProduct(Vendor vendor, int categoryId, int subCategoryId, String name,
+                           String description, int stock, String status, double price, String images) {
+        Products products = new Products();
+        products.setCategory(categoryRepository.findById(categoryId).get());
+        products.setSubCategory(subCategoryRepository.findById(subCategoryId).get());
+        products.setVendor(vendor);
+        products.setName(name);
+        products.setDescription(description);
+//        products.setStatus(status);
+        products.setStock(stock);
+        products.setPrice(price);
+        products.setImages(images);
+        productsRepository.save(products);
+        return mapper.productToProductRespDTO(products);
     }
 
     // done  //vendor

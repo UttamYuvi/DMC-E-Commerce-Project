@@ -180,8 +180,7 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
             labelId="category-label"
             value={form.categoryId}
             label="Category"
-            onChange={handleCategoryChange}
-          >
+            onChange={handleCategoryChange}>
             {categories.map((cat) => (
               <MenuItem key={cat.id} value={cat.id}>
                 {cat.name}
@@ -199,8 +198,7 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
             label="Sub Category"
             disabled={!form.categoryId}
             value={form.subCategoryId}
-            onChange={handleSubCategoryChange}
-          >
+            onChange={handleSubCategoryChange}>
             {filteredSubCategories.map((sub) => (
               <MenuItem key={sub.id} value={sub.id}>
                 {sub.name}
@@ -267,8 +265,7 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
         style={{
           display: "flex",
           justifyContent: "center",
-        }}
-      >
+        }}>
         <FormControlLabel
           sx={{ margin: 0 }}
           value="Status"

@@ -9,9 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductRespDTO {
 
+    private String category;
+    private String subCategory;
     private String name;
     private String description;
     private double price;
     private int stock;
+    private String status;
+    String[] images;
 
 }
