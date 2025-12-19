@@ -96,10 +96,12 @@ public class SecurityConfig {
                                 "/products/subcategories/**"
                         ).permitAll()
                         .requestMatchers("/vendors/**",
+                                "/products/**",
                                 "/category/vendor/**",
                                 "/subcategory/vendor/**",
                                 "/products/vendor/**",
-                                "/products/category"
+                                "/products/category",
+                                "/products/add"
                         ).hasAuthority("VENDOR")
                         .requestMatchers("/user/**",
                                 "/category/user",

@@ -20,7 +20,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import defaultImage from "/src/assets/small-logo.jpeg";
 import { base_url, categories, subCategories } from "../../../../utils/config";
-// import Dropzone from "react-dropzone";
+import Dropzone from "react-dropzone";
 import serverData from "../../../../services/ServerData";
 
 function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
@@ -80,14 +80,17 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
     const fd = new FormData();
     fd.append("categoryId", form.categoryId);
     fd.append("subCategoryId", form.subCategoryId);
-    fd.append("product", form.product);
+    fd.append("name", form.product);
     fd.append("description", form.description);
     fd.append("price", form.price);
     fd.append("stock", form.stock);
     fd.append("status", form.status);
 
-    form.images.map((item, index) => {
-      fd.append("images" + index, item);
+    // form.images.map((item, index) => {
+    //   fd.append("images" + index, item);
+    // });
+    form.images.forEach((item) => {
+      fd.append("images", item);
     });
 
     try {
@@ -100,7 +103,7 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
         // response = await serverData.updateCategory(fd);
       }
 
-      if (response.data.status) {
+      if (response.data) {
         toast.success(
           mode === "add"
             ? "Product added successfully"
@@ -154,8 +157,7 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
             labelId="category-label"
             value={form.categoryId}
             label="Category"
-            onChange={handleCategoryChange}
-          >
+            onChange={handleCategoryChange}>
             {categories.map((cat) => (
               <MenuItem key={cat.id} value={cat.id}>
                 {cat.name}
@@ -173,8 +175,7 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
             label="Sub Category"
             disabled={!form.categoryId}
             value={form.subCategoryId}
-            onChange={handleSubCategoryChange}
-          >
+            onChange={handleSubCategoryChange}>
             {filteredSubCategories.map((sub) => (
               <MenuItem key={sub.id} value={sub.id}>
                 {sub.name}
@@ -241,8 +242,7 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
         style={{
           display: "flex",
           justifyContent: "center",
-        }}
-      >
+        }}>
         <FormControlLabel
           sx={{ margin: 0 }}
           value="Status"
@@ -302,8 +302,7 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
                 ],
               };
             });
-          }}
-        >
+          }}>
           {({ getRootProps, getInputProps }) => (
             <section>
               <div
@@ -313,8 +312,7 @@ function ProductFields({ mode = "add", data = null, onClose, onSuccess }) {
                   padding: "20px",
                   textAlign: "center",
                   cursor: "pointer",
-                }}
-              >
+                }}>
                 <input {...getInputProps()} />
                 <p>
                   Drag & drop images or click to upload (max 4 images,{" "}

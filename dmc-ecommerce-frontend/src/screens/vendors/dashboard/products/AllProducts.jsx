@@ -21,9 +21,9 @@ export default function AllProducts() {
 
   const loadProducts = async () => {
     try {
-      const res = await serverData.allProductList();
-      if (res.data.status) {
-        setProducts(res.data.data);
+      const res = await serverData?.allProductList();
+      if (res.data) {
+        setProducts(res.data);
       }
     } catch {
       toast.error("Failed to load categories");

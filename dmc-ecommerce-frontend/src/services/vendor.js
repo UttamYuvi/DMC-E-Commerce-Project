@@ -4,10 +4,11 @@ import Swal from "sweetalert2";
 
 export async function loginVendor(email, password) {
   try {
-    const userBody = { email, password };
-    const url = base_url.url + "/vendor/signin";
+    const userBody = { username:email, password };
+    // const url = base_url.url + "/vendor/signin";
+    const url = base_url.url + "/login/vendor"
     const response = await axios.post(url, userBody);
-    return response.data;
+    return response;
   } catch (error) {
     Swal.fire({
       position: "top-end",

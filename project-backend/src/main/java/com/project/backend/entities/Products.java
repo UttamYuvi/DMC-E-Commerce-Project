@@ -32,5 +32,7 @@ public class Products {
     private String description;
     private double price;
     private int stock;
+    @Column(columnDefinition = "TEXT")
+    private String images;
     private String status;
 }
