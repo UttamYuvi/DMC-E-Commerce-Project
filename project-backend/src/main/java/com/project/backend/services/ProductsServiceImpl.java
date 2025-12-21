@@ -45,8 +45,8 @@ public class ProductsServiceImpl implements ProductsService{
         return mapper.productToProductRespDTO(productsRepository.findById(id).get());
     }
 
-    public Products getProductByCatAndSubcat(int categoryId, int subCategoryId) {
-        return new Products();
+    public List<Products> getProductByCatAndSubcat(int categoryId, int subCategoryId) {
+        return productsRepository.findByCategory_CategoryIdAndSubCategory_SubCategoryId(categoryId,subCategoryId);
     }
 
     public ProductRespDTO addProduct(Vendor vendor, int categoryId, int subCategoryId, String name,

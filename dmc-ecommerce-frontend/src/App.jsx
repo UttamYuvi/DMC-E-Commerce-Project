@@ -18,6 +18,7 @@ import Orders from "./screens/vendors/dashboard/Orders";
 import AllProducts from "./screens/vendors/dashboard/products/AllProducts";
 import Home from "./screens/users/Home";
 import CategoryUser from "./screens/users/CategoryUser";
+import ProductsUser from "./screens/users/ProductsUser";
 
 function App() {
   const { vendor } = useContext(VendorContext);
@@ -25,9 +26,11 @@ function App() {
   return (
     <>
       <Routes>
+        {/* <Route path="*" element={<Login/>} />  */}
         <Route path="*" element={<Home/>} />  
         <Route path="/register" element={<Register />} />
         <Route path="/category/:categoryId/:categoryName" element={<CategoryUser/>} />
+        <Route path="products/:categoryId/:subCategoryId" element={<ProductsUser />} />
 
         <Route
           path="/page"

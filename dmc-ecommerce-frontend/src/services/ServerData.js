@@ -44,6 +44,9 @@ const serverData = {
   updateProductImages: async (formData) => {
     return Server.post(ApiEndpoint.updateProductImagesApi, formData, true);
   },
+  getProductsByCat_Subcat: async (categoryId,subCategoryId) => {  
+    return Server.get(ApiEndpoint.getproductsByCatAndSubcat + `${categoryId}/${subCategoryId}`);
+  }
 };
 
 export default serverData;

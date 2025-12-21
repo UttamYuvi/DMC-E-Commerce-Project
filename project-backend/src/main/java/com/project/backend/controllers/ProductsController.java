@@ -46,7 +46,7 @@ public class ProductsController {
     }
     @GetMapping("/{cid}/{scid}")
     public ResponseEntity<?> getProductByCatAndSubcat(@PathVariable("cid") int cid, @PathVariable("scid") int scid) {
-        return ResponseEntity.ok(productsService.getProductById(cid));
+        return ResponseEntity.ok(productsService.getProductByCatAndSubcat(cid,scid));
     }
 
     @PostMapping(value = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -55,7 +55,6 @@ public class ProductsController {
             @RequestParam double price, @RequestParam int stock, @RequestParam String status, @RequestParam("images") MultipartFile[] images
     ) throws IOException {
 
-        System.out.println(status);
         Files.createDirectories(Paths.get(UPLOAD_DIR));
         List<String> imagePaths = new ArrayList<>();
 
@@ -101,7 +100,6 @@ public class ProductsController {
 
     @DeleteMapping("/delete/{id}")
     public void deleteProduct(@PathVariable("id") int id){
-        System.out.println(id);
         productsService.deleteProduct(id);
     }
 
