@@ -23,7 +23,6 @@ public class ProductsServiceImpl implements ProductsService{
 
     @Autowired
     private ProductsRepository productsRepository;
-
     @Autowired
     private VendorRepository vendorRepository;
     @Autowired
@@ -45,10 +44,22 @@ public class ProductsServiceImpl implements ProductsService{
         return mapper.productToProductRespDTO(productsRepository.findById(id).get());
     }
 
+    //done  //user
     public List<Products> getProductByCatAndSubcat(int categoryId, int subCategoryId) {
         return productsRepository.findByCategory_CategoryIdAndSubCategory_SubCategoryId(categoryId,subCategoryId);
     }
 
+    //done  //user
+    public List<SubCategory> getAllSubcategories(int categoryId) {
+        System.out.println("service"+categoryId);
+        List<SubCategory> s = subCategoryRepository.getAllSubcategory(categoryId);
+        return s;
+    }
+
+    // --------------------------------------------------------------------------------------------
+
+
+    //done  //vendor
     public ProductRespDTO addProduct(Vendor vendor, int categoryId, int subCategoryId, String name,
                            String description, int stock, String status, double price, String images) {
         Products products = new Products();
@@ -65,54 +76,29 @@ public class ProductsServiceImpl implements ProductsService{
         return mapper.productToProductRespDTO(products);
     }
 
-    // done  //vendor
-    public Products saveProduct(ProductReqDTO productReqDTO,int vendorId) {
-        return productsRepository.save(new Products()); //mapper.productReqToProducts(productReqDTO,vendorId)
-    }
-
     //done  //vendor
     @Override
     public List<ProductRespDTO> getAllProductsOfVendor(int vendorId) {
-
         List<Products> products = productsRepository.findProductsByVendorId(vendorId);
         List<ProductRespDTO> productRespDTOS = new ArrayList<>();
-        for ( Products product: products){
+        for ( Products product: products)
             productRespDTOS.add(mapper.productToProductRespDTO(product));
-        }
         return productRespDTOS;
-
-
     }
 
-    public ProductRespDTO updateProduct(int pid, ProductReqDTO productReqDTO) {
-        Products product = mapper.productReqDtoToUpdatedProduct(pid,productReqDTO);
-        productsRepository.save(product);
-        return mapper.productToProductRespDTO(product);
-    }
-
+    //done  //vendor
     @Override
     public void deleteProduct(int id) {
         productsRepository.deleteById(id);
 
     }
+
+    //done  //vendor
     public ProductRespDTO updateProduct(ProductReqDTO productReqDTO) {
         Products save = productsRepository.save(mapper.productReqToProducts(productReqDTO));
         return mapper.productToProductRespDTO(save);
-
     }
 
-    public List<SubCategory> getAllSubcategories(int categoryId) {
-        System.out.println("service"+categoryId);
-        List<SubCategory> s = subCategoryRepository.getAllSubcategory(categoryId);
-        return s;
-    }
 
-    public void addSubcategory(int cid, String name, String image) {
-        SubCategory subCategory = new SubCategory();
-        subCategory.setImage(image);
-        subCategory.setName(name);
-        subCategory.setCategory(categoryRepository.findById(cid).get());
-        subCategoryRepository.save(subCategory);
-    }
 
 }
