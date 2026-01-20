@@ -55,9 +55,11 @@ const serverData = {
   allVendorsList: async (filters = {}) => {
     return AdminServer.get(ApiEndpoint.getAllVendorsApi, filters);
   },
-  getProductsByCat_Subcat: async (categoryId,subCategoryId) => {  
-    return Server.get(ApiEndpoint.getproductsByCatAndSubcat + `${categoryId}/${subCategoryId}`);
-  }
+  getProductsByCat_Subcat: async (categoryId, subCategoryId) => {
+    return VendorServer.get(
+      ApiEndpoint.getproductsByCatAndSubcat + `${categoryId}/${subCategoryId}`
+    );
+  },
 };
 
 export default serverData;

@@ -11,10 +11,10 @@ const ApiEndpoint = {
   updateSubCategoryApi: base_url.vendorUrl + "/subcategory/update",
   addProductApi: base_url.vendorUrl + "/product", //vednor
   getAllProductApi: base_url.vendorUrl + "/product", //vednor
-  deleteProductApi: base_url.vendorUrl + "/product/delete/",  //vednor
+  deleteProductApi: base_url.vendorUrl + "/product/delete/", //vednor
   updateProductApi: base_url.vendorUrl + "/product/update", //vednor
   updateProductImagesApi: base_url.vendorUrl + "/product/updateProductImages", //vednor
-  getproductsByCatAndSubcat: base_url.vendorUrl + "/products/" //user
+  getproductsByCatAndSubcat: base_url.vendorUrl + "/products/", //user
   // Vendors
   getAllVendorsApi: base_url.adminUrl + "/vendor/getAllVendors",
 };
