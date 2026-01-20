@@ -2,24 +2,37 @@ package com.project.backend.services;
 
 import com.project.backend.dtos.*;
 import com.project.backend.entities.Products;
+import com.project.backend.entities.SubCategory;
+import com.project.backend.entities.Vendor;
 
 import java.util.List;
 
 public interface ProductsService  {
 
-    List<ProductRespDTO> getAllProducts(); // done user
+    // User Products API's
 
-    ProductRespDTO getProductById(int id); // done user
+    List<ProductRespDTO> getAllProducts(); // done
 
-    Products saveProduct(ProductReqDTO productReqDTO, int vendorId); // done user
+    ProductRespDTO getProductById(int id); // done
 
-    List<ProductRespDTO> getAllProductsOfVendor(int vendorId); // done vendor
+    List<Products> getProductByCatAndSubcat(int categoryId, int subCategoryId); //done
 
-    ProductRespDTO updateProduct(int pid, ProductReqDTO productReqDTO);
+    List<SubCategory> getAllSubcategories(int categoryId); //done
 
-    void deleteProduct(int id);
 
-    ProductRespDTO updateProduct(ProductReqDTO productReqDTO);
+    //-----------------------------------------------------------------------------------------------//
+
+
+    // Vendor Products API's
+
+    ProductRespDTO addProduct(Vendor vendor, int categoryId, int subCategoryId, String name,
+                        String description, int stock, String status, double price, String images); // done
+
+    List<ProductRespDTO> getAllProductsOfVendor(int vendorId); // done
+
+    void deleteProduct(int id); //done
+
+    ProductRespDTO updateProduct(ProductReqDTO productReqDTO); //done
 
 
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import "./css/CategoryUser.css";
 import { getCategoryAll } from "../../services/UserService";
 // import shirts from "../../assets/subCategories/shirt.jpg";
@@ -8,32 +8,27 @@ import { getCategoryAll } from "../../services/UserService";
 function CategoryUser() {
   const { categoryId, categoryName } = useParams();
   const [subCategory, setSubCategory] = useState([]);
-
-  // const categories = [
-  //   { id: 1, name: "mens" },
-  //   { id: 2, name: "womens" },
-  //   { id: 3, name: "boys" },
-  //   { id: 4, name: "girls" },
-  //   { id: 5, name: "kids" },
-  // ];
+  const navigate = useNavigate()
 
   const getAllCategory = async () => {
     const response = await getCategoryAll(categoryId);
     setSubCategory(response);
     return response;
   };
+  
 
   useEffect(() => {
     getAllCategory();
   }, []);
-
+  console.log(subCategory)
   return (
-    <div className="category-page">
+    <div className="category-page" >
       <h2 className="category-title">Sub Categories</h2>
 
-      <div className="subcategory-grid">
+      <div className="subcategory-grid" >
         {subCategory.map((sub) => (
-          <div key={sub.id} className="subcategory-card">
+          
+          <div key={sub.id} className="subcategory-card" onClick={()=> navigate(`/products/${categoryId}/${sub.subCategoryId}`)}>
             <img
               src={`http://localhost:8080/uploads/subcategories/${categoryName}/${sub.image}`}
               // src={"http://localhost:8080/uploads/subcategories/mens/"+sub.image}

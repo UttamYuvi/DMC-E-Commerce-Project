@@ -92,17 +92,17 @@ public class SecurityConfig {
                                 "/login/**",
                                 "/register/**",
                                 "/products/**",
-                                "/procucts/subcategory/**",
-                                "/products/subcategories/**"
+                                "/procucts/subcategory/**"
+//                                "/products/subcategories/**"
                         ).permitAll()
                         .requestMatchers("/vendors/**",
-                                "/products/**",
-                                "/products/delete/**",
-                                "/category/vendor/**",
-                                "/subcategory/vendor/**",
-                                "/products/vendor/**",
-                                "/products/category",
-                                "/products/add"
+                                "/product/**"
+//                                "/products/delete/**",
+//                                "/category/vendor/**",
+//                                "/subcategory/vendor/**"
+//                                "/products/vendor/**",
+//                                "/products/category",
+//                                "/products/add"
                         ).hasAuthority("VENDOR")
                         .requestMatchers("/user/**",
                                 "/category/user",
