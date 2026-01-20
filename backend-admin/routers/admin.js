@@ -48,7 +48,7 @@ router.post("/signin", (req, res) => {
             firstName: data[0].firstName,
             lastName: data[0].lastName,
             email: data[0].email,
-            mobile: data[0].mobile,
+            phone: data[0].phone,
           };
           res.send(result.createResult(null, user));
         } else res.send(result.createResult("Invalid Password"));

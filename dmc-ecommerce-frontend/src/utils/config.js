@@ -1,5 +1,6 @@
 export const base_url = {
-  url: import.meta.env.VITE_APP_SPRING_BACKEND_URL,
+  vendorUrl: import.meta.env.VITE_APP_SPRING_BACKEND_URL,
+  adminUrl: import.meta.env.VITE_APP_NODE_BACKEND_URL,
 };
 
 export const categories = [

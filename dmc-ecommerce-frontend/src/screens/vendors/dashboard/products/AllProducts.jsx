@@ -188,7 +188,7 @@ export default function AllProducts() {
                         return (
                           <Avatar
                             key={index}
-                            src={`${base_url.url}/uploads/products/${img}`}
+                            src={`${base_url.vendorUrl}/uploads/products/${img}`}
                             variant="rounded"
                             sx={{ width: 40, height: 40 }}
                           />

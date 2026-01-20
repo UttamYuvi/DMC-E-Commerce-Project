@@ -1,44 +1,41 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { loginVendor } from "../../../services/vendor";
 import { toast } from "react-toastify";
-import { VendorContext } from "./VendorContext";
-import {
-  setVendorToken,
-  saveVendorToStorage,
-} from "../../../utils/LocalStorage";
+import { saveAdminToStorage, setAdminToken } from "../../../utils/LocalStorage";
 import { Grid, Paper, TextField, Button } from "@mui/material";
 import { AppSubHeader, AppText } from "../../../utils/AppText";
+import { AdminContext } from "./AdminContext";
+import { loginAdmin } from "../../../services/admin";
 
-function Login() {
+function AdminLogin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setVendor } = useContext(VendorContext);
+  const { setAdmin } = useContext(AdminContext);
 
   const signin = async () => {
     try {
-      const result = await loginVendor(email, password);
-      console.log("result ", result);
-      if (result.status === 200) {
-        setVendorToken(result.data.token);
+      const result = await loginAdmin(email, password);
+      console.log(result);
+      if (result.data.status) {
+        setAdminToken(result.data.data.token);
 
-        const vendorObj = {
-          firstName: result.data.firstname,
-          lastName: result.data.lastName,
-          email: result.data.email,
-          mobile: result.data.mobile,
+        const adminObject = {
+          firstName: result.data.data.firstName,
+          lastName: result.data.data.lastName,
+          email: result.data.data.email,
+          phone: result.data.data.phone,
         };
 
-        saveVendorToStorage(vendorObj);
-        setVendor(vendorObj);
+        saveAdminToStorage(adminObject);
+        setAdmin(adminObject);
 
-        toast.success(`Hi ${result.data.firstname}! Welcome to Shopifi😊`);
-        navigate("/page/dashboard");
+        toast.success(`Hi ${result.data.data.firstName}! Welcome to Shopifi😊`);
+        navigate("/admin/pages/dashboard");
       } else {
-        toast.error(result.error);
-        navigate("/");
+        toast.error(result.data.error);
+        navigate("/admin/login");
       }
     } catch (ex) {
       toast.error(ex);
@@ -62,7 +59,7 @@ function Login() {
       >
         <div style={{ padding: "16px", display: "flex" }}>
           <div className=" col-lg-6 d-none d-md-block align-content-center">
-            <img src="/signin.png" width={"100%"} />
+            <img src="/admin.png" width={"100%"} />
           </div>
           <div className=" col-lg-6">
             <Grid container spacing={3}>
@@ -102,14 +99,6 @@ function Login() {
                   Sign in
                 </Button>
               </Grid>
-
-              <Grid size={12}>
-                <AppText>
-                  <label> Don't have an account?</label>
-                  <Link to="/register"> Register here </Link>
-                  <label>for free</label>
-                </AppText>
-              </Grid>
             </Grid>
           </div>
         </div>
@@ -118,4 +107,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default AdminLogin;

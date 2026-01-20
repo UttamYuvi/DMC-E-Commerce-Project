@@ -13,7 +13,7 @@ const HiddenInput = styled("input")({
   display: "none",
 });
 
-function CategoryFields({ mode = "add", data = null, onClose, onSuccess }) {
+function VendorFields({ mode = "add", data = null, onClose, onSuccess }) {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -153,4 +153,4 @@ function CategoryFields({ mode = "add", data = null, onClose, onSuccess }) {
   );
 }
 
-export default CategoryFields;
+export default VendorFields;

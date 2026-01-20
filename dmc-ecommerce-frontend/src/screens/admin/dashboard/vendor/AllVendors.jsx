@@ -1,39 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { AppHeader, AppSubHeader, AppText } from "../../../../utils/AppText";
-import CategoryIcon from "@mui/icons-material/Category";
+import { AppSubHeader, AppText } from "../../../../utils/AppText";
 import { Box, CircularProgress, IconButton } from "@mui/material";
-import serverData from "../../../../services/ServerData";
-import { Toast } from "bootstrap";
-import { base_url } from "../../../../utils/config";
 import { Delete, Edit } from "@mui/icons-material";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import { PhotoCamera } from "@mui/icons-material";
-import { Avatar, Grid, TextField, Button } from "@mui/material";
-import Header from "../../../../components/vendor/headers/Header";
-
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import CategoryFields from "./CategoryFields";
 import emptyListImg from "../../../../assets/empty_box.png";
+import serverData from "../../../../services/ServerData";
+import AddHeader from "../../../../components/admin/headers/Header";
 
-export default function AllCategory() {
+export default function AllVendors() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  const [editData, setEditData] = useState(null);
-  const [categories, setCategories] = useState([]);
+  //   const [editData, setEditData] = useState(null);
+  const [vendors, setVendors] = useState([]);
 
   const loadCategories = async () => {
     try {
-      const res = await serverData.allCategories();
-      if (res.data.status) setCategories(res.data.data);
+      const res = await serverData.allVendorsList();
+      if (res.data.status) setVendors(res.data.data);
     } catch {
-      toast.error("Failed to load categories");
+      toast.error("Failed to load vendors");
     } finally {
       setLoading(false);
     }
   };
+
+  console.log("vednors aa gye - ", vendors);
 
   const handleDelete = async (e, id) => {
     const confirm = await Swal.fire({
@@ -64,13 +58,13 @@ export default function AllCategory() {
 
   return (
     <>
-      <Header title={"Category"} navigateTo={"category"} />
+      <AddHeader title={"Vendors"} navigateTo={"vendor"} />
 
       {loading ? (
         <Box sx={{ textAlign: "center", py: 5 }}>
           <CircularProgress />
         </Box>
-      ) : categories.length === 0 ? (
+      ) : vendors.length === 0 ? (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <img src={emptyListImg} alt="empty-list" width={"200px"} />
         </div>
@@ -80,11 +74,21 @@ export default function AllCategory() {
             <tr>
               <th>
                 <AppSubHeader style={{ fontSize: "16px" }}>
-                  Category
+                  Vendors
                 </AppSubHeader>
               </th>
               <th>
-                <AppSubHeader style={{ fontSize: "16px" }}>Image</AppSubHeader>
+                <AppSubHeader style={{ fontSize: "16px" }}>
+                  Contact
+                </AppSubHeader>
+              </th>
+              <th>
+                <AppSubHeader style={{ fontSize: "16px" }}>Status</AppSubHeader>
+              </th>
+              <th>
+                <AppSubHeader style={{ fontSize: "16px" }}>
+                  Created At
+                </AppSubHeader>
               </th>
               <th style={{ display: "flex", justifyContent: "right" }}>
                 <AppSubHeader style={{ fontSize: "16px" }}>Action</AppSubHeader>
@@ -92,18 +96,29 @@ export default function AllCategory() {
             </tr>
           </thead>
           <tbody>
-            {categories.map((item, i) => (
+            {vendors.map((item, i) => (
               <tr key={i}>
                 <td style={{ alignContent: "center" }}>
-                  <AppText>{item.name}</AppText>
+                  <AppText>{item.firstName}</AppText>
+                  <AppText>{item.lastName}</AppText>
                 </td>
                 <td>
-                  <img
-                    src={`${base_url.vendorUrl}/images/${item.image}`}
-                    alt="category_img"
-                    width={"50px"}
-                  />
+                  <AppText>{item.email}</AppText>
+                  <AppText>{item.mobile}</AppText>
                 </td>
+                <td>
+                  {/* style={{ color: "green" }} */}
+                  <AppText>
+                    {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                  </AppText>
+                </td>
+
+                <td>
+                  <AppText>
+                    {new Date(item.createdAt).toLocaleDateString()}
+                  </AppText>
+                </td>
+
                 <td
                   style={{
                     display: "flex",
@@ -119,7 +134,7 @@ export default function AllCategory() {
                   <div>
                     <IconButton
                       onClick={() => {
-                        setEditData(item);
+                        // setEditData(item);
                         setOpen(true);
                       }}
                     >
@@ -141,12 +156,12 @@ export default function AllCategory() {
         fullWidth
       >
         <DialogContent>
-          <CategoryFields
+          {/* <CategoryFields
             mode={editData ? "edit" : "add"}
             data={editData}
             onClose={() => setOpen(false)}
             onSuccess={loadCategories}
-          />
+          /> */}
         </DialogContent>
       </Dialog>
     </>

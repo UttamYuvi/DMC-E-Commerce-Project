@@ -4,11 +4,14 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router";
 import VendorProvider from "./providers/VendorProvider.jsx";
+import AdminProvider from "./providers/AdminProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <VendorProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </VendorProvider>
+  <AdminProvider>
+    <VendorProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </VendorProvider>
+  </AdminProvider>
 );

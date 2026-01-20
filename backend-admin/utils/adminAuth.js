@@ -13,7 +13,7 @@ function authorization(req, res, next) {
       try {
         const payload = jwt.verify(token, config.SECRET);
         console.log("payload: ", payload);
-        req.headers.uid = payload.uid;
+        req.headers.adminId = payload.uid;
         next();
       } catch (error) {
         res.send(result.createResult("Invalid Token"));

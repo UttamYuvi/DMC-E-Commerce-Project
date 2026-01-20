@@ -52,7 +52,7 @@ function ProductFields({ mode = "add", data = null, onClose }) {
         stock: data.stock,
         status: data.status,
         file: null,
-        preview: `${base_url.url}/images/${data.image}`,
+        preview: `${base_url.vendorUrl}/images/${data.image}`,
       });
     }
     const filtered = subCategories.filter(

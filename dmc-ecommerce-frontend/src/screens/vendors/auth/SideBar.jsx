@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router";
 import { sideList } from "./SideBarList";
-import ProfileCard from "./ProfileCard";
 
 function SideBar() {
   const location = useLocation();

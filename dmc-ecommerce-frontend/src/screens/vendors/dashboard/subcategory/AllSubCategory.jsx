@@ -104,7 +104,7 @@ export default function AllSubCategory() {
     setSubCategoryName(item.name);
 
     setSubCategoryLogo({
-      fileName: `${base_url.url}/images/${item.image}`,
+      fileName: `${base_url.vendorUrl}/images/${item.image}`,
       bytes: "",
     });
 
@@ -154,7 +154,7 @@ export default function AllSubCategory() {
                 </td>
                 <td>
                   <img
-                    src={`${base_url.url}/images/${item.image}`}
+                    src={`${base_url.vendorUrl}/images/${item.image}`}
                     alt="category_img"
                     width={"50px"}
                   />

@@ -18,16 +18,45 @@ import Orders from "./screens/vendors/dashboard/Orders";
 import AllProducts from "./screens/vendors/dashboard/products/AllProducts";
 import Home from "./screens/users/Home";
 import CategoryUser from "./screens/users/CategoryUser";
+import AdminLogin from "./screens/admin/auth/AdminLogin";
+import { AdminContext } from "./screens/admin/auth/AdminContext";
+import AdminDashboard from "./screens/admin/dashboard/AdminDashboard";
+import AdminMainPage from "./screens/admin/dashboard/AdminMainPage";
+import AllVendors from "./screens/admin/dashboard/vendor/AllVendors";
+import Vendor from "./screens/admin/dashboard/vendor/Vendor";
 
 function App() {
   const { vendor } = useContext(VendorContext);
 
+  const { admin } = useContext(AdminContext);
+
+  console.log("admin aa gya ", admin);
+
   return (
     <>
       <Routes>
-        <Route path="*" element={<Home/>} />  
-        <Route path="/register" element={<Register />} />
-        <Route path="/category/:categoryId/:categoryName" element={<CategoryUser/>} />
+        {/* Users routes */}
+        <Route
+          path="/category/:categoryId/:categoryName"
+          element={<CategoryUser />}
+        />
+        {/* Admin Routes */}
+        <Route path="*" element={<AdminLogin />} />
+
+        <Route
+          path="/admin/pages"
+          element={admin ? <AdminMainPage /> : <Navigate to="/" />}
+        >
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="vendor" element={<Vendor />} />
+          <Route path="allvendors" element={<AllVendors />} />
+        </Route>
+
+        {/* Vendor Routes */}
+        <Route path="/vendor/login" element={<Login />} />
+
+        <Route path="/vendor/register" element={<Register />} />
 
         <Route
           path="/page"

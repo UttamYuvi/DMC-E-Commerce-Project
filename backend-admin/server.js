@@ -1,10 +1,12 @@
 const express = require("express");
+const cors = require("cors");
 const adminRouter = require("./routers/admin");
 const vendorRouter = require("./routers/vendor");
 const authorization = require("./utils/adminAuth");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.use(authorization);

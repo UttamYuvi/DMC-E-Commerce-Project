@@ -4,9 +4,9 @@ import Swal from "sweetalert2";
 
 export async function loginVendor(email, password) {
   try {
-    const userBody = { username:email, password };
-    // const url = base_url.url + "/vendor/signin";
-    const url = base_url.url + "/login/vendor"
+    const userBody = { username: email, password };
+    // const url = base_url.vendorUrl + "/vendor/signin";
+    const url = base_url.vendorUrl + "/login/vendor";
     const response = await axios.post(url, userBody);
     return response;
   } catch (error) {
@@ -29,7 +29,7 @@ export async function registerVendor(
 ) {
   try {
     const userBody = { firstName, lastName, mobile, email, password };
-    const url = base_url.url + "/vendor/signup";
+    const url = base_url.vendorUrl + "/vendor/signup";
     const response = await axios.post(url, userBody);
     return response.data;
   } catch (error) {
