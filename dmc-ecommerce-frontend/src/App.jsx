@@ -24,6 +24,7 @@ import AdminDashboard from "./screens/admin/dashboard/AdminDashboard";
 import AdminMainPage from "./screens/admin/dashboard/AdminMainPage";
 import AllVendors from "./screens/admin/dashboard/vendor/AllVendors";
 import Vendor from "./screens/admin/dashboard/vendor/Vendor";
+import ProductsUser from "./screens/users/ProductsUser";
 
 function App() {
   const { vendor } = useContext(VendorContext);
@@ -36,12 +37,17 @@ function App() {
     <>
       <Routes>
         {/* Users routes */}
+        <Route path="/" element={<Home />} />
         <Route
           path="/category/:categoryId/:categoryName"
           element={<CategoryUser />}
         />
+        <Route
+          path="produts/:categoryId/:subcategoryId"
+          element={<ProductsUser />}
+        />
         {/* Admin Routes */}
-        <Route path="*" element={<AdminLogin />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
 
         <Route
           path="/admin/pages"

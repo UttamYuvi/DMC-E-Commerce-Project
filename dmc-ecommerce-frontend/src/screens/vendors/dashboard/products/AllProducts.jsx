@@ -243,6 +243,7 @@ export default function AllProducts() {
             mode={editData ? "edit" : "add"}
             data={editData}
             onClose={() => setOpen(false)}
+            loadProducts={loadProducts}
           />
         </DialogContent>
       </Dialog>

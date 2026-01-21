@@ -20,9 +20,7 @@ function AddHeader(props) {
         </AppHeader>
 
         <div style={{ display: "flex", alignItems: "center" }}>
-          <IconButton
-            onClick={() => navigate(`/admin/pages/${props.navigateTo}`)}
-          >
+          <IconButton onClick={() => navigate(`/page/${props.navigateTo}`)}>
             {props.type === "add" ? <SegmentIcon /> : <CategoryIcon />}
           </IconButton>
         </div>

@@ -22,7 +22,7 @@ import defaultImage from "/src/assets/small-logo.jpeg";
 import { base_url, categories, subCategories } from "../../../../utils/config";
 import ProductImageDropzone from "./ProductImageDropzone";
 
-function ProductFields({ mode = "add", data = null, onClose }) {
+function ProductFields({ mode = "add", data = null, onClose, loadProducts }) {
   console.log("ProductFields", data);
 
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ function ProductFields({ mode = "add", data = null, onClose }) {
       });
     }
     const filtered = subCategories.filter(
-      (sub) => sub.categoryId == data?.categoryId
+      (sub) => sub.categoryId == data?.categoryId,
     );
     setFilteredSubCategories(filtered);
   }, [mode, data]);
@@ -66,7 +66,7 @@ function ProductFields({ mode = "add", data = null, onClose }) {
     setForm((prev) => ({ ...prev, categoryId: categoryId }));
 
     const filtered = subCategories.filter(
-      (sub) => sub.categoryId == categoryId
+      (sub) => sub.categoryId == categoryId,
     );
 
     setFilteredSubCategories(filtered);
@@ -104,7 +104,6 @@ function ProductFields({ mode = "add", data = null, onClose }) {
           fd.append("images", file);
         });
 
-        console.log("Adding product:", form);
         response = await serverData.addProduct(fd);
       } else {
         const body = {
@@ -118,7 +117,6 @@ function ProductFields({ mode = "add", data = null, onClose }) {
           status: form.status,
         };
 
-        console.log("Updating product:", body);
         response = await serverData.updateProduct(body);
       }
 
@@ -126,7 +124,7 @@ function ProductFields({ mode = "add", data = null, onClose }) {
         toast.success(
           mode === "add"
             ? "Product added successfully"
-            : "Product updated successfully"
+            : "Product updated successfully",
         );
 
         if (mode === "add") {
@@ -134,6 +132,7 @@ function ProductFields({ mode = "add", data = null, onClose }) {
         } else {
           onClose();
         }
+        loadProducts();
       } else {
         toast.error(response?.data?.message || "Operation failed");
       }
