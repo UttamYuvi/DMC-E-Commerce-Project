@@ -1,19 +1,19 @@
 package com.project.backend.services;
 
-import com.project.backend.entities.Category;
-import com.project.backend.entities.SubCategory;
-import com.project.backend.entities.Vendor;
+import com.project.backend.entities.*;
 import com.project.backend.repository.CategoryRepository;
 import com.project.backend.repository.ProductsRepository;
 import com.project.backend.dtos.*;
-import com.project.backend.entities.Products;
 import com.project.backend.repository.SubCategoryRepository;
 import com.project.backend.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+
+import java.lang.module.ResolutionException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductsServiceImpl implements ProductsService{
@@ -40,13 +40,26 @@ public class ProductsServiceImpl implements ProductsService{
     }
 
     //done  //user
-    public ProductRespDTO getProductById(int id) {
-        return mapper.productToProductRespDTO(productsRepository.findById(id).get());
+    public ProductRespDTO getProductById(int id) throws ResourceNotFoundException {
+        Optional<Products> optional = productsRepository.findById(id);
+        if (optional.isPresent()) {
+            return mapper.productToProductRespDTO(optional.get());
+        } else {
+            throw new ResourceNotFoundException("Product not found with id: " + id);
+        }
     }
 
     //done  //user
-    public List<Products> getProductByCatAndSubcat(int categoryId, int subCategoryId) {
-        return productsRepository.findByCategory_CategoryIdAndSubCategory_SubCategoryId(categoryId,subCategoryId);
+    public List<ProductRespDTO> getProductByCatAndSubcat(int categoryId, int subCategoryId) throws ResourceNotFoundException {
+        List<Products> products = productsRepository.findByCategory_CategoryIdAndSubCategory_SubCategoryId(categoryId, subCategoryId);
+        if(products.size() != 0) {
+            List<ProductRespDTO> productRespDTOS = new ArrayList<>();
+            for(Products product : products) {
+                productRespDTOS.add(mapper.productToProductRespDTO(product));
+            }
+            return productRespDTOS;
+        }
+        throw new ResourceNotFoundException("Products not found with given categoryId: "+categoryId+" and subCategoryId: "+subCategoryId);
     }
 
     //done  //user
