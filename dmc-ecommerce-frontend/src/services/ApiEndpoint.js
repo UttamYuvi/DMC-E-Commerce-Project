@@ -17,6 +17,7 @@ const ApiEndpoint = {
   getproductsByCatAndSubcat: base_url.vendorUrl + "/products/", //user
   // Vendors
   getAllVendorsApi: base_url.adminUrl + "/vendor/getAllVendors",
+  updateVendorStatusApi: base_url.adminUrl + "/vendor/updateVendorStatus",
 };
 
 export default ApiEndpoint;
