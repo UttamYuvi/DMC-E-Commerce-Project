@@ -1,5 +1,6 @@
 package com.project.backend.services;
 
+import com.project.backend.dtos.VendorAuthResponseDTO;
 import com.project.backend.dtos.VendorDeliveredProductDTO;
 import com.project.backend.entities.User;
 import com.project.backend.entities.Vendor;
@@ -11,7 +12,7 @@ public interface VendorService {
 
     public List<Vendor> getAllVendors();
 
-    public Vendor getVendorById(int vid);
+    public VendorAuthResponseDTO getVendorById(int vid);
 
     //done  //user
     List<VendorDeliveredProductDTO> getAllDeliveredProductsOfVendor(int vendorId);

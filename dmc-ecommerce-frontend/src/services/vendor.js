@@ -1,12 +1,13 @@
 import axios from "axios";
-import { base_url } from "../utils/config";
 import Swal from "sweetalert2";
+import { base_url } from "../utils/config";
 
 export async function loginVendor(email, password) {
   try {
     const userBody = { username: email, password };
     // const url = base_url.vendorUrl + "/vendor/signin";
     const url = base_url.vendorUrl + "/login/vendor";
+    console.log('login url',url)
     const response = await axios.post(url, userBody);
     return response;
   } catch (error) {

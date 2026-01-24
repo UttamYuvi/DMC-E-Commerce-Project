@@ -26,6 +26,7 @@ const ApiEndpoint = {
   changeOrderStatus: base_url.vendorUrl + "/order/status/",
   
   // Vendor Backend - /Vendor/VendorController
+  getProfileOfVendor: base_url.vendorUrl + "/vendor",
   getTotalSales: base_url.vendorUrl + "/vendor/sales",
   getSaleAndProfit: base_url.vendorUrl + "/vendor/salesandprofit",
 

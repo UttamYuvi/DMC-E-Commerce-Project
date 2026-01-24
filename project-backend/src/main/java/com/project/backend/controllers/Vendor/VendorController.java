@@ -22,8 +22,9 @@ public class VendorController {
     private OrderService orderService;
 
 
-    @GetMapping("/{vid}")
-    public ResponseEntity<?> getVendorById(@PathVariable("vid") int vid) {
+    @GetMapping
+    public ResponseEntity<?> getVendorById(Principal principal) {
+        int vid = mapper.emailToId(principal.getName()).getVendorId();
         System.out.println("getVendorById");
         return ResponseEntity.ok(vendorService.getVendorById(vid));
     }

@@ -1,3 +1,4 @@
+import { Api } from "@mui/icons-material";
 import ApiEndpoint from "./ApiEndpoint";
 import AdminServer from "./server/AdminServer";
 import VendorServer from "./server/VendorServer";
@@ -62,6 +63,9 @@ const serverData = {
     return VendorServer.get(
       ApiEndpoint.getproductsByCatAndSubcat + `${categoryId}/${subCategoryId}`
     );
+  },
+  getVendorProfile: async () => {
+    return VendorServer.get(ApiEndpoint.getVendorProfile)
   },
   allVendorRecentOrder:  async () => {
     return VendorServer.get(ApiEndpoint.getVendorRecentOrders)
