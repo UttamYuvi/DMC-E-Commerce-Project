@@ -38,7 +38,7 @@ export default function AllProducts() {
   const loadProducts = async () => {
     try {
       const res = await serverData?.allProductList();
-      console.log(res.data)
+      console.log(res.data);
       if (res) {
         setProducts(res.data);
       }
@@ -62,8 +62,7 @@ export default function AllProducts() {
     if (!confirm.isConfirmed) return;
 
     try {
-      const res = await serverData.deleteProduct(item.id);
-      console.log("ress: ", res);
+      const res = await serverData.deleteProduct(item.productId);
       if (res) {
         toast.success("Deleted");
         loadProducts();
@@ -136,7 +135,7 @@ export default function AllProducts() {
               <th>
                 <AppSubHeader style={{ fontSize: "16px" }}>Date</AppSubHeader>
               </th>
-              <th style={{ display: "flex", justifyContent: "right" }}>
+              <th>
                 <AppSubHeader style={{ fontSize: "16px" }}>Action</AppSubHeader>
               </th>
             </tr>
@@ -202,13 +201,7 @@ export default function AllProducts() {
                       {new Date(item.createdAt).toLocaleDateString()}
                     </AppText>
                   </td>
-                  <td
-                    style={{
-                      display: "flex",
-                      justifyContent: "right",
-                      alignItems: "center",
-                    }}
-                  >
+                  <td>
                     <div>
                       <IconButton onClick={(e) => handleDelete(e, item)}>
                         <Delete />

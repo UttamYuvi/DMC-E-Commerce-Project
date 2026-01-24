@@ -107,7 +107,7 @@ function ProductFields({ mode = "add", data = null, onClose, loadProducts }) {
         response = await serverData.addProduct(fd);
       } else {
         const body = {
-          productId: data.id,
+          productId: data.productId,
           categoryId: form.categoryId,
           subCategoryId: form.subCategoryId,
           name: form.product,
