@@ -24,6 +24,7 @@ const ApiEndpoint = {
   getProductCount: base_url.vendorUrl + "/product/count",
   getSaleAndProfit: base_url.vendorUrl + "/order/sales",
   getAllVendorsApi: base_url.adminUrl + "/vendor/getAllVendors",
+  updateVendorStatusApi: base_url.adminUrl + "/vendor/updateVendorStatus",
 };
 
 export default ApiEndpoint;

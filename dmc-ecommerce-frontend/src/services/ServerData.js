@@ -47,13 +47,16 @@ const serverData = {
     return VendorServer.post(
       ApiEndpoint.updateProductImagesApi,
       formData,
-      true
+      true       
     );
   },
 
   // Vendors
   allVendorsList: async (filters = {}) => {
     return AdminServer.get(ApiEndpoint.getAllVendorsApi, filters);
+  },
+  updateVendorStatus: async (data)=>{
+    return AdminServer.post(ApiEndpoint.updateVendorStatusApi, data);            
   },
   getProductsByCat_Subcat: async (categoryId, subCategoryId) => {
     return VendorServer.get(
