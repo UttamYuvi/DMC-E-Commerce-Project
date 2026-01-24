@@ -96,7 +96,8 @@ public class SecurityConfig {
 //                                "/products/subcategories/**"
                         ).permitAll()
                         .requestMatchers("/vendors/**",
-                                "/product/**"
+                                "/product/**",
+                                "/order/**"
 //                                "/products/delete/**",
 //                                "/category/vendor/**",
 //                                "/subcategory/vendor/**"

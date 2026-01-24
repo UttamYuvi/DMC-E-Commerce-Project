@@ -40,6 +40,7 @@ public class VendorController {
     //done
     @PostMapping("/status/{oid}")
     public ResponseEntity<?> setOrderStatus(@PathVariable("oid") int oid, @RequestBody StatusDTO statusDTO) {
+        System.out.println(statusDTO.getStatus());
         return ResponseEntity.ok(vendorService.setOrderStatus(oid,statusDTO.getStatus()));
     }
 

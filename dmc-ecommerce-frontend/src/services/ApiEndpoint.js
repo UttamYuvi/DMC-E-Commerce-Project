@@ -15,7 +15,14 @@ const ApiEndpoint = {
   updateProductApi: base_url.vendorUrl + "/product/update", //vednor
   updateProductImagesApi: base_url.vendorUrl + "/product/updateProductImages", //vednor
   getproductsByCatAndSubcat: base_url.vendorUrl + "/products/", //user
-  // Vendors
+
+  getVendorRecentOrders: base_url.vendorUrl + "/order",
+  changeOrderStatus: base_url.vendorUrl + "/vendors/status/",
+  getTotalSales: base_url.vendorUrl + "/vendors/sales",
+  getOrderCount: base_url.vendorUrl + "/order/count",
+  getOrderByStatus: base_url.vendorUrl + "/order/byStatus",
+  getProductCount: base_url.vendorUrl + "/product/count",
+  getSaleAndProfit: base_url.vendorUrl + "/order/sales",
   getAllVendorsApi: base_url.adminUrl + "/vendor/getAllVendors",
 };
 

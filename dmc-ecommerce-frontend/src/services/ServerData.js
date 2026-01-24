@@ -60,6 +60,27 @@ const serverData = {
       ApiEndpoint.getproductsByCatAndSubcat + `${categoryId}/${subCategoryId}`
     );
   },
+  allVendorRecentOrder:  async () => {
+    return VendorServer.get(ApiEndpoint.getVendorRecentOrders)
+  },
+  updateOrderStatus: async (filters) => {
+    return VendorServer.post(ApiEndpoint.changeOrderStatus + filters.id, filters.status)
+  },
+  getTotalSales: async () => {
+    return VendorServer.get(ApiEndpoint.getTotalSales)
+  },
+  getOrderCount: async () => {
+    return VendorServer.get(ApiEndpoint.getOrderCount)
+  },
+  getProductCount: async () => {
+    return VendorServer.get(ApiEndpoint.getProductCount)
+  },
+  getOrderByStatus: async (filters) => {
+    return VendorServer.post(ApiEndpoint.getOrderByStatus, filters)
+  },
+  getSaleAndProfit: async () => {
+    return VendorServer.get(ApiEndpoint.getSaleAndProfit)
+  }
 };
 
 export default serverData;

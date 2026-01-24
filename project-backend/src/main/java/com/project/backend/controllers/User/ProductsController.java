@@ -1,9 +1,8 @@
-package com.project.backend.controllers.products;
+package com.project.backend.controllers.User;
 
 import com.project.backend.dtos.EntityMapper;
 import com.project.backend.dtos.ProductRespDTO;
 import com.project.backend.dtos.Resp;
-import com.project.backend.entities.Products;
 import com.project.backend.entities.ResourceNotFoundException;
 import com.project.backend.services.ProductsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
-public class UserProductsController {
+public class ProductsController {
 
     @Autowired
     private ProductsServiceImpl productsService;

@@ -43,7 +43,7 @@ public class VendorServiceImpl implements VendorService {
     public String setOrderStatus(int orderId, String status) {
         int count = orderRepository.setOrderStatus(orderId,status);
         if(count == 1)
-            return "Order Status changed to - "+status.toUpperCase();
+            return "Order Status changed to - "+status;
         return "something went wrong";
     }
 
