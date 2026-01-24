@@ -27,6 +27,7 @@ const ApiEndpoint = {
   
   // Vendor Backend - /Vendor/VendorController
   getProfileOfVendor: base_url.vendorUrl + "/vendor",
+  updateVendorProfile: base_url.vendorUrl + "/vendor/update" ,
   getTotalSales: base_url.vendorUrl + "/vendor/sales",
   getSaleAndProfit: base_url.vendorUrl + "/vendor/salesandprofit",
 

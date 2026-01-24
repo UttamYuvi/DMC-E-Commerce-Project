@@ -2,6 +2,8 @@ package com.project.backend.controllers.Vendor;
 
 import com.project.backend.dtos.EntityMapper;
 import com.project.backend.dtos.StatusDTO;
+import com.project.backend.dtos.UpdateVendorReqDTO;
+import com.project.backend.dtos.VendorRequestDTO;
 import com.project.backend.services.OrderService;
 import com.project.backend.services.VendorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,11 @@ public class VendorController {
         int vid = mapper.emailToId(principal.getName()).getVendorId();
         System.out.println("getVendorById");
         return ResponseEntity.ok(vendorService.getVendorById(vid));
+    }
+    @PostMapping("/update")
+    public ResponseEntity<?> updateVendor(@RequestBody UpdateVendorReqDTO updateVendorReqDTO, Principal principal) {
+        int vendorId = mapper.emailToId(principal.getName()).getVendorId();
+        return ResponseEntity.ok(vendorService.updateVendor(updateVendorReqDTO,vendorId));
     }
 
     @GetMapping("/sales") // get total sales of vendor

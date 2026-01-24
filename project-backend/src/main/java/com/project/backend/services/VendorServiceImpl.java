@@ -1,8 +1,6 @@
 package com.project.backend.services;
 
-import com.project.backend.dtos.EntityMapper;
-import com.project.backend.dtos.VendorAuthResponseDTO;
-import com.project.backend.dtos.VendorDeliveredProductDTO;
+import com.project.backend.dtos.*;
 import com.project.backend.entities.Order;
 import com.project.backend.entities.User;
 import com.project.backend.repository.OrderDetailsRepository;
@@ -13,6 +11,7 @@ import com.project.backend.entities.Vendor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -37,6 +36,14 @@ public class VendorServiceImpl implements VendorService {
     public VendorAuthResponseDTO getVendorById(int vid) {
         Vendor vendor = vendorRepository.findById(vid).get();
         return mapper.vendorAuthResponseDTO(vendor);
+    }
+
+    public Vendor updateVendor(UpdateVendorReqDTO updateVendorReqDTO, int vendorId) {
+        Vendor vendor = vendorRepository.findById(vendorId).get();
+        vendor.setFirstName(updateVendorReqDTO.getFirstName());
+        vendor.setLastName(updateVendorReqDTO.getLastName());
+        vendor.setMobile(updateVendorReqDTO.getMobile());
+        return vendorRepository.save(vendor);
     }
 
     //done

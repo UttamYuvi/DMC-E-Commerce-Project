@@ -25,7 +25,7 @@ function Sales() {
   return (
     <div className="app">
       <br></br>
-      <div style={{textAlign: "center"}}><h3><b>--------------------------------------------  Sales and Profits  ----------------------------------------------------</b></h3></div>
+      <div><h3><b>Sales and Profits</b></h3></div>
       <br></br>
 
       <div className="orders-table">
