@@ -1,5 +1,7 @@
 package com.project.backend.services;
 
+import com.project.backend.dtos.EntityMapper;
+import com.project.backend.dtos.VendorAuthResponseDTO;
 import com.project.backend.dtos.VendorDeliveredProductDTO;
 import com.project.backend.entities.Order;
 import com.project.backend.entities.User;
@@ -19,6 +21,8 @@ public class VendorServiceImpl implements VendorService {
     @Autowired
     private VendorRepository vendorRepository;
     @Autowired
+    EntityMapper mapper;
+    @Autowired
     private OrderRepository orderRepository;
 
     @Autowired
@@ -30,8 +34,9 @@ public class VendorServiceImpl implements VendorService {
         return vendorRepository.findAll();
     }
 
-    public Vendor getVendorById(int vid) {
-        return vendorRepository.findById(vid).get();
+    public VendorAuthResponseDTO getVendorById(int vid) {
+        Vendor vendor = vendorRepository.findById(vid).get();
+        return mapper.vendorAuthResponseDTO(vendor);
     }
 
     //done
@@ -43,7 +48,7 @@ public class VendorServiceImpl implements VendorService {
     public String setOrderStatus(int orderId, String status) {
         int count = orderRepository.setOrderStatus(orderId,status);
         if(count == 1)
-            return "Order Status changed to - "+status.toUpperCase();
+            return "Order Status changed to - "+status;
         return "something went wrong";
     }
 

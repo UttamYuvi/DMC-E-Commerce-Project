@@ -1,11 +1,13 @@
-package com.project.backend.controllers.products;
+package com.project.backend.controllers.User;
 
 import com.project.backend.dtos.EntityMapper;
 import com.project.backend.dtos.ProductRespDTO;
+import com.project.backend.dtos.Resp;
 import com.project.backend.dtos.SubCategoryWithCategoryDTO;
+import com.project.backend.entities.ResourceNotFoundException;
 import com.project.backend.services.ProductsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
-public class UserProductsController {
+public class ProductsController {
 
     @Autowired
     private ProductsServiceImpl productsService;
@@ -25,14 +27,18 @@ public class UserProductsController {
     //done // user
     @GetMapping
     public ResponseEntity<?> getAllProducts(@RequestParam int page, @RequestParam int size) {
-        System.out.println("pagination"+page+ ", size "+size);
         return  ResponseEntity.ok(productsService.getAllProducts(page, size));
     }
 
     //done  //user
     @GetMapping("/{pid}")
-    public ResponseEntity<?> getProductById(@PathVariable("pid") int pid) {
-        return ResponseEntity.ok(productsService.getProductById(pid));
+    public ResponseEntity<Resp<ProductRespDTO>> getProductById(@PathVariable("pid") int pid) {
+       try {
+           ProductRespDTO productRespDTO =  productsService.getProductById(pid);
+           return ResponseEntity.ok(Resp.success(productRespDTO));
+       } catch (ResourceNotFoundException e) {
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Resp.error(e.getMessage()));
+       }
     }
 
     //done  //user

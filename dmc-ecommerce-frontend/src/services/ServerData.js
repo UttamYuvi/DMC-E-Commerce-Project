@@ -1,3 +1,4 @@
+import { Api } from "@mui/icons-material";
 import ApiEndpoint from "./ApiEndpoint";
 import AdminServer from "./server/AdminServer";
 import VendorServer from "./server/VendorServer";
@@ -47,7 +48,7 @@ const serverData = {
     return VendorServer.post(
       ApiEndpoint.updateProductImagesApi,
       formData,
-      true
+      true       
     );
   },
 
@@ -55,11 +56,38 @@ const serverData = {
   allVendorsList: async (filters = {}) => {
     return AdminServer.get(ApiEndpoint.getAllVendorsApi, filters);
   },
+  updateVendorStatus: async (data)=>{
+    return AdminServer.post(ApiEndpoint.updateVendorStatusApi, data);            
+  },
   getProductsByCat_Subcat: async (categoryId, subCategoryId) => {
     return VendorServer.get(
       ApiEndpoint.getproductsByCatAndSubcat + `${categoryId}/${subCategoryId}`
     );
   },
+  getVendorProfile: async () => {
+    return VendorServer.get(ApiEndpoint.getVendorProfile)
+  },
+  allVendorRecentOrder:  async () => {
+    return VendorServer.get(ApiEndpoint.getVendorRecentOrders)
+  },
+  updateOrderStatus: async (filters) => {
+    return VendorServer.post(ApiEndpoint.changeOrderStatus + filters.id, filters.status)
+  },
+  getTotalSales: async () => {
+    return VendorServer.get(ApiEndpoint.getTotalSales)
+  },
+  getOrderCount: async () => {
+    return VendorServer.get(ApiEndpoint.getOrderCount)
+  },
+  getProductCount: async () => {
+    return VendorServer.get(ApiEndpoint.getProductCount)
+  },
+  getOrderByStatus: async (filters) => {
+    return VendorServer.post(ApiEndpoint.getOrderByStatus, filters)
+  },
+  getSaleAndProfit: async () => {
+    return VendorServer.get(ApiEndpoint.getSaleAndProfit)
+  }
 };
 
 export default serverData;

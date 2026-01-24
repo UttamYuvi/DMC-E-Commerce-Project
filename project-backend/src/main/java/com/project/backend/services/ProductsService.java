@@ -18,7 +18,7 @@ public interface ProductsService  {
 
     ProductRespDTO getProductById(int id); // done
 
-    List<Products> getProductByCatAndSubcat(int categoryId, int subCategoryId); //done
+    List<ProductRespDTO> getProductByCatAndSubcat(int categoryId, int subCategoryId); //done
 
     List<SubCategoryByCategoryRespDTO> getAllSubcategories(int categoryId); //done
 

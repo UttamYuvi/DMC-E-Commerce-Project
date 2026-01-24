@@ -1,8 +1,7 @@
-package com.project.backend.controllers;
+package com.project.backend.controllers.Auth;
 
 import com.project.backend.dtos.AuthRequestDTO;
 import com.project.backend.dtos.AuthResponseDTO;
-import com.project.backend.dtos.VendorAuthResponseDTO;
 import com.project.backend.dtos.VendorRequestDTO;
 import com.project.backend.entities.User;
 import com.project.backend.entities.Vendor;
@@ -16,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 @RestController

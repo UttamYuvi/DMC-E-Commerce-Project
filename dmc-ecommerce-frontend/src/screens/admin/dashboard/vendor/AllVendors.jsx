@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AppSubHeader, AppText } from "../../../../utils/AppText";
-import { Box, CircularProgress, IconButton } from "@mui/material";
+import { Box, CircularProgress, IconButton, Switch } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
@@ -10,26 +10,31 @@ import emptyListImg from "../../../../assets/empty_box.png";
 import serverData from "../../../../services/ServerData";
 import AddHeader from "../../../../components/admin/headers/Header";
 
-export default function AllVendors() {
+const label = { inputProps: { 'aria-label': 'Switch demo' } };
+
+export default function () {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  //   const [editData, setEditData] = useState(null);
   const [vendors, setVendors] = useState([]);
 
   const loadCategories = async () => {
     try {
-      const res = await serverData.allVendorsList();
-      if (res.data.status) setVendors(res.data.data);
-    } catch {
-      toast.error("Failed to load vendors");
-    } finally {
-      setLoading(false);
+    const res = await serverData.allVendorsList();
+    if (res.data.status) {
+      setVendors(res.data.data); 
     }
-  };
+  } catch {
+    toast.error("Failed to load vendors");
+  } finally {
+    setLoading(false);
+  }
+};
 
-  console.log("vednors aa gye - ", vendors);
+  useEffect(() => {
+    loadCategories();
+  }, []);
 
-  const handleDelete = async (e, id) => {
+  const handleDelete = async (e, item) => {
     const confirm = await Swal.fire({
       title: "Delete?",
       text: "deletion is not revertable.",
@@ -41,7 +46,7 @@ export default function AllVendors() {
     if (!confirm.isConfirmed) return;
 
     try {
-      const res = await serverData.deleteCategory(id);
+      const res = await serverData.deleteCategory(item.vendorId);
 
       if (res.data.status) {
         toast.success("Deleted");
@@ -52,9 +57,49 @@ export default function AllVendors() {
     }
   };
 
-  useEffect(() => {
-    loadCategories();
-  }, []);
+
+  const handleStatus = async (event, item) => {
+  const checked = event.target.checked;
+  const statusString = checked ? "active" : "inactive";
+
+  // 1️⃣ Update switch UI state
+    setVendors((prev) =>
+      prev.map((v) =>
+        v.vendorId === item.vendorId
+          ? { ...v, status: statusString }
+          : v
+      )
+    );
+
+ 
+  
+
+  // 3️⃣ Payload for backend
+  const body = {
+    vendorId: item.vendorId,
+    status: statusString,
+  };
+
+  // 4️⃣ OPTIONAL: call API
+  try {
+    const res = await serverData.updateVendorStatus(body);
+    if (res.data.status) {
+      toast.success("Vendor status updated");
+
+      // sync vendors list text
+      setVendors((prev) =>
+        prev.map((v) =>
+          v.vendorId === item.vendorId
+            ? { ...v, status: statusString }
+            : v
+        )
+      );
+    }
+  } catch {
+    toast.error("Failed to update status");
+  }
+};
+
 
   return (
     <>
@@ -82,13 +127,14 @@ export default function AllVendors() {
                   Contact
                 </AppSubHeader>
               </th>
-              <th>
-                <AppSubHeader style={{ fontSize: "16px" }}>Status</AppSubHeader>
-              </th>
+              
               <th>
                 <AppSubHeader style={{ fontSize: "16px" }}>
                   Created At
                 </AppSubHeader>
+              </th>
+              <th>
+                <AppSubHeader style={{ fontSize: "16px" }}>Status</AppSubHeader>
               </th>
               <th style={{ display: "flex", justifyContent: "right" }}>
                 <AppSubHeader style={{ fontSize: "16px" }}>Action</AppSubHeader>
@@ -106,17 +152,26 @@ export default function AllVendors() {
                   <AppText>{item.email}</AppText>
                   <AppText>{item.mobile}</AppText>
                 </td>
-                <td>
-                  {/* style={{ color: "green" }} */}
-                  <AppText>
-                    {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-                  </AppText>
-                </td>
+                
 
                 <td>
                   <AppText>
                     {new Date(item.createdAt).toLocaleDateString()}
                   </AppText>
+                </td>
+
+                <td>
+                  <AppText>
+                    {item.status?.charAt(0).toUpperCase() + item.status?.slice(1)}
+                  </AppText>
+                  <Switch
+                    {...label}
+                    checked={item.status === "active"}
+
+                    onChange={(e) => handleStatus(e, item)}
+
+                />
+
                 </td>
 
                 <td

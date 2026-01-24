@@ -144,6 +144,16 @@ public class EntityMapper {
         return newProduct;
     }
 
+    public VendorAuthResponseDTO vendorAuthResponseDTO(Vendor vendor) {
+        VendorAuthResponseDTO vendorAuthResponseDTO = new VendorAuthResponseDTO();
+        vendorAuthResponseDTO.setVendorId(vendor.getVendorId());
+        vendorAuthResponseDTO.setFirstName(vendor.getFirstName());
+        vendorAuthResponseDTO.setLastName(vendor.getLastName());
+        vendorAuthResponseDTO.setMobile(vendor.getMobile());
+        vendorAuthResponseDTO.setEmail(vendor.getEmail());
+        return vendorAuthResponseDTO;
+    }
+
     public OrderRespDTO newOrderToOrderRespDTO(Order order) {
         OrderRespDTO orderRespDTO = new OrderRespDTO();
         orderRespDTO.setOrderId(order.getOrderId());

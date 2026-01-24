@@ -31,7 +31,6 @@ function App() {
 
   const { admin } = useContext(AdminContext);
 
-  console.log("admin aa gya ", admin);
 
   return (
     <>

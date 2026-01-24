@@ -38,6 +38,7 @@ export default function AllProducts() {
   const loadProducts = async () => {
     try {
       const res = await serverData?.allProductList();
+      console.log(res.data)
       if (res) {
         setProducts(res.data);
       }

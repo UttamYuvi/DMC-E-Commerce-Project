@@ -32,14 +32,36 @@ router.get("/getAllVendors", verifyAdminAuth, (req, res) => {
 });
 
 router.post("/updateVendorStatus", verifyAdminAuth, (req, res) => {
+  
   const adminId = req.adminId;
   const { vendorId, status } = req.body;
-  console.log("requesting ", req.body, req.adminId);
+
+  if(!vendorId || !status){
+    return res.send(
+      result.createResult("vendor id and status required")
+    )
+  }
   const sql = "update vendors set status=?, adminId=? where vendorId=?";
+
   pool.query(sql, [status, adminId, vendorId], (err, data) => {
-    if (data) return res.send(result.createResult(null, data));
-    else return res.send(result.createResult(err));
-  });
+    if(err){
+      return res.send(result.createResult(err))
+    }
+
+    if(data.affectedRows === 0){
+      return res.send(
+        result.createResult("vendor not found or status unchanged")
+      )
+    }
+
+    return res.send(
+      result.createResult(null,{
+        message:"'vendor status updated successfully",
+        vendorId,
+        status,
+      })
+    )
+})
 });
 
 module.exports = router;

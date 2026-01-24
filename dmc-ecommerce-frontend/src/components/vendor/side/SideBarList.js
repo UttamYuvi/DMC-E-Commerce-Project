@@ -17,4 +17,8 @@ export const sideList = [
     name: "Sales",
     nav: "sales",
   },
+  {
+    name: "Profile",
+    nav: "profile"
+  }
 ];
