@@ -1,4 +1,4 @@
-package com.project.backend.controllers;
+package com.project.backend.controllers.Auth;
 
 import com.project.backend.entities.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;

@@ -5,6 +5,7 @@ import com.project.backend.dtos.Resp;
 import com.project.backend.dtos.StatusDTO;
 import com.project.backend.repository.UserRepository;
 import com.project.backend.services.OrderService;
+import com.project.backend.services.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,23 +21,28 @@ public class OrderController {
     private UserRepository userRepository;
     @Autowired
     private EntityMapper mapper;
+    @Autowired
+    private VendorService vendorService;
 
-    @GetMapping //final
+    @GetMapping // get all recent orders os vendor
     public ResponseEntity<?> findAllOrderOfVendors(Principal principal) {
+        System.out.println("findAllOrderOfVendors");
         return ResponseEntity.ok(orderService.findAllOrderByVendor(principal));
     }
-    @GetMapping("/count") //final
+    @GetMapping("/count") // give no of order of vendor
     public ResponseEntity<?> getVendorAllOrderCount(Principal principal) {
+        System.out.println("getVendorAllOrderCount");
         return ResponseEntity.ok(orderService.getVendorAllOrderCount(principal));
     }
-    @PostMapping("/byStatus") //final
+    @PostMapping("/byStatus") // get all orders of vendor by status
     public ResponseEntity<?> getAllOrderByStatus(@RequestBody StatusDTO statusDTO, Principal principal) {
+        System.out.println("getAllOrderByStatus");
         return ResponseEntity.ok(orderService.getAllOrderByStatus(statusDTO.getStatus(),principal));
     }
-    @GetMapping("/sales")
-    public ResponseEntity<?> getSalesAndProfit(Principal principal) {
-        int vendorId = mapper.emailToId(principal.getName()).getVendorId();
-        return ResponseEntity.ok(orderService.getProductWiseSales(vendorId));
+    @PostMapping("/status/{oid}") // change order status
+    public ResponseEntity<?> setOrderStatus(@PathVariable("oid") int oid, @RequestBody StatusDTO statusDTO) {
+        System.out.println("setOrderStatus");
+        return ResponseEntity.ok(vendorService.setOrderStatus(oid,statusDTO.getStatus()));
     }
 
 

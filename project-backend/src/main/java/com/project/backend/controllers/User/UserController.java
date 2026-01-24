@@ -1,17 +1,15 @@
-package com.project.backend.controllers;
+package com.project.backend.controllers.User;
 
 import com.project.backend.dtos.AddressReqDTO;
 import com.project.backend.dtos.UserProfileReqDTO;
 import com.project.backend.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
-
 import static org.springframework.http.ResponseEntity.ok;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
 
@@ -34,4 +32,6 @@ public class UserController {
     public ResponseEntity<?> getUserProfile(Principal principal) {
         return ok(userService.getUserProfile(principal.getName()));
     }
+
+
 }
