@@ -1,6 +1,7 @@
 package com.project.backend.services;
 
 import com.project.backend.dtos.*;
+import com.project.backend.entities.Category;
 import com.project.backend.entities.Products;
 import com.project.backend.entities.SubCategory;
 import com.project.backend.entities.Vendor;
@@ -11,13 +12,15 @@ public interface ProductsService  {
 
     // User Products API's
 
-    List<ProductRespDTO> getAllProducts(); // done
+//    List<ProductRespDTO> getAllProducts(); // done
+
+    List<Category> getAllCategories();
 
     ProductRespDTO getProductById(int id); // done
 
     List<Products> getProductByCatAndSubcat(int categoryId, int subCategoryId); //done
 
-    List<SubCategory> getAllSubcategories(int categoryId); //done
+    List<SubCategoryByCategoryRespDTO> getAllSubcategories(int categoryId); //done
 
 
     //-----------------------------------------------------------------------------------------------//

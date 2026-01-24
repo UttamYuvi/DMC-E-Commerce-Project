@@ -10,6 +10,9 @@ import com.project.backend.entities.Products;
 import com.project.backend.repository.SubCategoryRepository;
 import com.project.backend.repository.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -30,13 +33,18 @@ public class ProductsServiceImpl implements ProductsService{
     @Autowired
     private SubCategoryRepository subCategoryRepository;
 
-    //done  /user
-    public List<ProductRespDTO> getAllProducts() {
-        List<ProductRespDTO> productRespDTOS = new ArrayList<>();
-        for(Products product : productsRepository.findAll()) {
-            productRespDTOS.add(mapper.productToProductRespDTO(product));
-        }
-        return productRespDTOS;
+    //done  -  user
+    public Page<ProductRespDTO> getAllProducts(int page, int size) {
+        Page<Products> productPage = productsRepository.findAll(
+                PageRequest.of(page, size, Sort.by("createdAt").descending())
+        );
+        return productPage.map(mapper::productToProductRespDTO);
+    }
+
+
+    @Override
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
     }
 
     //done  //user
@@ -50,9 +58,15 @@ public class ProductsServiceImpl implements ProductsService{
     }
 
     //done  //user
-    public List<SubCategory> getAllSubcategories(int categoryId) {
-        System.out.println("service"+categoryId);
-        List<SubCategory> s = subCategoryRepository.getAllSubcategory(categoryId);
+    public List<SubCategoryByCategoryRespDTO> getAllSubcategories(int categoryId) {
+        List<SubCategory> subCategories = subCategoryRepository.getSubCategoriesByCategoryId(categoryId);
+        return mapper.getSubCatByCat(subCategories, categoryId);
+
+    }
+
+    public List<SubCategoryWithCategoryDTO> getAvailableSubcategories() {
+        List<SubCategoryWithCategoryDTO> s = subCategoryRepository.findAvailableSubCategories();
+        System.out.println(s);
         return s;
     }
 

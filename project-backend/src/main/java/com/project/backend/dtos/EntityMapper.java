@@ -38,6 +38,23 @@ public class EntityMapper {
         return userRepository.getUserByEmail(email).get();
     }
 
+    public List<SubCategoryByCategoryRespDTO> getSubCatByCat(List<SubCategory> subCategories, int categoryId){
+        String categoryName = categoryRepository.findById(categoryId).get().getName();
+        List<SubCategoryByCategoryRespDTO> subCategoryByCategoryRespDTOS = new ArrayList<>();
+        for (SubCategory subCategory: subCategories){
+            SubCategoryByCategoryRespDTO subCategoryByCategoryRespDTO = new SubCategoryByCategoryRespDTO();
+            subCategoryByCategoryRespDTO.setCategoryName(categoryName);
+            subCategoryByCategoryRespDTO.setCategoryId(categoryId);
+            subCategoryByCategoryRespDTO.setSubCategoryId(subCategory.getSubCategoryId());
+            subCategoryByCategoryRespDTO.setSubCategoryName(subCategory.getName());
+            subCategoryByCategoryRespDTO.setImage(subCategory.getImage());
+            subCategoryByCategoryRespDTOS.add(subCategoryByCategoryRespDTO);
+        }
+        return subCategoryByCategoryRespDTOS;
+
+    }
+
+
     public UserProfileResponseDto userToUserProfileResponse(User user) {
         UserProfileResponseDto userProfileResponseDto = new UserProfileResponseDto();
         userProfileResponseDto.setFirstName(user.getFirstName());
@@ -77,7 +94,7 @@ public class EntityMapper {
         ProductRespDTO productRespDTO = new ProductRespDTO();
         String categoryName = products.getCategory().getName();
         String subCategoryName = products.getSubCategory().getName();
-        productRespDTO.setId(products.getProductId());
+        productRespDTO.setProductId(products.getProductId());
         productRespDTO.setCategoryId(products.getCategory().getCategoryId());
         productRespDTO.setSubCategoryId(products.getSubCategory().getSubCategoryId());
         productRespDTO.setName(products.getName());

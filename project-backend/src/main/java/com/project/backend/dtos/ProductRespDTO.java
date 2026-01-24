@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductRespDTO {
 
-    private int id;
+    private int productId;
     private int categoryId;
     private int subCategoryId;
     private String category;

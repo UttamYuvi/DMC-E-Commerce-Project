@@ -24,6 +24,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private EntityMapper mapper;
 
+    public void getAllCategories(){
+
+    }
+
     public void updateUser(UserProfileReqDTO userProfileReqDTO, String email) {
         User user = mapper.userProfileToUser(userProfileReqDTO, email);
         userRepository.save(user);

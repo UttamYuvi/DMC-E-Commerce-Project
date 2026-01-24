@@ -1,0 +1,39 @@
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer } from "@react-navigation/native";
+import { StyleSheet } from "react-native";
+import LoginScreen from "./src/screens/auth/LoginScreen";
+import RegisterScreen from "./src/screens/auth/RegisterScreen";
+import BottomTabs from "./src/navigation/BottomTabs";
+import { Provider } from "react-redux";
+import { store } from "./store";
+
+const Stack = createNativeStackNavigator();
+
+export default function App() {
+  return (
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Group>
+            <Stack.Screen name="MainPages" component={BottomTabs} />
+
+            <Stack.Screen name="Login" component={LoginScreen} />
+
+            <Stack.Screen name="Register" component={RegisterScreen} />
+          </Stack.Group>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+});

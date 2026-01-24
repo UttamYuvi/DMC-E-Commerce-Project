@@ -1,10 +1,15 @@
 package com.project.backend.controllers.products;
 
 import com.project.backend.dtos.EntityMapper;
+import com.project.backend.dtos.ProductRespDTO;
+import com.project.backend.dtos.SubCategoryWithCategoryDTO;
 import com.project.backend.services.ProductsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -19,8 +24,9 @@ public class UserProductsController {
 
     //done // user
     @GetMapping
-    public ResponseEntity<?> getAllProducts() {
-        return  ResponseEntity.ok(productsService.getAllProducts());
+    public ResponseEntity<?> getAllProducts(@RequestParam int page, @RequestParam int size) {
+        System.out.println("pagination"+page+ ", size "+size);
+        return  ResponseEntity.ok(productsService.getAllProducts(page, size));
     }
 
     //done  //user
@@ -41,5 +47,10 @@ public class UserProductsController {
     public ResponseEntity<?> getAllSubcategory(@PathVariable("cid") int cid) {
         System.out.println("category api called"+cid);
         return ResponseEntity.ok(productsService.getAllSubcategories(cid));
+    }
+
+    @GetMapping("/subcategories")
+    public List<SubCategoryWithCategoryDTO> getAllSubcategories() {
+        return productsService.getAvailableSubcategories();
     }
 }

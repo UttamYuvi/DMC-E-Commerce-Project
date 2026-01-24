@@ -25,5 +25,6 @@ public class Category {
     @JsonIgnore
     @ToString.Exclude
     private List<SubCategory> subCategories = new ArrayList<>();
+    private String image;
 
 }
