@@ -110,18 +110,18 @@ const styles = StyleSheet.create({
   },
   buyButton: {
     borderWidth: 1,
-    borderColor: "#007bff",
+    borderColor: "#FF7A00",
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
     width: "45%",
   },
   buyButtonText: {
-    color: "#007bff",
+    color: "#FF7A00",
     fontWeight: "bold",
   },
   button: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#FF7A00",
     padding: 10,
     borderRadius: 5,
     alignItems: "center",

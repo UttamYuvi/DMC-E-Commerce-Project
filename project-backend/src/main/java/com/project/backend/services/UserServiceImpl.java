@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
     private EntityMapper mapper;
 
     public void getAllCategories(){
-
     }
 
     public void updateUser(UserProfileReqDTO userProfileReqDTO, String email) {
@@ -51,5 +50,13 @@ public class UserServiceImpl implements UserService {
         address.setLandmark(addressReqDTO.getLandmark());
         address.setAddressType(addressReqDTO.getAddressType());
         addressRepository.save(address);
+
+    }
+
+
+    @Override
+    public List<Address> getUserAddress(String email) {
+        int userId = mapper.userEmailToId(email).getUserId();
+        return userRepository.getAllAddresses(userId);
     }
 }

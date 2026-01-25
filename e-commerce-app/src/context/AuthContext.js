@@ -1,9 +1,13 @@
-import { createContext, useState } from "react";
+import { createContext, use, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null); // null = not logged in
+  const [user, setUser] = useState(null);
+
+  //   useEffect(() => {
+  //     console.log("successsss user login:", user);
+  //   }, [user]);
 
   const login = (userData) => {
     setUser(userData);

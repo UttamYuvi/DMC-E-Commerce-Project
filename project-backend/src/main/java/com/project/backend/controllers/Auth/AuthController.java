@@ -2,6 +2,7 @@ package com.project.backend.controllers.Auth;
 
 import com.project.backend.dtos.AuthRequestDTO;
 import com.project.backend.dtos.AuthResponseDTO;
+import com.project.backend.dtos.UserRequestDTO;
 import com.project.backend.dtos.VendorRequestDTO;
 import com.project.backend.entities.User;
 import com.project.backend.entities.Vendor;
@@ -79,7 +80,7 @@ public class AuthController {
     }
 
     @PostMapping("/register/vendor")
-    public ResponseEntity<?> registerUser(@RequestBody VendorRequestDTO registerRequest) {
+    public ResponseEntity<?> registerVendor(@RequestBody VendorRequestDTO registerRequest) {
         if (vendorRepository.getVendorByEmail(registerRequest.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("Email already exists");
         }
@@ -92,5 +93,22 @@ public class AuthController {
         vendor.setRole("VENDOR");
         vendorRepository.save(vendor);
         return ResponseEntity.ok("Vendor registered");
+    }
+
+    @PostMapping("/register/user")
+    public ResponseEntity<?> registerUser(@RequestBody UserRequestDTO registerRequest) {
+        if (userRepository.getUserByEmail(registerRequest.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("User already present");
+        }
+        System.out.println("User for register:"+registerRequest);
+        User user = new User();
+        user.setEmail(registerRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setMobile(registerRequest.getMobile());
+        user.setFirstName(registerRequest.getFirstName());
+        user.setLastName(registerRequest.getLastName());
+        user.setRole("USER");
+        userRepository.save(user);
+        return ResponseEntity.ok("User registered");
     }
 }

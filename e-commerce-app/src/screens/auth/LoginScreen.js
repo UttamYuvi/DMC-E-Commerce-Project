@@ -16,7 +16,6 @@ function LoginScreen({ navigation }) {
   const [password, setPassword] = useState("");
 
   const { login } = useContext(AuthContext);
-  console.log(login);
 
   const onRegister = () => {
     // navigate to Register Screen
@@ -30,7 +29,6 @@ function LoginScreen({ navigation }) {
     } else if (password.length == 0) {
       alert("please enter password");
     } else {
-      console.log(`email: ${email}, password: ${password}`);
       const result = await loginUser(email, password);
       login(result);
       // navigation.navigate("Home");

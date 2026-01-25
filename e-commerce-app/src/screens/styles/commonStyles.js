@@ -33,7 +33,7 @@ export const commonStyles = StyleSheet.create({
   title: { fontSize: 16, fontWeight: "bold" },
   price: { color: "#888", marginVertical: 5 },
   // button: {
-  //   backgroundColor: "#007bff",
+  //   backgroundColor: "#FF7A00",
   //   padding: 10,
   //   borderRadius: 5,
   //   alignItems: "center",
