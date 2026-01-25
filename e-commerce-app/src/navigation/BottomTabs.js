@@ -1,12 +1,12 @@
 import HomeScreen from "../screens/mainScreens/Home";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CategoriesScreen from "../screens/mainScreens/Categories";
-import CartScreen from "../screens/mainScreens/Cart";
 import AccountScreen from "../screens/mainScreens/Account";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, View } from "react-native";
 import Home from "../screens/mainScreens/Home";
 import { useSelector } from "react-redux";
+import Cart from "../screens/mainScreens/Cart";
 
 const Tab = createBottomTabNavigator();
 
@@ -36,7 +36,7 @@ export default function BottomTabs() {
 
         <Tab.Screen
           name="Cart"
-          component={CartScreen}
+          component={Cart}
           options={{
             tabBarBadge: items.length > 0 ? items.length : undefined,
             tabBarBadgeStyle: {

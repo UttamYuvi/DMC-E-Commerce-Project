@@ -38,6 +38,7 @@ public class ProductController {
             @RequestParam double price, @RequestParam int stock, @RequestParam String status, @RequestParam("images") MultipartFile[] images
     ) throws IOException {
         System.out.println("addProduct");
+        System.out.println(name);
         Files.createDirectories(Paths.get(UPLOAD_DIR));
         List<String> imagePaths = new ArrayList<>();
 

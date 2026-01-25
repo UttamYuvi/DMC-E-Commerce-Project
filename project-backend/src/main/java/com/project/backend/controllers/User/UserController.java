@@ -33,5 +33,11 @@ public class UserController {
         return ok(userService.getUserProfile(principal.getName()));
     }
 
+    @GetMapping("/address")
+    public ResponseEntity<?> getUserAddress(Principal principal) {
+        System.out.println(principal.getName());
+        return ok(userService.getUserAddress(principal.getName()));
+    }
+
 
 }

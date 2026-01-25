@@ -10,7 +10,7 @@ function Button({ title, onPress }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#1a155f",
+    backgroundColor: "#FF7A00",
     padding: 15,
     borderRadius: 10,
     elevation: 5,

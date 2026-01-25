@@ -118,6 +118,7 @@ function ProductFields({ mode = "add", data = null, onClose, loadProducts }) {
         };
 
         response = await serverData.updateProduct(body);
+        loadProducts();
       }
 
       if (response?.data) {
@@ -132,13 +133,12 @@ function ProductFields({ mode = "add", data = null, onClose, loadProducts }) {
         } else {
           onClose();
         }
-        loadProducts();
       } else {
         toast.error(response?.data?.message || "Operation failed");
       }
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong");
+      toast.error("Something went wrong 123456");
     }
   };
 
