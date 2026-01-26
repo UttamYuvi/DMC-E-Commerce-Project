@@ -28,6 +28,22 @@ function CartScreen({ navigation }) {
     };
   }, [items]);
 
+  const payload = {
+    // addressId: address.addressId,
+    orderDetailsReqDTOList: items.map(item => ({
+      productId: item.productId,
+      quantity: item.quantity,
+    })),
+  };
+
+  const getProductsForOrder = () => {
+    return payload
+  }
+
+  useEffect(() => {
+    console.log(items)
+  },[items])
+
   const onCheckoutPress = () => {
     navigation.navigate("Checkout");
   };
@@ -62,7 +78,7 @@ function CartScreen({ navigation }) {
           <Text style={[styles.value, { color: "green" }]}>FREE</Text>
         </View>
 
-        <View style={styles.divider} />
+        {/* <View style={styles.divider} /> */}
 
         <View style={styles.row}>
           <Text style={styles.totalLabel}>Total Amount</Text>
@@ -81,6 +97,7 @@ const styles = StyleSheet.create({
   homeHeader: {
     padding: 20,
     paddingTop: 45,
+    backgroundColor:"#a2f5f3", 
   },
   image: {
     width: 80,
@@ -94,8 +111,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: "100%",
-    backgroundColor: "#fff",
-    padding: 16,
+    backgroundColor:"#a2f5f3", 
+    padding: 12,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     shadowColor: "#000",
@@ -112,7 +129,7 @@ const styles = StyleSheet.create({
 
   label: {
     fontSize: 14,
-    color: "#555",
+    color: "#302f2f",
   },
 
   value: {
@@ -138,7 +155,7 @@ const styles = StyleSheet.create({
 
   checkoutBtn: {
     marginTop: 12,
-    backgroundColor: "#FF5533",
+    backgroundColor: "#f97705",
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",

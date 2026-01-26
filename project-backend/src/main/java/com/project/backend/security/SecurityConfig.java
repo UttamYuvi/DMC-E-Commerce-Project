@@ -92,11 +92,12 @@ public class SecurityConfig {
                                 "/login/**",
                                 "/register/**",
                                 "/products/**",
-                                "/procucts/subcategory/**"
-//                                "/products/subcategories/**"
+                                "/procucts/subcategory/**",
+                                "/categories/**"
                         ).permitAll()
-                        .requestMatchers("/vendors/**",
-                                "/product/**"
+                        .requestMatchers("/vendor/**",
+                                "/product/**",
+                                "/order/**"
 //                                "/products/delete/**",
 //                                "/category/vendor/**",
 //                                "/subcategory/vendor/**"

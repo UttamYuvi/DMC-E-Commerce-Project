@@ -59,7 +59,7 @@ function AddToCartButton({ product, style }) {
           flexDirection: "row",
           alignItems: "center",
           borderWidth: 1,
-          borderColor: "#FF5533",
+          borderColor: "#ff4f2c",
           borderRadius: 6,
           overflow: "hidden",
           justifyContent: "space-between",
@@ -87,17 +87,17 @@ const styles = StyleSheet.create({
   },
   controlBtn: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: "#FF5533",
+    // paddingVertical: 3,
+    backgroundColor: "#FF7A00",
   },
   controlText: {
     color: "#fff",
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "bold",
   },
 
   quantity: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "600",
     paddingHorizontal: 12,
   },

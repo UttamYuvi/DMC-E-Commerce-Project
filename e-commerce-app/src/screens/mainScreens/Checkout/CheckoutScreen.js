@@ -7,27 +7,30 @@ import AddressModal from "../../../components/modals/AddressModal";
 import AddAddressModal from "../../../components/address/AddAddressModal";
 
 import { getUserAddresses } from "../../../services/address";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clear } from "../../../slice/cartSlice";
+import { placeOrderService } from "../../../services/order";
+// import { add } from "react-native/types_generated/Libraries/Animated/AnimatedExports";
+// import CartScreen from "../Cart/CartScreen";
 
 export default function CheckoutScreen({ navigation }) {
   const { user } = useContext(AuthContext);
 
   const dispatch = useDispatch();
 
-  const [step, setStep] = useState("LOGIN"); // LOGIN | ADDRESS | ADD_ADDRESS
+  const items = useSelector((state) => state.cart.items)
+
+  const [step, setStep] = useState("LOGIN");
   const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  /* Move to ADDRESS after login */
   useEffect(() => {
-    if (user) {
+    if (user && step === "LOGIN") {
       setStep("ADDRESS");
     }
   }, [user]);
 
-  /* Fetch addresses only when ADDRESS step is active */
   useEffect(() => {
     if (step === "ADDRESS" && user) {
       fetchAddresses();
@@ -35,25 +38,56 @@ export default function CheckoutScreen({ navigation }) {
   }, [step, user]);
 
   const fetchAddresses = async () => {
+    // if (!user?.token) return;
     setLoading(true);
 
     try {
-      // Artificial delay to test loader
-    //   await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      const data = await getUserAddresses();
-      setAddresses(data || []);
+      const data = await getUserAddresses(user.token);
+      console.log(data)
+      setAddresses(Array.isArray(data) ? data : []);
     } catch (err) {
       console.log("Failed to fetch addresses", err);
+      setAddresses([])
     } finally {
       setLoading(false);
     }
   };
 
-  const placeOrder = (address) => {
-    console.log("Placing order with:", address);
-    navigation.replace("PlaceOrderScreen");
+  const placeOrder = async (address) => {
+    if (!user?.token) {
+    console.log("User not logged in");
+    setStep("LOGIN");
+    return;
+    }
+    if(!address) {
+      console.log("No address selected")
+      return
+    }
+    if(!items || items.length === 0) {
+      console.log("Cart is empty")
+      return
+    }
+
+    const payload = {
+      addressId: address.addressId,
+      orderDetailsReqDTOList: items.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      }))
+    }
+    try {
+      console.log("Placing order with:", payload);
+      const result = await placeOrderService(payload,user.token)
+      navigation.replace("PlaceOrderScreen",{
+      orderId: result.orderId,
+      totalAmount: result.totalAmount,
+      deliveryAddress: result.deliveryAddress,
+      orderDetails: result.orderDetails,
+    });
     dispatch(clear());
+    } catch(err) {
+      console.log(err)
+    }
   };
 
   return (

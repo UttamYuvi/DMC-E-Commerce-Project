@@ -6,6 +6,7 @@ export async function loginUser(email, password) {
     const url = `${config.url}/login/user`;
     const body = { username: email, password };
     const response = await axios.post(url, body);
+    console.log("auth.js",response.data)
     return response.data;
   } catch (ex) {
     return null;

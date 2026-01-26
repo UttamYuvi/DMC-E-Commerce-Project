@@ -12,6 +12,7 @@ public class OrderDetailsRespDTO {
 //    private int orderDetailId;
 //    private int orderId;
     private int productId;
+    private String name;
     private int quantity;
     private double price;
     private double subtotal;

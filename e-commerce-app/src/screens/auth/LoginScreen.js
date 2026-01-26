@@ -18,8 +18,6 @@ function LoginScreen({ navigation }) {
   const { login } = useContext(AuthContext);
 
   const onRegister = () => {
-    // navigate to Register Screen
-    // navigation.navigate('Register')
     navigation.push("Register");
   };
 

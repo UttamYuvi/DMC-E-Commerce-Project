@@ -19,17 +19,27 @@ function LoginModal({ visible, onClose }) {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);    
 
   const onLogin = async () => {
-    const success = await loginUser(email, password);
-    if (success.role == "USER") {
-      const { email, token } = success;
-      console.log("success:", email, token);
+    try {
+      const success = await loginUser(email, password);
+    if (success?.role == "USER") {
+      console.log("success",success)
+      login(success)
+      // const { email, token } = success;
+      // console.log("success:", email, token);
+      onClose(true)
 
-      await AsyncStorage.setItem("username", email);
-      await AsyncStorage.setItem("token", token);
-      login(success);
-      onClose(true);
+      // await AsyncStorage.setItem("username", email);
+      // await AsyncStorage.setItem("token", token);
+      // login(success);
+      // onClose(true);
+    }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -57,7 +67,7 @@ function LoginModal({ visible, onClose }) {
           />
 
           <TouchableOpacity style={styles.btn} onPress={onLogin}>
-            <Text style={styles.btnText}>Sign In</Text>
+            <Text style={styles.btnText}>{loading ? "Signing in..." : "Sign In"}</Text>
           </TouchableOpacity>
 
           <Text style={styles.linkText}>

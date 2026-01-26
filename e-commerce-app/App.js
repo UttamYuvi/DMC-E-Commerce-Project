@@ -21,9 +21,8 @@ export default function App() {
             }}
           >
             <Stack.Group>
+              
               <Stack.Screen name="MainPages" component={BottomTabs} />
-
-              <Stack.Screen name="Login" component={LoginScreen} />
 
               <Stack.Screen name="Register" component={RegisterScreen} />
             </Stack.Group>

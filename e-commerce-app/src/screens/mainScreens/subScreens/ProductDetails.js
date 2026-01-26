@@ -1,12 +1,12 @@
 import {
   Dimensions,
   FlatList,
-  Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 import { commonStyles } from "../../styles/commonStyles";
 import { config } from "../../../services/config";
@@ -20,16 +20,19 @@ function ProductDetails({ route }) {
 
   return (
     <View style={commonStyles.container}>
-      <View style={styles.homeHeader}>
-        <Text style={commonStyles.title}>Product details</Text>
+      {/* HEADER */}
+      <View style={styles.header}>
+        <Text style={commonStyles.title}>Product Details</Text>
       </View>
+
+      {/* IMAGE CAROUSEL */}
       <View style={styles.carouselContainer}>
         <FlatList
           data={imagesArray}
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item, index) => `img-${index}`}
           renderItem={({ item }) => (
             <Image
               source={{ uri: `${config.url}/uploads/products/${item}` }}
@@ -40,92 +43,129 @@ function ProductDetails({ route }) {
         />
       </View>
 
+      {/* PRODUCT DETAILS */}
       <ScrollView
         style={styles.detailsContainer}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        // showsVerticalScrollIndicator={false}
+        // contentContainerStyle={{ paddingBottom: 20 }}
       >
-        <Text style={styles.title}>{product.name}</Text>
+        <Text style={styles.productTitle}>{product.name}</Text>
         <Text style={styles.price}>₹ {product.price}</Text>
         <Text style={styles.description}>{product.description}</Text>
       </ScrollView>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-around",
-          backgroundColor: "#FFFFFF",
-        }}
-      >
+
+      {/* ACTION BUTTONS */}
+      <View style={styles.actionsContainer}>
         <TouchableOpacity style={styles.buyButton}>
           <Text style={styles.buyButtonText}>Buy Now</Text>
         </TouchableOpacity>
 
-        <AddToCartButton product={product} style={{ width: "50%" }} />
+        <AddToCartButton product={product} style={styles.addToCartButton} />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  homeHeader: {
-    // backgroundColor: "red",
-    padding: 20,
-    paddingTop: 45,
+  header: {
+    paddingTop: 50,
+    paddingBottom: 15,
+    paddingHorizontal: 20,
+    backgroundColor: "#a2f5f3",
+    borderBottomLeftRadius: 24,
+    borderBottomRightRadius: 24,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+    elevation: 4,
   },
+
   carouselContainer: {
-    height: 300,
+    margin: 15,
+    marginHorizontal:10,
+    height: 320,
+    borderRadius:10
   },
 
   carouselImage: {
     width: width,
-    height: 300,
+    height: 320,
+    // borderBottomLeftRadius: 20,
+    // borderBottomRightRadius: 20,
   },
 
   detailsContainer: {
     flex: 1,
-    padding: 16,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#fff",
+    paddingHorizontal: 16,
+    marginHorizontal: 8,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    shadowColor: "#000",
+    shadowOpacity: 0.02,
+    shadowOffset: { width: 0, height: -3 },
+    shadowRadius: 6,
+    elevation: 3,
   },
 
-  title: {
-    fontSize: 20,
-    fontWeight: "600",
+  productTitle: {
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#111827",
+    marginTop: 16,
     marginBottom: 6,
-    includeFontPadding: false,
   },
 
   price: {
-    fontSize: 18,
-    fontWeight: "500",
-    marginBottom: 10,
-    includeFontPadding: false,
-    color: "#888",
+    fontSize: 20,
+    fontWeight: "800",
+    color: "#16A34A",
+    marginBottom: 12,
   },
 
   description: {
-    fontSize: 14,
-    lineHeight: 20,
-    marginBottom: 6,
-    includeFontPadding: false,
+    fontSize: 15,
+    color: "#6B7280",
+    lineHeight: 22,
+    marginBottom: 20,
   },
+
+  actionsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: "#a2f5f3",
+    borderTopWidth: 0.5,
+    borderTopColor: "#E5E7EB",
+    shadowColor: "#000",
+    shadowOpacity: 0.05,    
+    shadowOffset: { width: 0, height: -2 },
+    shadowRadius: 4,
+    elevation: 3,
+  },
+
   buyButton: {
-    borderWidth: 1,
-    borderColor: "#FF7A00",
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: "#33a00e",
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 12,
+    flex: 1,
+    marginRight: 8,
     alignItems: "center",
-    width: "45%",
   },
+
   buyButtonText: {
-    color: "#FF7A00",
-    fontWeight: "bold",
+    color: "#ffffff",   
+    fontWeight: "700",
+    fontSize: 16,
   },
-  button: {
-    backgroundColor: "#FF7A00",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    width: "50%",
+
+  addToCartButton: {
+    flex: 1,
+    marginLeft: 8,
+    borderRadius: 12,
   },
 });
 

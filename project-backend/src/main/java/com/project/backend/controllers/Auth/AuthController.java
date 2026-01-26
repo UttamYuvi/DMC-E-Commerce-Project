@@ -45,7 +45,7 @@ public class AuthController {
                 Vendor vendor = (Vendor) auth.getPrincipal();
                 String role = vendor.getAuthorities().stream().findFirst().get().getAuthority();
                 String token = tokenProvider.createToken(vendor.getEmail(), role);
-                AuthResponseDTO responseDTO = new AuthResponseDTO(token,role,vendor.getFirstName(), vendor.getLastName(), vendor.getEmail(), vendor.getMobile());
+                AuthResponseDTO responseDTO = new AuthResponseDTO(token,role,vendor.getFirstName(), vendor.getLastName(), vendor.getEmail(), vendor.getMobile(),"NULL");
                 return ResponseEntity.ok(responseDTO);
             } catch (BadCredentialsException ex) {
                 return ResponseEntity.status(401).body("Invalid username/password");
@@ -70,7 +70,7 @@ public class AuthController {
             user = (User) auth.getPrincipal();
             String role = user.getAuthorities().stream().findFirst().get().getAuthority();
             String token = tokenProvider.createToken(user.getEmail(), role);
-            AuthResponseDTO responseDTO = new AuthResponseDTO(token,role, user.getFirstName(), user.getLastName(), user.getEmail(), user.getMobile());
+            AuthResponseDTO responseDTO = new AuthResponseDTO(token,role, user.getFirstName(), user.getLastName(), user.getEmail(), user.getMobile(),user.getGender());
             return ResponseEntity.ok(responseDTO);
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(401).body("Invalid username/password");

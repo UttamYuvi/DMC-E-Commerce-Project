@@ -35,7 +35,7 @@ function ProductList({ route, navigation }) {
 
 const styles = StyleSheet.create({
   homeHeader: {
-    // backgroundColor: "red",
+    backgroundColor: "#a2f5f3",
     padding: 20,
     paddingTop: 45,
   },
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   },
   productContainer: {
     flex: 1,
+    backgroundColor:"#a2f5f3"
   },
 });
 

@@ -14,6 +14,14 @@ export default function AppStack() {
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
+            headerStyle: {
+              backgroundColor: "#a2f5f3"
+            },
+            headerTitleStyle: {
+          fontWeight: "700",
+          color: "#111",
+        },
+        headerTintColor: "#111",
           }}
         >
           <Stack.Group>
