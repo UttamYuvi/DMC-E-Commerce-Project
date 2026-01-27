@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(user);
 
         order.setOrderStatus("placed");
-        order.setPaymentStatus("paid");
+        order.setPaymentStatus("pending");
         order.setDeliveryAddress(address);
         List<OrderDetails> orderDetailsList = new ArrayList<>();
         double total = 0;
