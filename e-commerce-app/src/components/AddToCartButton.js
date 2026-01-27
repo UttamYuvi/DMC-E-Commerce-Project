@@ -38,7 +38,7 @@ function AddToCartButton({ product, style }) {
       <TouchableOpacity
         style={[
           {
-            backgroundColor: "#FF5533",
+            backgroundColor: "#f97705",
             padding: 12,
             borderRadius: 6,
             alignItems: "center",
@@ -59,7 +59,7 @@ function AddToCartButton({ product, style }) {
           flexDirection: "row",
           alignItems: "center",
           borderWidth: 1,
-          borderColor: "#FF5533",
+          borderColor: "#ff4f2c",
           borderRadius: 6,
           overflow: "hidden",
           justifyContent: "space-between",
@@ -79,7 +79,6 @@ function AddToCartButton({ product, style }) {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   addText: {
     color: "#fff",
@@ -87,20 +86,43 @@ const styles = StyleSheet.create({
   },
   controlBtn: {
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: "#FF5533",
+    // paddingVertical: 3,
+    backgroundColor: "#FF7A00",
   },
   controlText: {
     color: "#fff",
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "bold",
   },
 
   quantity: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "600",
     paddingHorizontal: 12,
   },
 });
+
+// const styles = StyleSheet.create({
+//   addText: {
+//     color: "#fff",
+//     fontWeight: "bold",
+//   },
+//   controlBtn: {
+//     paddingHorizontal: 16,
+//     paddingVertical: 8,
+//     backgroundColor: "#a2f5f3",
+//   },
+//   controlText: {
+//     color: "#fff",
+//     fontSize: 18,
+//     fontWeight: "bold",
+//   },
+
+//   quantity: {
+//     fontSize: 16,
+//     fontWeight: "600",
+//     paddingHorizontal: 12,
+//   },
+// });
 
 export default AddToCartButton;

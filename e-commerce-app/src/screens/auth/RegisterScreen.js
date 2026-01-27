@@ -26,7 +26,6 @@ function RegisterScreen({ navigation }) {
   };
 
   const onSignup = async () => {
-    console.log("Register payload:", form);
     const result = await registerUser(form);
     if (result.status == 200) {
       alert(result.data);

@@ -31,13 +31,13 @@ function ProductCard({ item }) {
           style={commonStyles.image}
         />
         <View style={commonStyles.info}>
-          <Text style={commonStyles.title}>{name}</Text>
-          <Text style={commonStyles.price}>{desc}</Text>
-          <Text style={commonStyles.price}>${item.price}</Text>
+          <Text style={commonStyles.productTitle}>{name}</Text>
+          <Text style={commonStyles.description}>{desc}</Text>
+          <Text style={commonStyles.price}>₹{item.price}</Text>
         </View>
       </TouchableOpacity>
 
-      <AddToCartButton product={item} style={{ width: "100%" }} />
+      <AddToCartButton product={item} style={commonStyles.button} />
     </View>
   );
 }

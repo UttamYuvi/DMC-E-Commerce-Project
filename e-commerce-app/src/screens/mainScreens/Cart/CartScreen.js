@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
   homeHeader: {
     padding: 20,
     paddingTop: 45,
+    backgroundColor: "#a2f5f3",
   },
   image: {
     width: 80,
@@ -94,8 +95,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: "100%",
-    backgroundColor: "#fff",
-    padding: 16,
+    backgroundColor: "#a2f5f3",
+    padding: 12,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     shadowColor: "#000",
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
 
   label: {
     fontSize: 14,
-    color: "#555",
+    color: "#302f2f",
   },
 
   value: {
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
 
   checkoutBtn: {
     marginTop: 12,
-    backgroundColor: "#FF5533",
+    backgroundColor: "#f97705",
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
@@ -150,5 +151,79 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 });
+
+// const styles = StyleSheet.create({
+//   homeHeader: {
+//     padding: 20,
+//     paddingTop: 45,
+//   },
+//   image: {
+//     width: 80,
+//     height: 80,
+//     borderRadius: 100,
+//   },
+//   productContainer: {
+//     flex: 1,
+//   },
+//   cartFooter: {
+//     position: "absolute",
+//     bottom: 0,
+//     width: "100%",
+//     backgroundColor: "#fff",
+//     padding: 16,
+//     borderTopLeftRadius: 16,
+//     borderTopRightRadius: 16,
+//     shadowColor: "#000",
+//     shadowOpacity: 0.1,
+//     shadowOffset: { width: 0, height: -2 },
+//     elevation: 10,
+//   },
+
+//   row: {
+//     flexDirection: "row",
+//     justifyContent: "space-between",
+//     marginVertical: 6,
+//   },
+
+//   label: {
+//     fontSize: 14,
+//     color: "#555",
+//   },
+
+//   value: {
+//     fontSize: 14,
+//     fontWeight: "500",
+//   },
+
+//   divider: {
+//     height: 1,
+//     backgroundColor: "#eee",
+//     marginVertical: 10,
+//   },
+
+//   totalLabel: {
+//     fontSize: 16,
+//     fontWeight: "600",
+//   },
+
+//   totalValue: {
+//     fontSize: 16,
+//     fontWeight: "700",
+//   },
+
+//   checkoutBtn: {
+//     marginTop: 12,
+//     backgroundColor: "#FF5533",
+//     paddingVertical: 12,
+//     borderRadius: 8,
+//     alignItems: "center",
+//   },
+
+//   checkoutText: {
+//     color: "#fff",
+//     fontSize: 16,
+//     fontWeight: "600",
+//   },
+// });
 
 export default CartScreen;

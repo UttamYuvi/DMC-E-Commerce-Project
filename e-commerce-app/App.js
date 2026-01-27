@@ -1,7 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
-import LoginScreen from "./src/screens/auth/LoginScreen";
 import RegisterScreen from "./src/screens/auth/RegisterScreen";
 import BottomTabs from "./src/navigation/BottomTabs";
 import { Provider } from "react-redux";
@@ -22,8 +21,6 @@ export default function App() {
           >
             <Stack.Group>
               <Stack.Screen name="MainPages" component={BottomTabs} />
-
-              <Stack.Screen name="Login" component={LoginScreen} />
 
               <Stack.Screen name="Register" component={RegisterScreen} />
             </Stack.Group>

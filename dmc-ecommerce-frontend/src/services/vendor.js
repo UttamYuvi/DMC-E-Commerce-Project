@@ -5,11 +5,10 @@ import { base_url } from "../utils/config";
 export async function loginVendor(email, password) {
   try {
     const userBody = { username: email, password };
-    // const url = base_url.vendorUrl + "/vendor/signin";
     const url = base_url.vendorUrl + "/login/vendor";
-    console.log('login url',url)
+    console.log("login url", url);
     const response = await axios.post(url, userBody);
-    return response;
+    return response.data;
   } catch (error) {
     Swal.fire({
       position: "top-end",
@@ -26,11 +25,11 @@ export async function registerVendor(
   lastName,
   mobile,
   email,
-  password
+  password,
 ) {
   try {
     const userBody = { firstName, lastName, mobile, email, password };
-    const url = base_url.vendorUrl + "/vendor/signup";
+    const url = base_url.vendorUrl + "/register/vendor";
     const response = await axios.post(url, userBody);
     return response.data;
   } catch (error) {

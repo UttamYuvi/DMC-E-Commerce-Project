@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   },
 
   selectedCard: {
-    borderColor: "#FF7A00",
+    borderColor: "#f97705",
     backgroundColor: "#f0f6ff",
   },
 
@@ -132,14 +132,14 @@ const styles = StyleSheet.create({
   },
 
   radioSelected: {
-    borderColor: "#FF7A00",
+    borderColor: "#f97705",
   },
 
   radioInner: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: "#FF7A00",
+    backgroundColor: "#f97705",
   },
 
   addressText: {
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   type: {
     fontSize: 12,
     fontWeight: "600",
-    color: "#FF7A00",
+    color: "#f97705",
     marginBottom: 2,
   },
 
@@ -164,13 +164,13 @@ const styles = StyleSheet.create({
   },
 
   addText: {
-    color: "#FF7A00",
+    color: "#f97705",
     fontWeight: "600",
     marginVertical: 12,
   },
 
   btn: {
-    backgroundColor: "#FF7A00",
+    backgroundColor: "#f97705",
     padding: 14,
     borderRadius: 8,
     alignItems: "center",

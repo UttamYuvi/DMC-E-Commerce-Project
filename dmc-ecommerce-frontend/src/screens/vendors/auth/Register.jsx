@@ -21,11 +21,12 @@ function Register() {
         lastName,
         mobile,
         email,
-        password
+        password,
       );
-      if (result.status) {
+      if (result) {
+        console.log(result);
         toast.success("Register successfully");
-        navigate("/");
+        navigate("/vendor/login");
       } else {
         Swal.fire({
           position: "top-end",

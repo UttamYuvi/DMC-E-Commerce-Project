@@ -7,11 +7,14 @@ import AddressModal from "../../../components/modals/AddressModal";
 import AddAddressModal from "../../../components/address/AddAddressModal";
 
 import { getUserAddresses } from "../../../services/address";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clear } from "../../../slice/cartSlice";
+import { placeOrderService } from "../../../services/order";
 
 export default function CheckoutScreen({ navigation }) {
   const { user } = useContext(AuthContext);
+
+  const items = useSelector((state) => state.cart.items);
 
   const dispatch = useDispatch();
 
@@ -39,9 +42,9 @@ export default function CheckoutScreen({ navigation }) {
 
     try {
       // Artificial delay to test loader
-    //   await new Promise((resolve) => setTimeout(resolve, 1000));
+      //   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const data = await getUserAddresses();
+      const data = await getUserAddresses(user.token);
       setAddresses(data || []);
     } catch (err) {
       console.log("Failed to fetch addresses", err);
@@ -50,10 +53,41 @@ export default function CheckoutScreen({ navigation }) {
     }
   };
 
-  const placeOrder = (address) => {
-    console.log("Placing order with:", address);
-    navigation.replace("PlaceOrderScreen");
-    dispatch(clear());
+  const placeOrder = async (address) => {
+    if (!user?.token) {
+      console.log("User not logged in");
+      setStep("LOGIN");
+      return;
+    }
+
+    if (!address) {
+      console.log("No address selected");
+      return;
+    }
+
+    if (!items || items.length === 0) {
+      console.log("Cart is empty");
+      return;
+    }
+
+    const payload = {
+      addressId: address.addressId,
+      orderDetailsReqDTOList: items.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+      })),
+    };
+    try {
+      const result = await placeOrderService(payload, user.token);
+      navigation.replace("PlaceOrderScreen", {
+        orderId: result.orderId,
+        totalAmount: result.totalAmount,
+        deliveryAddress: result.deliveryAddress,
+        orderDetails: result.orderDetails,
+      });
+      dispatch(clear());
+    } catch (err) {
+    }
   };
 
   return (
@@ -63,6 +97,9 @@ export default function CheckoutScreen({ navigation }) {
         <LoginModal
           visible
           onClose={(success) => success && setStep("ADDRESS")}
+          onOpenClose={() => {
+            navigation.goBack();
+          }}
         />
       )}
 

@@ -1,22 +1,34 @@
-import { StyleSheet, Text, View } from "react-native";
-import { commonStyles } from "../styles/commonStyles";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import AccountScreen from "./subScreens/AccountScreen";
+import MyOrders from "./subScreens/MyOrder";
+import MyProfile from "./subScreens/MyProfile";
+import UpdatePassword from "./subScreens/UpdatePassword";
 
-function AccountScreen() {
+const Stack = createNativeStackNavigator();
+
+export default function Account() {
   return (
-    <View style={commonStyles.container}>
-      <View style={styles.homeHeader}>
-        <Text style={commonStyles.title}>AccountScreen Screen</Text>
-      </View>
-      <View></View>
-      <View style={commonStyles.innerContainer}></View>
-    </View>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: "#a2f5f3",
+        },
+        headerTitleStyle: {
+          fontWeight: "700",
+          color: "#111",
+        },
+        headerTintColor: "#111",
+        // headerShadowVisible: false,
+      }}
+    >
+      <Stack.Screen
+        name="AccountHome"
+        component={AccountScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="MyOrders" component={MyOrders} />
+      <Stack.Screen name="MyProfile" component={MyProfile} />
+      <Stack.Screen name="UpdatePassword" component={UpdatePassword} />
+    </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  homeHeader: {
-    backgroundColor: "red",
-  },
-});
-
-export default AccountScreen;

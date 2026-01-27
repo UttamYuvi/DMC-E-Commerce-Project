@@ -1,17 +1,20 @@
 import HomeScreen from "../screens/mainScreens/Home";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import CategoriesScreen from "../screens/mainScreens/Categories";
-import AccountScreen from "../screens/mainScreens/Account";
 import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet, View } from "react-native";
 import Home from "../screens/mainScreens/Home";
 import { useSelector } from "react-redux";
 import Cart from "../screens/mainScreens/Cart";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import Account from "../screens/mainScreens/Account";
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabs() {
   const items = useSelector((state) => state.cart.items);
+  const { user } = useContext(AuthContext);
   return (
     <View style={styles.container}>
       <Tab.Navigator screenOptions={{ headerShown: false }}>
@@ -57,15 +60,17 @@ export default function BottomTabs() {
           }}
         />
 
-        <Tab.Screen
-          name="Acount"
-          component={AccountScreen}
-          options={{
-            tabBarIcon: () => {
-              return <Ionicons name="cog-outline" size={20} />;
-            },
-          }}
-        />
+        {user && (
+          <Tab.Screen
+            name="Acount"
+            component={Account}
+            options={{
+              tabBarIcon: () => {
+                return <Ionicons name="cog-outline" size={20} />;
+              },
+            }}
+          />
+        )}
       </Tab.Navigator>
     </View>
   );

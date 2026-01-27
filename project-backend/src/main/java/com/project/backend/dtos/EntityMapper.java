@@ -173,7 +173,9 @@ public class EntityMapper {
     public List<OrderDetailsRespDTO> getAllOrderDetailsRespDto(List<OrderDetails> orderDetails) {
         List<OrderDetailsRespDTO> orderDetailsRespDTOList = new ArrayList<>();
         for(OrderDetails orderDetail : orderDetails) {
+            Products product = productsRepository.findById(orderDetail.getProduct().getProductId()).get();
             OrderDetailsRespDTO orderDetailsRespDTO = new OrderDetailsRespDTO();
+            orderDetailsRespDTO.setName(product.getName());
             orderDetailsRespDTO.setProductId(orderDetail.getProduct().getProductId());
             orderDetailsRespDTO.setPrice(orderDetail.getPrice());
             orderDetailsRespDTO.setQuantity(orderDetail.getQuantity());

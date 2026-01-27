@@ -23,11 +23,11 @@ public class OrdersController {
     private EntityMapper mapper;
 //
 //    //done  //user
-//    @GetMapping
-//    public ResponseEntity<?> findAllOrders(Principal principal) {
-//        int userId = mapper.userEmailToId(principal.getName()).getUserId();
-//        return ResponseEntity.ok(orderService.findOrdersByUserId(userId));
-//    }
+    @GetMapping
+    public ResponseEntity<?> findAllOrders(Principal principal) {
+        int userId = mapper.userEmailToId(principal.getName()).getUserId();
+        return ResponseEntity.ok(orderService.findOrdersByUserId(userId));
+    }
 //
 //    //done  //user
 //    @GetMapping("/{oid}")
@@ -44,8 +44,7 @@ public class OrdersController {
     @PostMapping
     public ResponseEntity<?> placeOrder(@RequestBody OrderReqDTO orderReqDTO, Principal principal) {
         User user = mapper.userEmailToId(principal.getName());
-        orderService.placeOrder(user,orderReqDTO);
-        return ResponseEntity.ok("Order Placed");
+        return ResponseEntity.ok(orderService.placeOrder(user,orderReqDTO));
     }
 //
 //    @GetMapping("/details/{orderId}")

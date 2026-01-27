@@ -9,10 +9,12 @@ import {
   Alert,
 } from "react-native";
 import AddressForm from "./AddressForm";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { addUserAddress } from "../../services/address";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function AddAddressModal({ visible, onSave, onClose }) {
+  const { user } = useContext(AuthContext);
   const [address, setAddress] = useState({
     addressLine: "",
     city: "",
@@ -39,12 +41,11 @@ export default function AddAddressModal({ visible, onSave, onClose }) {
       setLoading(true);
 
       // Call API to save the address
-      const savedAddress = await addUserAddress(address);
+      const savedAddress = await addUserAddress(address, user.token);
 
       // If API returns the saved address
       onSave(savedAddress);
     } catch (err) {
-      console.log("Failed to save address", err);
       Alert.alert("Error", "Could not save address. Please try again.");
     } finally {
       setLoading(false);

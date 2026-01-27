@@ -1,9 +1,6 @@
 package com.project.backend.controllers.Auth;
 
-import com.project.backend.dtos.AuthRequestDTO;
-import com.project.backend.dtos.AuthResponseDTO;
-import com.project.backend.dtos.UserRequestDTO;
-import com.project.backend.dtos.VendorRequestDTO;
+import com.project.backend.dtos.*;
 import com.project.backend.entities.User;
 import com.project.backend.entities.Vendor;
 import com.project.backend.repository.UserRepository;
@@ -36,31 +33,34 @@ public class AuthController {
 
 
         @PostMapping("/login/vendor")
-        public ResponseEntity<?> authenticateVendor(@RequestBody AuthRequestDTO loginRequest) {
+        public ResponseEntity<Resp<?>> authenticateVendor(@RequestBody AuthRequestDTO loginRequest) {
             try {
                 AuthenticationManager manager = securityConfig.vendorAuthManager(securityConfig.vendorAuthProvider()) ;
                 Authentication auth = manager.authenticate(
                         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
                 );
                 Vendor vendor = (Vendor) auth.getPrincipal();
+                Vendor checkVendor = vendorRepository.getVendorByEmail(loginRequest.getUsername()).get();
+                if(checkVendor.getStatus().equals("inactive")) {
+                    return ResponseEntity.ok(Resp.error("Unauthorized Vendor"));
+                }
                 String role = vendor.getAuthorities().stream().findFirst().get().getAuthority();
                 String token = tokenProvider.createToken(vendor.getEmail(), role);
                 AuthResponseDTO responseDTO = new AuthResponseDTO(token,role,vendor.getFirstName(), vendor.getLastName(), vendor.getEmail(), vendor.getMobile());
-                return ResponseEntity.ok(responseDTO);
+                return ResponseEntity.ok(Resp.success(responseDTO));
             } catch (BadCredentialsException ex) {
-                return ResponseEntity.status(401).body("Invalid username/password");
+                return ResponseEntity.ok(Resp.error("Invalid username/password"));
             } catch (AuthenticationException ex) {
-                return ResponseEntity.status(401).body("Authentication failed: " + ex.getMessage());
+                return ResponseEntity.ok(Resp.error("Authentication failed: " + ex.getMessage()));
             }
         }
 
     @PostMapping("/login/user")
-    public ResponseEntity<?> authenticateUser(@RequestBody AuthRequestDTO loginRequest) {
+    public ResponseEntity<Resp<?>> authenticateUser(@RequestBody AuthRequestDTO loginRequest) {
+        System.out.println("userlogin");
         User user = new User();
         if(userRepository.getUserByEmail(loginRequest.getUsername()).isEmpty()) {
-            user.setEmail(loginRequest.getUsername());
-            user.setPassword(passwordEncoder.encode(loginRequest.getPassword()));
-            userRepository.save(user);
+            return ResponseEntity.ok(Resp.error(null,"User is not yet registered"));
         }
         try {
             AuthenticationManager manager = securityConfig.userAuthManager(securityConfig.userAuthProvider());
@@ -71,16 +71,17 @@ public class AuthController {
             String role = user.getAuthorities().stream().findFirst().get().getAuthority();
             String token = tokenProvider.createToken(user.getEmail(), role);
             AuthResponseDTO responseDTO = new AuthResponseDTO(token,role, user.getFirstName(), user.getLastName(), user.getEmail(), user.getMobile());
-            return ResponseEntity.ok(responseDTO);
+            return ResponseEntity.ok(Resp.success(responseDTO));
         } catch (BadCredentialsException ex) {
-            return ResponseEntity.status(401).body("Invalid username/password");
+            return ResponseEntity.ok(Resp.success("Invalid username/password"));
         } catch (AuthenticationException ex) {
-            return ResponseEntity.status(401).body("Authentication failed: " + ex.getMessage());
+            return ResponseEntity.ok(Resp.success("Authentication failed: "+ ex.getMessage()));
         }
     }
 
     @PostMapping("/register/vendor")
     public ResponseEntity<?> registerVendor(@RequestBody VendorRequestDTO registerRequest) {
+        System.out.println(registerRequest.getEmail());
         if (vendorRepository.getVendorByEmail(registerRequest.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("Email already exists");
         }
@@ -90,6 +91,7 @@ public class AuthController {
         vendor.setMobile(registerRequest.getMobile());
         vendor.setFirstName(registerRequest.getFirstName());
         vendor.setLastName(registerRequest.getLastName());
+        vendor.setStatus("inactive");
         vendor.setRole("VENDOR");
         vendorRepository.save(vendor);
         return ResponseEntity.ok("Vendor registered");

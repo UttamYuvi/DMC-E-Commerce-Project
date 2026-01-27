@@ -5,12 +5,8 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  //   useEffect(() => {
-  //     console.log("successsss user login:", user);
-  //   }, [user]);
-
   const login = (userData) => {
-    setUser(userData);
+    setUser(userData.data);
   };
 
   const logout = () => {

@@ -21,7 +21,13 @@ function Login() {
     try {
       const result = await loginVendor(email, password);
       console.log("result ", result);
-      if (result.status === 200) {
+
+      if (result.status === "error") {
+        alert(result.message);
+        return;
+      }
+
+      if (result.status === "success") {
         setVendorToken(result.data.token);
 
         const vendorObj = {
@@ -106,7 +112,7 @@ function Login() {
               <Grid size={12}>
                 <AppText>
                   <label> Don't have an account?</label>
-                  <Link to="/register"> Register here </Link>
+                  <Link to="/vendor/register"> Register here </Link>
                   <label>for free</label>
                 </AppText>
               </Grid>

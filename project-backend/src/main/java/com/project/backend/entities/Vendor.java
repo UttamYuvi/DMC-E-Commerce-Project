@@ -26,7 +26,7 @@ public class Vendor implements UserDetails {
     private String lastName;
     private String email;
     private String mobile;
-//    private String subscriptionStatus;
+    private String status;
     private double commissionRate;
     private String password;
     private String role = "VENDOR";

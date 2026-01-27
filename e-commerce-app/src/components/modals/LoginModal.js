@@ -11,9 +11,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useContext, useState } from "react";
 import { loginUser } from "../../services/auth";
 import { AuthContext } from "../../context/AuthContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-function LoginModal({ visible, onClose }) {
+function LoginModal({ visible, onClose, onOpenClose }) {
   const { login } = useContext(AuthContext);
   const navigation = useNavigation();
 
@@ -22,12 +21,9 @@ function LoginModal({ visible, onClose }) {
 
   const onLogin = async () => {
     const success = await loginUser(email, password);
-    if (success.role == "USER") {
-      const { email, token } = success;
-      console.log("success:", email, token);
 
-      await AsyncStorage.setItem("username", email);
-      await AsyncStorage.setItem("token", token);
+    if (success.data.role == "USER") {
+      const { email, token } = success.data;
       login(success);
       onClose(true);
     }
@@ -36,7 +32,7 @@ function LoginModal({ visible, onClose }) {
   return (
     <Modal transparent visible={visible} animationType="slide">
       {/* Overlay - click outside */}
-      <Pressable style={styles.overlay} onPress={() => onClose(false)}>
+      <Pressable style={styles.overlay} onPress={() => onOpenClose(false)}>
         {/* Modal box - stop closing on press */}
         <Pressable style={styles.modal} onPress={() => {}}>
           <Text style={styles.title}>Login</Text>
@@ -120,7 +116,7 @@ const styles = StyleSheet.create({
   },
 
   btn: {
-    backgroundColor: "#FF7A00",
+    backgroundColor: "#a2f5f3",
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
@@ -141,7 +137,7 @@ const styles = StyleSheet.create({
   },
 
   link: {
-    color: "#FF7A00",
+    color: "#a2f5f3",
     fontWeight: "600",
   },
 });
