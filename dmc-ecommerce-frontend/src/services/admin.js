@@ -20,3 +20,21 @@ export async function loginAdmin(email, password) {
     });
   }
 }
+export async function getAdminDashboard() {
+  try {
+    const url = base_url.adminUrl + "/admin/getAllVendors"; // ✅ FIXED URL
+
+    const token = localStorage.getItem("adminToken"); // ✅ FIXED KEY
+
+    return await axios.get(url, {
+      headers: {
+        token: token, // ✅ MATCHES verifyAdminAuth
+      },
+    });
+  } catch (error) {
+    Swal.fire({
+      icon: "error",
+      title: "Dashboard fetch failed",
+    });
+  }
+}
