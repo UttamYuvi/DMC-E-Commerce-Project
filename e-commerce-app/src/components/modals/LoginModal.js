@@ -21,27 +21,27 @@ function LoginModal({ visible, onClose, onOpenClose }) {
   const [password, setPassword] = useState("");
 
   const onLogin = async () => {
-  const success = await loginUser(email, password);
+    const success = await loginUser(email, password);
 
-  if (success.status === "success") {
-    console.log(success)
-    login(success);
-    Toast.show({ type: 'success', text1: 'Login successful 🎉' });
-
-  }else if (success.message === "Invalid username/password") {
-    Toast.show({ type: 'error', text1: 'Invalid username/password' });
-  }
-   else if (success.status === "error") {
-    Toast.show({
-      type: 'error',
-      position: 'bottom',
-      text1: "You're not registered yet",
-      text2: "Please register to continue",
-    });
-    navigation.navigate("Register")
-  }
-  onClose();
-};
+    if (success.message === "Invalid username/password") {
+      Toast.show({ type: "error", text1: "Invalid username/password" });
+      return;
+    } else if (success.status === "success") {
+      await login(success);
+      Toast.show({ type: "success", text1: "Login successful 🎉" });
+      setEmail("");
+      setPassword("");
+    } else if (success.status === "error") {
+      Toast.show({
+        type: "error",
+        position: "bottom",
+        text1: "You're not registered yet",
+        text2: "Please register to continue",
+      });
+      navigation.navigate("Register");
+    }
+    onClose();
+  };
 
   return (
     <Modal transparent visible={visible} animationType="slide">

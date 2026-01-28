@@ -38,41 +38,64 @@ function CartScreen({ navigation }) {
         <Text style={commonStyles.title}>Cart</Text>
       </View>
 
-      <FlatList
-        data={items}
-        keyExtractor={(item) => item.productId.toString()}
-        renderItem={({ item }) => <ProductCard item={item} />}
-        numColumns={2}
-        contentContainerStyle={{
-          paddingBottom: footerHeight + 12,
-        }}
-        showsVerticalScrollIndicator={false}
-      />
-      <View
-        style={styles.cartFooter}
-        onLayout={(e) => setFooterHeight(e.nativeEvent.layout.height)}
-      >
-        <View style={styles.row}>
-          <Text style={styles.label}>Items ({totalQuantity})</Text>
-          <Text style={styles.value}>₹ {totalAmount}</Text>
-        </View>
+      {items.length > 0 ? (
+        <>
+          <FlatList
+            data={items}
+            keyExtractor={(item) => item.productId.toString()}
+            renderItem={({ item }) => <ProductCard item={item} />}
+            numColumns={2}
+            contentContainerStyle={{
+              paddingBottom: footerHeight + 12,
+            }}
+            showsVerticalScrollIndicator={false}
+          />
+          <View
+            style={styles.cartFooter}
+            onLayout={(e) => setFooterHeight(e.nativeEvent.layout.height)}
+          >
+            <View style={styles.row}>
+              <Text style={styles.label}>Items ({totalQuantity})</Text>
+              <Text style={styles.value}>₹ {totalAmount}</Text>
+            </View>
 
-        <View style={styles.row}>
-          <Text style={styles.label}>Delivery</Text>
-          <Text style={[styles.value, { color: "green" }]}>FREE</Text>
-        </View>
+            <View style={styles.row}>
+              <Text style={styles.label}>Delivery</Text>
+              <Text style={[styles.value, { color: "green" }]}>FREE</Text>
+            </View>
 
-        <View style={styles.divider} />
+            <View style={styles.divider} />
 
-        <View style={styles.row}>
-          <Text style={styles.totalLabel}>Total Amount</Text>
-          <Text style={styles.totalValue}>₹ {totalAmount}</Text>
-        </View>
+            <View style={styles.row}>
+              <Text style={styles.totalLabel}>Total Amount</Text>
+              <Text style={styles.totalValue}>₹ {totalAmount}</Text>
+            </View>
 
-        <TouchableOpacity style={styles.checkoutBtn} onPress={onCheckoutPress}>
-          <Text style={styles.checkoutText}>Proceed to Checkout</Text>
-        </TouchableOpacity>
-      </View>
+            <TouchableOpacity
+              style={styles.checkoutBtn}
+              onPress={onCheckoutPress}
+            >
+              <Text style={styles.checkoutText}>Proceed to Checkout</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      ) : (
+        <>
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyTitle}>Your cart is empty 🛒</Text>
+            <Text style={styles.emptySubtitle}>
+              Looks like you haven’t added anything yet
+            </Text>
+
+            <TouchableOpacity
+              style={styles.emptyBtn}
+              onPress={() => navigation.navigate("Home")}
+            >
+              <Text style={styles.emptyBtnText}>Start Shopping</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
     </View>
   );
 }
@@ -146,6 +169,41 @@ const styles = StyleSheet.create({
   },
 
   checkoutText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 24,
+  },
+
+  emptyTitle: {
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#033f40",
+    marginBottom: 8,
+  },
+
+  emptySubtitle: {
+    fontSize: 14,
+    color: "#555",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+
+  emptyBtn: {
+    backgroundColor: "#f97705",
+    paddingVertical: 12,
+    paddingHorizontal: 28,
+    borderRadius: 10,
+    elevation: 4,
+  },
+
+  emptyBtnText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",

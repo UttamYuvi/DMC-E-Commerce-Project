@@ -11,6 +11,7 @@ import {
 import { AuthContext } from "../../../context/AuthContext";
 import { config } from "../../../services/config";
 import axios from "axios";
+import Toast from "react-native-toast-message";
 
 function UpdatePassword() {
   const [newPassword, setNewPassword] = useState("");
@@ -20,37 +21,55 @@ function UpdatePassword() {
 
   const handleUpdatePassword = async () => {
     if (!newPassword || !confirmPassword) {
-      Alert.alert("Validation Error", "All fields are required");
+      Toast.show({
+        type: "error",
+        text1: "Validation Error",
+        text2: "All fields are required",
+      });
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      Alert.alert("Validation Error", "Passwords do not match");
+      Toast.show({
+        type: "error",
+        text1: "Validation Error",
+        text2: "Passwords do not match",
+      });
       return;
     }
 
     try {
       setLoading(true);
-      const body = {newPassword}
+
+      const body = { newPassword };
+
       const response = await axios.post(
-        `${config.url}/user/updatePassword`, body,
+        `${config.url}/user/updatePassword`,
+        body,
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`, // if using JWT
+            Authorization: `Bearer ${user.token}`,
           },
         },
       );
 
-      Alert.alert("Success", response.data.message || "Password updated!");
-      // setOldPassword("");
+      Toast.show({
+        type: "success",
+        text1: "Success 🎉",
+        text2: response.data.message || "Password updated successfully",
+      });
+
       setNewPassword("");
       setConfirmPassword("");
     } catch (error) {
-      Alert.alert(
-        "Error",
-        error.response?.data?.message || "Something went wrong",
-      );
+      Toast.show({
+        type: "error",
+        text1: "Update Failed",
+        text2:
+          error.response?.data?.message ||
+          "Something went wrong. Please try again",
+      });
     } finally {
       setLoading(false);
     }
@@ -82,10 +101,13 @@ function UpdatePassword() {
         <TouchableOpacity
           style={styles.button}
           onPress={handleUpdatePassword}
-          disabled={loading}>
-          {loading ?
+          disabled={loading}
+        >
+          {loading ? (
             <ActivityIndicator color="#000" />
-          : <Text style={styles.buttonText}>Update Password</Text>}
+          ) : (
+            <Text style={styles.buttonText}>Update Password</Text>
+          )}
         </TouchableOpacity>
       </View>
     </View>

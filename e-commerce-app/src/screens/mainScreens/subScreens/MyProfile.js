@@ -1,5 +1,5 @@
 // import { useNavigation } from '@react-navigation/core'
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -12,26 +12,40 @@ import { updateUserProfile } from "../../../services/profile";
 import { AuthContext } from "../../../context/AuthContext";
 
 function MyProfile() {
-  const { user } = useContext(AuthContext);
+  const { user, login } = useContext(AuthContext);
 
-  const [firstName, setFirstName] = useState(user.firstname);
-  const [lastName, setLastName] = useState(user.lastName);
-  const [email, setEmail] = useState(user.email);
-  const [mobile, setMobile] = useState(user.mobile);
-  const [gender, setGender] = useState(user.gender);
+  console.log("user aa gya", user);
 
-  console.log("userrrrrrrr", user);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [gender, setGender] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName || "");
+      setLastName(user.lastName || "");
+      setEmail(user.email || "");
+      setMobile(user.mobile || "");
+      setGender(user.gender || "");
+    }
+  }, [user]);
 
   const onUpdate = async () => {
-    const payload = {
-      firstName,
-      lastName,
-      mobile,
-    };
+    const payload = { firstName, lastName, mobile, gender };
 
-    console.log("Updated Profile:", payload);
     try {
       const result = await updateUserProfile(payload, user.token);
+
+      login({
+        data: {
+          ...user,
+          ...payload,
+          token: user.token,
+        },
+      });
+
       alert("Profile Updated Successfully");
     } catch (error) {
       console.log(error);
@@ -73,12 +87,23 @@ function MyProfile() {
         />
 
         {/* Gender (Disabled) */}
+        {/* Gender */}
         <Text style={styles.label}>Gender</Text>
-        <TextInput
-          value={gender}
-          editable={false}
-          style={[styles.input, styles.disabledInput]}
-        />
+
+        <View style={styles.radioGroup}>
+          {["Male", "Female", "Other"].map((item) => (
+            <TouchableOpacity
+              key={item}
+              style={styles.radioOption}
+              onPress={() => setGender(item)}
+            >
+              <View style={styles.radioCircle}>
+                {gender === item && <View style={styles.selectedRb} />}
+              </View>
+              <Text style={styles.radioText}>{item}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
         <TouchableOpacity style={styles.updateBtn} onPress={onUpdate}>
           <Text style={styles.updateText}>Update Profile</Text>
@@ -160,6 +185,40 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "700",
+  },
+  radioGroup: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+
+  radioOption: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  radioCircle: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#055052",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 6,
+  },
+
+  selectedRb: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: "#055052",
+  },
+
+  radioText: {
+    fontSize: 14,
+    color: "#055052",
+    fontWeight: "600",
   },
 });
 

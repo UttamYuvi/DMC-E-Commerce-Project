@@ -23,7 +23,7 @@ function AccountScreen() {
       <View style={styles.header}>
         <Ionicons name="person-circle-outline" size={80} color="#FF5533" />
         <Text style={styles.name}>
-          {user?.firstname + " " + user?.lastName || "My Account"}
+          {user?.firstName + " " + user?.lastName || "My Account"}
         </Text>
         <Text style={styles.mobile}>{user?.mobile || ""}</Text>
       </View>
