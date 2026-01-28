@@ -1,9 +1,13 @@
 package com.project.backend.services;
 
+import com.project.backend.dtos.UpdatePasswordReqDTO;
 import com.project.backend.dtos.UserProfileReqDTO;
 import com.project.backend.dtos.UserProfileResponseDto;
 import com.project.backend.entities.Address;
 import com.project.backend.entities.User;
+import org.springframework.security.core.parameters.P;
+
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
@@ -13,5 +17,7 @@ public interface UserService {
     UserProfileResponseDto getUserProfile(String email);
 
     List<Address> getUserAddress(String email);
+
+    String updatePassword(UpdatePasswordReqDTO updatePasswordReqDTO, Principal principal);
 
 }

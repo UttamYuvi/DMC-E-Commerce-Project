@@ -1,17 +1,16 @@
 package com.project.backend.services;
 
-import com.project.backend.dtos.AddressReqDTO;
-import com.project.backend.dtos.EntityMapper;
-import com.project.backend.dtos.UserProfileReqDTO;
-import com.project.backend.dtos.UserProfileResponseDto;
+import com.project.backend.dtos.*;
 import com.project.backend.entities.Address;
 import com.project.backend.repository.AddressRepository;
 import com.project.backend.repository.UserRepository;
 import com.project.backend.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -20,7 +19,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private AddressRepository addressRepository;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private EntityMapper mapper;
 
@@ -50,9 +50,17 @@ public class UserServiceImpl implements UserService {
         address.setLandmark(addressReqDTO.getLandmark());
         address.setAddressType(addressReqDTO.getAddressType());
         addressRepository.save(address);
-
     }
 
+    public String updatePassword(UpdatePasswordReqDTO updatePasswordReqDTO, Principal principal) {
+        int userId = mapper.userEmailToId(principal.getName()).getUserId();
+        String getUserOldPassword = userRepository.findById(userId).get().getPassword();
+        String newPassword = passwordEncoder.encode(updatePasswordReqDTO.getNewPassword());
+        int count = userRepository.updatePassword(newPassword,userId);
+        if(count == 1)
+            return "yess";
+        return null;
+    }
 
     @Override
     public List<Address> getUserAddress(String email) {
