@@ -6,11 +6,13 @@ import {
   View,
   KeyboardAvoidingView,
   Platform,
+  Keyboard,
 } from "react-native";
 import Button from "../../components/Button";
 import { commonStyles } from "../styles/commonStyles";
 import { useState } from "react";
 import { registerUser } from "../../services/auth";
+import Toast from "react-native-toast-message";
 
 function RegisterScreen({ navigation }) {
   const [form, setForm] = useState({
@@ -27,10 +29,16 @@ function RegisterScreen({ navigation }) {
 
   const onSignup = async () => {
     const result = await registerUser(form);
-    if (result.status == 200) {
-      alert(result.data);
+    if (result.status === "success") {
+      Toast.show({ type: 'success', text1: 'Register successful 🎉' });
+      navigation.goBack();
     }
-    navigation.goBack();
+    else{
+      Keyboard.dismiss();
+      Toast.show({ type: 'error',position:"bottom", text1: 'User already present' });
+
+    }
+    
   };
 
   return (

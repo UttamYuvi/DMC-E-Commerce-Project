@@ -6,15 +6,41 @@ import { StyleSheet, View } from "react-native";
 import Home from "../screens/mainScreens/Home";
 import { useSelector } from "react-redux";
 import Cart from "../screens/mainScreens/Cart";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import Account from "../screens/mainScreens/Account";
+import LoginModal from "../components/modals/LoginModal";
+import { useNavigation } from "@react-navigation/core";
 
 const Tab = createBottomTabNavigator();
+
+function DummyScreen() {
+  return null;
+}
 
 export default function BottomTabs() {
   const items = useSelector((state) => state.cart.items);
   const { user } = useContext(AuthContext);
+  const navigation = useNavigation()
+  const [showLogin, setShowLogin] = useState(false);
+
+  const handleLoginSuccess = () => {
+    setShowLogin(false)
+    // navigation.navigate("Account",{
+    //   screen: "AccountHome",
+    // })
+  }
+//   useEffect(() => {
+//   if (user) {
+//     setTimeout(() => {
+//       navigation.navigate("Account", {
+//       screen: "AccountHome",
+//       });
+//     },0)
+//   }
+// }, [user]);
+
+
   return (
     <View style={styles.container}>
       <Tab.Navigator screenOptions={{ headerShown: false }}>
@@ -60,9 +86,9 @@ export default function BottomTabs() {
           }}
         />
 
-        {user && (
+        {user ? (
           <Tab.Screen
-            name="Acount"
+            name="Account"
             component={Account}
             options={{
               tabBarIcon: () => {
@@ -70,8 +96,30 @@ export default function BottomTabs() {
               },
             }}
           />
-        )}
+        ) : (
+          <Tab.Screen
+        name="login"
+        component={DummyScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+                <Ionicons name="person-outline" size={size} color={color} />
+          ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            setShowLogin(true)
+          }
+        }}
+        />
+      )}
+
       </Tab.Navigator>
+      <LoginModal
+      visible={showLogin}
+      onClose={handleLoginSuccess}
+      onOpenClose={()=>setShowLogin(false)}
+      />
     </View>
   );
 }

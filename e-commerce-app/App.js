@@ -6,6 +6,7 @@ import BottomTabs from "./src/navigation/BottomTabs";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { AuthProvider } from "./src/context/AuthContext";
+import Toast from "react-native-toast-message";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </AuthProvider>
+      <Toast />
     </Provider>
   );
 }

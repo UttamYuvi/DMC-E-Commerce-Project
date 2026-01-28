@@ -59,6 +59,10 @@ function HomeScreen({ navigation }) {
     setRefreshing(false);
   };
 
+  const toCategory = (item) => {
+    console.log(item)
+  }
+
   useEffect(() => {
     loadAllProducts();
     loadAllCategories();
@@ -75,7 +79,15 @@ function HomeScreen({ navigation }) {
 
   const renderCategories = ({ item }) => (
     <View style={styles.categoryPill}>
-      <Text style={styles.categoryText}>{item.name}</Text>
+      <TouchableOpacity onPress={() => navigation.navigate("Categories", {
+        screen: "CategorySubCategoryScreen",
+        params: {
+          categoryId: item.categoryId,
+        },
+      }
+      )}>
+        <Text style={styles.categoryText}>{item.name}</Text>
+      </TouchableOpacity>
     </View>
   );
 
@@ -113,6 +125,7 @@ function HomeScreen({ navigation }) {
         <Text style={styles.logo}>Shop Infi</Text>
         <Text style={styles.subtitle}>Find what you love ❤️</Text>
       </View>
+
       <View>
         <FlatList
           data={cateogries}
@@ -162,47 +175,6 @@ function HomeScreen({ navigation }) {
     </View>
   );
 }
-
-// const styles = StyleSheet.create({
-//   homeHeader: {
-//     // backgroundColor: "red",
-//     padding: 20,
-//     paddingTop: 45,
-//   },
-//   item: {
-//     padding: 12,
-//     marginVertical: 6,
-//     marginTop: 500,
-//   },
-//   subCategoryItem: {
-//     backgroundColor: "#FAFAFA",
-//     padding: 20,
-//   },
-//   subCatImage: {
-//     width: 100,
-//     height: 100,
-//     borderRadius: 100,
-//   },
-//   categoryItem: {
-//     display: "flex",
-//     flexDirection: "row",
-//     backgroundColor: "white",
-//     padding: 12,
-//     paddingHorizontal: 30,
-//   },
-//   categoryName: {
-//     color: "black",
-//   },
-//   text: {
-//     color: "white",
-//   },
-//   // product card
-//   productsContainer: {
-//     flex: 1,
-//     backgroundColor: "pink",
-//     alignItems: "center",
-//   },
-// });
 
 const styles = StyleSheet.create({
   container: {

@@ -60,7 +60,7 @@ public class AuthController {
         System.out.println("userlogin");
         User user = new User();
         if(userRepository.getUserByEmail(loginRequest.getUsername()).isEmpty()) {
-            return ResponseEntity.ok(Resp.error(null,"User is not yet registered"));
+            return ResponseEntity.ok(Resp.error(null,"You’re not registered yet. Please register to continue."));
         }
         try {
             AuthenticationManager manager = securityConfig.userAuthManager(securityConfig.userAuthProvider());
@@ -98,9 +98,9 @@ public class AuthController {
     }
 
     @PostMapping("/register/user")
-    public ResponseEntity<?> registerUser(@RequestBody UserRequestDTO registerRequest) {
+    public ResponseEntity<Resp<?>> registerUser(@RequestBody UserRequestDTO registerRequest) {
         if (userRepository.getUserByEmail(registerRequest.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("User already present");
+            return ResponseEntity.ok(Resp.error(null,"User already present"));
         }
         System.out.println("User for register:"+registerRequest);
         User user = new User();
@@ -111,6 +111,6 @@ public class AuthController {
         user.setLastName(registerRequest.getLastName());
         user.setRole("USER");
         userRepository.save(user);
-        return ResponseEntity.ok("User registered");
+        return ResponseEntity.ok(Resp.success("User registered"));
     }
 }

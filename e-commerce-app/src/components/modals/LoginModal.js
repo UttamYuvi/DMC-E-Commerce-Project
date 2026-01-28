@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useContext, useState } from "react";
 import { loginUser } from "../../services/auth";
 import { AuthContext } from "../../context/AuthContext";
+import Toast from "react-native-toast-message";
 
 function LoginModal({ visible, onClose, onOpenClose }) {
   const { login } = useContext(AuthContext);
@@ -20,14 +21,23 @@ function LoginModal({ visible, onClose, onOpenClose }) {
   const [password, setPassword] = useState("");
 
   const onLogin = async () => {
-    const success = await loginUser(email, password);
+  const success = await loginUser(email, password);
 
-    if (success.data.role == "USER") {
-      const { email, token } = success.data;
-      login(success);
-      onClose(true);
-    }
-  };
+  if (success.status === "success") {
+    login(success);
+    Toast.show({ type: 'success', text1: 'Login successful 🎉' });
+
+  } else if (success.status === "error") {
+    Toast.show({
+      type: 'error',
+      position: 'bottom',
+      text1: "You're not registered yet",
+      text2: "Please register to continue",
+    });
+    navigation.navigate("Register")
+  }
+  onClose();
+};
 
   return (
     <Modal transparent visible={visible} animationType="slide">
@@ -116,7 +126,7 @@ const styles = StyleSheet.create({
   },
 
   btn: {
-    backgroundColor: "#a2f5f3",
+    backgroundColor: "#f97705",
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: "center",
@@ -137,7 +147,7 @@ const styles = StyleSheet.create({
   },
 
   link: {
-    color: "#a2f5f3",
+    color: "#f97705",
     fontWeight: "600",
   },
 });

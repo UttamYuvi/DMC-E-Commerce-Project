@@ -1,3 +1,3 @@
 export const config = {
-  url: "http://10.136.79.167:8080",
+  url: "http://192.168.0.102:8080",
 };
