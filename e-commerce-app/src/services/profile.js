@@ -16,3 +16,4 @@ export async function updateUserProfile(payload, token) {
     return null;
   }
 }
+

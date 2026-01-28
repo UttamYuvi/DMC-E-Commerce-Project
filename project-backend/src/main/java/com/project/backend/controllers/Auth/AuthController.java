@@ -30,6 +30,8 @@ public class AuthController {
     private CustomUserDetailsService customUserDetailsService;
     @Autowired
     private SecurityConfig securityConfig;
+    @Autowired
+    private EntityMapper mapper;
 
 
         @PostMapping("/login/vendor")
@@ -57,7 +59,6 @@ public class AuthController {
 
     @PostMapping("/login/user")
     public ResponseEntity<Resp<?>> authenticateUser(@RequestBody AuthRequestDTO loginRequest) {
-        System.out.println("userlogin");
         User user = new User();
         if(userRepository.getUserByEmail(loginRequest.getUsername()).isEmpty()) {
             return ResponseEntity.ok(Resp.error(null,"You’re not registered yet. Please register to continue."));
@@ -73,7 +74,7 @@ public class AuthController {
             AuthResponseDTO responseDTO = new AuthResponseDTO(token,role, user.getFirstName(), user.getLastName(), user.getEmail(), user.getMobile());
             return ResponseEntity.ok(Resp.success(responseDTO));
         } catch (BadCredentialsException ex) {
-            return ResponseEntity.ok(Resp.success("Invalid username/password"));
+            return ResponseEntity.ok(Resp.error("Invalid username/password"));
         } catch (AuthenticationException ex) {
             return ResponseEntity.ok(Resp.success("Authentication failed: "+ ex.getMessage()));
         }

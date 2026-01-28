@@ -25,12 +25,16 @@ function LoginModal({ visible, onClose, onOpenClose }) {
     const success = await loginUser(email, password);
 
     if (success.status === "success") {
+    console.log(success)
       await login(success);
       Toast.show({ type: "success", text1: "Login successful 🎉" });
       setEmail("");
       setPassword("");
       onClose();
-    } else if (success.status === "error") {
+    }else if (success.message === "Invalid username/password") {
+    Toast.show({ type: 'error', text1: 'Invalid username/password' });
+  }
+   else if (success.status === "error") {
       Toast.show({
         type: "error",
         position: "bottom",

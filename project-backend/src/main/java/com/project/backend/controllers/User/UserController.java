@@ -1,6 +1,8 @@
 package com.project.backend.controllers.User;
 
 import com.project.backend.dtos.AddressReqDTO;
+import com.project.backend.dtos.Resp;
+import com.project.backend.dtos.UpdatePasswordReqDTO;
 import com.project.backend.dtos.UserProfileReqDTO;
 import com.project.backend.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,11 @@ public class UserController {
     public ResponseEntity<?> getUserAddress(Principal principal) {
         System.out.println(principal.getName());
         return ok(userService.getUserAddress(principal.getName()));
+    }
+
+    @PostMapping("/updatePassword")
+    public ResponseEntity<Resp<?>> updatePassword(@RequestBody UpdatePasswordReqDTO updatePasswordReqDTO, Principal principal) {
+        return ResponseEntity.ok(Resp.success(userService.updatePassword(updatePasswordReqDTO,principal),"password updated"));
     }
 
 
