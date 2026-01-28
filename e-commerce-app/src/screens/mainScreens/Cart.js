@@ -2,9 +2,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CartScreen from "./Cart/CartScreen";
 import CheckoutScreen from "./Checkout/CheckoutScreen";
 import PlaceOrderScreen from "./Checkout/PlaceOrderScreen";
+import { useSelector } from "react-redux";
 
 function Cart() {
   const Stack = createNativeStackNavigator();
+
+  
 
   return (
     <Stack.Navigator

@@ -26,19 +26,8 @@ export default function BottomTabs() {
 
   const handleLoginSuccess = () => {
     setShowLogin(false)
-    // navigation.navigate("Account",{
-    //   screen: "AccountHome",
-    // })
   }
-//   useEffect(() => {
-//   if (user) {
-//     setTimeout(() => {
-//       navigation.navigate("Account", {
-//       screen: "AccountHome",
-//       });
-//     },0)
-//   }
-// }, [user]);
+
 
 
   return (

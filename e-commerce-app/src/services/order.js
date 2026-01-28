@@ -10,10 +10,8 @@ export async function placeOrderService(orderParam, token) {
         "Content-Type": "application/json",
       },
     });
-    console.log("service", response.data);
     return response.data;
   } catch (ex) {
-    console.log("error", ex);
     return null;
   }
 }
@@ -27,10 +25,8 @@ export async function getAllUserOrders(token) {
         "Content-Type": "application/json",
       },
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
-    console.log(error);
     return null;
   }
 }

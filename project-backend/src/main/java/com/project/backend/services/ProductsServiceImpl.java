@@ -34,12 +34,19 @@ public class ProductsServiceImpl implements ProductsService{
     private SubCategoryRepository subCategoryRepository;
 
     //done  -  user
+
+
     public Page<ProductRespDTO> getAllProducts(int page, int size) {
-        Page<Products> productPage = productsRepository.findAll(
-                PageRequest.of(page, size, Sort.by("createdAt").descending())
-        );
+
+        Page<Products> productPage =
+                productsRepository.findByVendor_Status(
+                        "active",
+                        PageRequest.of(page, size, Sort.by("createdAt").descending())
+                );
+
         return productPage.map(mapper::productToProductRespDTO);
     }
+
 
 
     @Override

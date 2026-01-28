@@ -7,7 +7,6 @@ import { Ionicons } from "@expo/vector-icons";
 function MyOrders() {
   const [orders, setOrders] = useState([]);
   const { user } = useContext(AuthContext);
-  console.log(user);
 
   const getAllOrder = async () => {
     const result = await getAllUserOrders(user.token);

@@ -16,7 +16,6 @@ export async function registerUser(body) {
   try {
     const url = `${config.url}/register/user`;
     const response = await axios.post(url, body);
-    console.log("response:", response.data);
     return response.data;
   } catch (ex) {
     return null;

@@ -17,7 +17,6 @@ import { getAllProductsBySubCatAndCat } from "../../../services/products";
 
 function CategorySubCategoryScreen({ navigation, route }) {
   const initialCategoryId = route?.params?.categoryId || 1;
-  console.log("route",route)
   const [cateogries, setCategories] = useState([]);
   const [subCateogries, setSubCategories] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(initialCategoryId);

@@ -55,7 +55,6 @@ export default function CheckoutScreen({ navigation }) {
 
   const placeOrder = async (address) => {
     if (!user?.token) {
-      console.log("User not logged in");
       setStep("LOGIN");
       return;
     }
@@ -67,6 +66,7 @@ export default function CheckoutScreen({ navigation }) {
 
     if (!items || items.length === 0) {
       console.log("Cart is empty");
+      navigation.replace("CartScreen");
       return;
     }
 
@@ -86,8 +86,7 @@ export default function CheckoutScreen({ navigation }) {
         orderDetails: result.orderDetails,
       });
       dispatch(clear());
-    } catch (err) {
-    }
+    } catch (err) {}
   };
 
   return (

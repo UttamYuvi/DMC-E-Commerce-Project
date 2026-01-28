@@ -13,7 +13,6 @@ export const getUserAddresses = async (token) => {
 
     return res.data;
   } catch (error) {
-    console.log(error);
     return error;
   }
 };
@@ -29,7 +28,6 @@ export const addUserAddress = async (address, token) => {
     });
     return res.data;
   } catch (error) {
-    console.log(error);
     return error;
   }
 };

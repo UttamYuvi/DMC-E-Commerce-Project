@@ -59,10 +59,6 @@ function HomeScreen({ navigation }) {
     setRefreshing(false);
   };
 
-  const toCategory = (item) => {
-    console.log(item)
-  }
-
   useEffect(() => {
     loadAllProducts();
     loadAllCategories();
@@ -79,13 +75,16 @@ function HomeScreen({ navigation }) {
 
   const renderCategories = ({ item }) => (
     <View style={styles.categoryPill}>
-      <TouchableOpacity onPress={() => navigation.navigate("Categories", {
-        screen: "CategorySubCategoryScreen",
-        params: {
-          categoryId: item.categoryId,
-        },
-      }
-      )}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Categories", {
+            screen: "CategorySubCategoryScreen",
+            params: {
+              categoryId: item.categoryId,
+            },
+          })
+        }
+      >
         <Text style={styles.categoryText}>{item.name}</Text>
       </TouchableOpacity>
     </View>

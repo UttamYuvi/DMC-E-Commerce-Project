@@ -2,6 +2,8 @@ package com.project.backend.repository;
 
 import com.project.backend.entities.Products;
 import com.project.backend.entities.SubCategory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,6 +18,12 @@ public interface ProductsRepository extends JpaRepository<Products,Integer> {
     List<Products> findByCategory_CategoryIdAndSubCategory_SubCategoryId(
             int categoryId,
             int subCategoryId
+    );
+
+
+    Page<Products> findByVendor_Status(
+            String status,
+            Pageable pageable
     );
 
 

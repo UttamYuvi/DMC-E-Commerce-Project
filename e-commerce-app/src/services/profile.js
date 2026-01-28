@@ -10,9 +10,9 @@ export async function updateUserProfile(payload, token) {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log("profile.js", response.data);
+
     return response.data;
   } catch (error) {
-    console.log(error);
+    return null;
   }
 }

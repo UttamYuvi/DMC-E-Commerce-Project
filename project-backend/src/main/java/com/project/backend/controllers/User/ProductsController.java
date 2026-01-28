@@ -44,7 +44,6 @@ public class ProductsController {
     //done  //user
     @GetMapping("/{cid}/{scid}")
     public ResponseEntity<?> getProductByCatAndSubcat(@PathVariable("cid") int cid, @PathVariable("scid") int scid) {
-        System.out.println("call");
         return ResponseEntity.ok(productsService.getProductByCatAndSubcat(cid,scid));
     }
 

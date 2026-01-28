@@ -12,6 +12,7 @@ import { useContext, useState } from "react";
 import { loginUser } from "../../services/auth";
 import { AuthContext } from "../../context/AuthContext";
 import Toast from "react-native-toast-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function LoginModal({ visible, onClose, onOpenClose }) {
   const { login } = useContext(AuthContext);
@@ -21,23 +22,26 @@ function LoginModal({ visible, onClose, onOpenClose }) {
   const [password, setPassword] = useState("");
 
   const onLogin = async () => {
-  const success = await loginUser(email, password);
+    const success = await loginUser(email, password);
 
-  if (success.status === "success") {
-    login(success);
-    Toast.show({ type: 'success', text1: 'Login successful 🎉' });
+    if (success.status === "success") {
+      await login(success);
+      Toast.show({ type: "success", text1: "Login successful 🎉" });
+      setEmail("");
+      setPassword("");
+      onClose();
+    } else if (success.status === "error") {
+      Toast.show({
+        type: "error",
+        position: "bottom",
+        text1: "You're not registered yet",
+        text2: "Please register to continue",
+      });
+      setPassword("");
 
-  } else if (success.status === "error") {
-    Toast.show({
-      type: 'error',
-      position: 'bottom',
-      text1: "You're not registered yet",
-      text2: "Please register to continue",
-    });
-    navigation.navigate("Register")
-  }
-  onClose();
-};
+      navigation.navigate("Register");
+    }
+  };
 
   return (
     <Modal transparent visible={visible} animationType="slide">
