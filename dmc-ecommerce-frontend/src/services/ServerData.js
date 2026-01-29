@@ -63,7 +63,21 @@ const serverData = {
   },
   getSaleAndProfit: async () => {
     return VendorServer.get(ApiEndpoint.getSaleAndProfit)
-  }
+  },
+
+  //admin
+  getAllVendors: async () => {
+  return AdminServer.get("/vendor/getAllVendors");
+},
+
+getActiveVendors: async () => {
+  return AdminServer.get("/vendor/getActiveVendors");
+},
+
+getInactiveVendors: async () => {
+  return AdminServer.get("/vendor/getInactiveVendors");
+},
+
 };
 
 export default serverData;

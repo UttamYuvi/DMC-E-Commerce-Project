@@ -9,12 +9,12 @@ export const sideList = [
   },
 
   {
-    name: "Active Vendors",
-    nav: "allActiveVendors",
+    name: "Income",
+    nav: "income",
   },
 
   {
-    name: "Income",
-    nav: "income",
+    name: "Profile",
+    nav: "profile",
   },
 ];
