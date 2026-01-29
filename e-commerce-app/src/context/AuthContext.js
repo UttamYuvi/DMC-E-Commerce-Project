@@ -1,11 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { clear } from "../slice/cartSlice";
 
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   // 🔹 Load auth on app start
   useEffect(() => {
@@ -43,6 +46,7 @@ export function AuthProvider({ children }) {
 
   const logout = async () => {
     setUser(null);
+    dispatch(clear());
     await AsyncStorage.removeItem("auth");
   };
 

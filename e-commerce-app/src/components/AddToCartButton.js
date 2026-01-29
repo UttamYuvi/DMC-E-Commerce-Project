@@ -59,6 +59,7 @@ function AddToCartButton({ product, style }) {
           flexDirection: "row",
           alignItems: "center",
           borderWidth: 1,
+          backgroundColor: "#ff4f2c",
           borderColor: "#ff4f2c",
           borderRadius: 6,
           overflow: "hidden",
@@ -79,50 +80,52 @@ function AddToCartButton({ product, style }) {
     </View>
   );
 }
-const styles = StyleSheet.create({
-  addText: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  controlBtn: {
-    paddingHorizontal: 16,
-    // paddingVertical: 3,
-    backgroundColor: "#FF7A00",
-  },
-  controlText: {
-    color: "#fff",
-    fontSize: 17,
-    fontWeight: "bold",
-  },
-
-  quantity: {
-    fontSize: 18,
-    fontWeight: "600",
-    paddingHorizontal: 12,
-  },
-});
-
 // const styles = StyleSheet.create({
 //   addText: {
-//     color: "#fff",
+//     color: "#FFFFFF",
 //     fontWeight: "bold",
 //   },
 //   controlBtn: {
 //     paddingHorizontal: 16,
-//     paddingVertical: 8,
-//     backgroundColor: "#a2f5f3",
+//     paddingVertical: 3,
+//     padding: 12,
+//     backgroundColor: "red",
 //   },
 //   controlText: {
-//     color: "#fff",
-//     fontSize: 18,
+//     color: "#FFFFFF",
+//     fontSize: 17,
 //     fontWeight: "bold",
 //   },
 
 //   quantity: {
-//     fontSize: 16,
+//     fontSize: 18,
 //     fontWeight: "600",
-//     paddingHorizontal: 12,
+//     // paddingHorizontal: 12,
+//     color: "#FFFFFF",
 //   },
 // });
+
+const styles = StyleSheet.create({
+  addText: {
+    color: "#FFFFFF",
+    fontWeight: "bold",
+  },
+  controlBtn: {
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+  },
+  controlText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+
+  quantity: {
+    fontSize: 16,
+    fontWeight: "600",
+    paddingHorizontal: 12,
+    color: "#FFFFFF",
+  },
+});
 
 export default AddToCartButton;

@@ -16,6 +16,10 @@ export default function CheckoutScreen({ navigation }) {
 
   const items = useSelector((state) => state.cart.items);
 
+  // useEffect(() => {
+  //   console.log("items, user, step", items, user, step);
+  // }, [items, user, step]);
+
   const dispatch = useDispatch();
 
   const [step, setStep] = useState("LOGIN"); // LOGIN | ADDRESS | ADD_ADDRESS
@@ -97,13 +101,13 @@ export default function CheckoutScreen({ navigation }) {
           visible
           onClose={(success) => success && setStep("ADDRESS")}
           onOpenClose={() => {
-            navigation.goBack();
+            navigation?.goBack();
           }}
         />
       )}
 
       {/* ADDRESS STEP */}
-      {step === "ADDRESS" && (
+      {step === "ADDRESS" && items.length > 0 && (
         <>
           {loading ? (
             <View
@@ -119,7 +123,7 @@ export default function CheckoutScreen({ navigation }) {
             <AddressModal
               visible
               addresses={addresses}
-              onClose={() => navigation.goBack()}
+              onClose={() => navigation?.goBack()}
               onAddNew={() => setStep("ADD_ADDRESS")}
               onConfirm={(addr) => {
                 setSelectedAddress(addr);
@@ -131,7 +135,7 @@ export default function CheckoutScreen({ navigation }) {
       )}
 
       {/* ADD ADDRESS STEP */}
-      {step === "ADD_ADDRESS" && (
+      {step === "ADD_ADDRESS" && items.length > 0 && (
         <AddAddressModal
           visible
           onClose={() => setStep("ADDRESS")}

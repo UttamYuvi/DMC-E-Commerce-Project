@@ -7,16 +7,23 @@ import {
 } from "react-native";
 import { commonStyles } from "../../styles/commonStyles";
 import { useSelector } from "react-redux";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import ProductCard from "../../../components/ProductCard";
 import AddressModal from "../../../components/modals/AddressModal";
 import LoginModal from "../../../components/modals/LoginModal";
 import { AuthContext } from "../../../context/AuthContext";
+import { useFocusEffect } from "@react-navigation/core";
 
 function CartScreen({ navigation }) {
   const [footerHeight, setFooterHeight] = useState(0);
 
   const items = useSelector((state) => state.cart.items);
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     console.log("cart scree", items);
+  //   }, [items]),
+  // );
 
   const { totalQuantity, totalAmount } = useMemo(() => {
     return {
@@ -103,7 +110,6 @@ function CartScreen({ navigation }) {
 const styles = StyleSheet.create({
   homeHeader: {
     padding: 20,
-    paddingTop: 45,
     backgroundColor: "#a2f5f3",
   },
   image: {

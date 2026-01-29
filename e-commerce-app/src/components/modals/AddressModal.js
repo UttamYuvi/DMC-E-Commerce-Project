@@ -43,7 +43,7 @@ function AddressModal({
     );
   };
 
-  const selectedAddress = addresses.find((a) => a.addressId === selectedId);
+  const selectedAddress = addresses?.find((a) => a.addressId === selectedId);
 
   return (
     <Modal transparent visible={visible} animationType="slide">

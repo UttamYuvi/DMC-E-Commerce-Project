@@ -57,7 +57,7 @@ export default function AddressListModal({
                 style={styles.btn}
                 disabled={!selectedId}
                 onPress={() =>
-                  onConfirm(addresses.find((a) => a.addressId === selectedId))
+                  onConfirm(addresses?.find((a) => a.addressId === selectedId))
                 }
               >
                 <Text style={styles.btnText}>Use this Address</Text>

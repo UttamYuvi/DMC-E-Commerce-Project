@@ -135,64 +135,67 @@ function HomeScreen({ navigation }) {
           contentContainerStyle={styles.categoryList}
         />
       </View>
-
-      <FlatList
-        numColumns={2}
-        data={products}
-        keyExtractor={(item, index) => `${item.productId}-${index}`}
-        renderItem={({ item }) => <ProductCard item={item} />}
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-        onEndReached={() => {
-          if (!loading && !refreshing && hasMore) {
-            loadAllProducts();
+      <>
+        <FlatList
+          numColumns={2}
+          data={products}
+          keyExtractor={(item, index) => `${item.productId}-${index}`}
+          renderItem={({ item }) => <ProductCard item={item} />}
+          columnWrapperStyle={styles.productRow}
+          contentContainerStyle={styles.productList}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          onEndReached={() => {
+            if (!loading && !refreshing && hasMore) {
+              loadAllProducts();
+            }
+          }}
+          onEndReachedThreshold={0.6}
+          initialNumToRender={4}
+          maxToRenderPerBatch={4}
+          windowSize={5}
+          removeClippedSubviews={true}
+          ListHeaderComponent={
+            <>
+              <Text style={styles.sectionTitle}>Popular Categories</Text>
+              {/* Sub Categories */}
+              <FlatList
+                data={subCateogries}
+                keyExtractor={(item, index) => `${item.subCategoryId}-${index}`}
+                renderItem={renderSubCategories}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.subCatList}
+              />
+              <Text style={styles.sectionTitle}>
+                Recommended Products for You
+              </Text>
+            </>
           }
-        }}
-        onEndReachedThreshold={0.6}
-        initialNumToRender={4}
-        maxToRenderPerBatch={4}
-        windowSize={5}
-        removeClippedSubviews={true}
-        ListHeaderComponent={
-          <>
-            <Text style={styles.sectionTitle}>Popular Categories</Text>
-            {/* Sub Categories */}
-            <FlatList
-              data={subCateogries}
-              keyExtractor={(item, index) => `${item.subCategoryId}-${index}`}
-              renderItem={renderSubCategories}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.subCatList}
-            />
-            <Text style={styles.sectionTitle}>
-              Recommended Products for You
-            </Text>
-          </>
-        }
-      />
+        />
+      </>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#a2f5f3",
-  },
+  // container: {
+  //   flex: 1,
+  //   backgroundColor: "#a2f5f3",
+  // },
 
-  header: {
-    paddingTop: 40,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-    backgroundColor: "#a2f5f3",
-    borderBottomLeftRadius: 28,
-    borderBottomRightRadius: 28,
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 6,
-  },
+  // header: {
+  //   paddingTop: 40,
+  //   paddingBottom: 20,
+  //   paddingHorizontal: 20,
+  //   backgroundColor: "#a2f5f3",
+  //   borderBottomLeftRadius: 28,
+  //   borderBottomRightRadius: 28,
+  //   shadowColor: "#000",
+  //   shadowOpacity: 0.08,
+  //   shadowOffset: { width: 0, height: 6 },
+  //   elevation: 6,
+  // },
 
   logo: {
     fontSize: 28,
@@ -206,11 +209,11 @@ const styles = StyleSheet.create({
     color: "#6B7280",
   },
 
-  categoryList: {
-    paddingTop: 15,
-    paddingBottom: 2,
-    paddingHorizontal: 10,
-  },
+  // categoryList: {
+  //   paddingTop: 15,
+  //   paddingBottom: 2,
+  //   paddingHorizontal: 10,
+  // },
 
   categoryPill: {
     backgroundColor: "#ffffff",
@@ -218,7 +221,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 18,
     marginHorizontal: 10,
-    marginBottom: 13,
+    marginBottom: 0,
     justifyContent: "center",
     alignItems: "center",
     minHeight: 44,
@@ -235,14 +238,14 @@ const styles = StyleSheet.create({
     color: "#374151",
   },
 
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#111827",
-    marginTop: 12,
-    marginBottom: 9,
-    paddingHorizontal: 16,
-  },
+  // sectionTitle: {
+  //   fontSize: 18,
+  //   fontWeight: "700",
+  //   color: "#111827",
+  //   marginTop: 12,
+  //   marginBottom: 9,
+  //   paddingHorizontal: 16,
+  // },
 
   subCatList: {
     paddingHorizontal: 12,
@@ -275,6 +278,49 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#1F2937",
     textAlign: "center",
+  },
+  // productList: {
+  //   paddingHorizontal: 12,
+  //   paddingBottom: 30,
+  // },
+  // productRow: {
+  //   justifyContent: "space-between",
+  // },
+
+  container: {
+    flex: 1,
+    backgroundColor: "#F9FAFB",
+  },
+
+  header: {
+    paddingTop: 45,
+    paddingBottom: 22,
+    paddingHorizontal: 20,
+    backgroundColor: "#a2f5f3",
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+  },
+
+  categoryList: {
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+  },
+
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#111827",
+    marginTop: 18,
+    marginBottom: 10,
+    paddingHorizontal: 16,
+  },
+
+  productList: {
+    paddingBottom: 60,
+  },
+
+  productRow: {
+    paddingHorizontal: 12,
   },
 });
 
