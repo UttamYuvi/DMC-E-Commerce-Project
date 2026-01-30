@@ -63,45 +63,7 @@ function AdminDashboard() {
         </div>
       </div>
 
-      <div className="recent-vendor-section">
-  <h3 className="recent-vendor-title">Recent Vendor</h3>
-
-  {loadingRecent ? (
-    <p>Loading...</p>
-  ) : !recentVendor ? (
-    <p>No recent vendor found.</p>
-  ) : (
-    <div className="table-responsive recent-vendor-table">
-      <table className="table table-striped table-hover">
-        <thead className="recent-vendor-head">
-          <tr>
-            <th>Vendor ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Created At</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{recentVendor.vendorId}</td>
-            <td>{recentVendor.firstName}</td>
-            <td>{recentVendor.lastName}</td>
-            <td>{recentVendor.email}</td>
-            <td className="vendor-status">
-              {recentVendor.status}
-            </td>
-            <td>
-              {new Date(recentVendor.createdAt).toLocaleDateString()}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  )}
-</div>
-
+      
     </div>
   );
 }

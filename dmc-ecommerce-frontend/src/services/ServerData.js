@@ -3,6 +3,7 @@ import ApiEndpoint from "./ApiEndpoint";
 import AdminServer from "./server/AdminServer";
 import VendorServer from "./server/VendorServer";
 
+
 const serverData = {
   //products
   addProduct: async (formData) => {
@@ -77,6 +78,17 @@ getActiveVendors: async () => {
 getInactiveVendors: async () => {
   return AdminServer.get("/vendor/getInactiveVendors");
 },
+
+getAdminIncome: async () => {
+  return AdminServer.get("/admin/income");
+},
+getAdminProfile: async (adminId) => {
+  return AdminServer.get(`/admin/profile`); // GET profile
+},
+
+
+ 
+
 
 };
 

@@ -56,5 +56,22 @@ router.post("/signin", (req, res) => {
     }
   });
 });
+router.get("/income", (req, res) => {
+  const sql = `
+    SELECT 
+    orderId,
+    (totalAmount * 0.05) AS totalProfit
+FROM orders
+WHERE paymentStatus = 'paid'
+  AND orderStatus = 'delivered';
+
+  `;
+
+  pool.query(sql, (err, data) => {
+    res.send(result.createResult(err, data));
+  });
+});
+
+
 
 module.exports = router;
