@@ -21,3 +21,15 @@ export async function registerUser(body) {
     return null;
   }
 }
+
+export async function fetchCityStateApi(pincode) {
+  try {
+    const response = await fetch(`${config.postalPincodeUrl}${pincode}`);
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("API error", error);
+    return null;
+  }
+}
