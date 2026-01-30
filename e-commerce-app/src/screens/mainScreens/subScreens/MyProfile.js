@@ -14,8 +14,6 @@ import { AuthContext } from "../../../context/AuthContext";
 function MyProfile() {
   const { user, login } = useContext(AuthContext);
 
-  console.log("user aa gya", user);
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");

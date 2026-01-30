@@ -6,10 +6,10 @@
 //     padding: 0,
 //     paddingTop: 0,
 //   },
-//   title: {
-//     fontSize: 20,
-//     fontWeight: "bold",
-//   },
+// title: {
+//   fontSize: 20,
+//   fontWeight: "bold",
+// },
 //   innerContainer: {
 //     flex: 1,
 //     backgroundColor: "pink",
@@ -51,6 +51,11 @@ export const commonStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F7F8FA",
+    paddingTop: 15,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 
   card: {
@@ -98,8 +103,8 @@ export const commonStyles = StyleSheet.create({
 
   button: {
     backgroundColor: "#FF7A00",
-    paddingVertical: 10,
-    paddingHorizontal: 12,
+    // paddingVertical: 10,
+    // paddingHorizontal: 12,
     borderRadius: 12,
     alignItems: "center",
     marginTop: 8,

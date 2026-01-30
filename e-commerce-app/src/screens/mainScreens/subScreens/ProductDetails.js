@@ -11,18 +11,18 @@ import {
 import { commonStyles } from "../../styles/commonStyles";
 import { config } from "../../../services/config";
 import AddToCartButton from "../../../components/AddToCartButton";
+import { useSelector } from "react-redux";
+import Toast from "react-native-toast-message";
 
 const { width } = Dimensions.get("window");
 
-function ProductDetails({ route }) {
+function ProductDetails({ route, navigation }) {
   const { product } = route.params;
+  const cart = useSelector((state) => state.cart.items);
   const imagesArray = product.images?.split(",") || [];
 
   return (
     <View style={commonStyles.container}>
-      <View style={styles.homeHeader}>
-        <Text style={commonStyles.title}>Product details</Text>
-      </View>
       <View style={styles.carouselContainer}>
         <FlatList
           data={imagesArray}
@@ -49,14 +49,28 @@ function ProductDetails({ route }) {
         <Text style={styles.price}>₹ {product.price}</Text>
         <Text style={styles.description}>{product.description}</Text>
       </ScrollView>
-      <View
-        style={styles.actionsContainer}
-      >
-        <TouchableOpacity style={styles.buyButton}>
+      <View style={styles.actionsContainer}>
+        {/* <TouchableOpacity
+          onPress={() => {
+            if (cart.length > 0) {
+              navigation.navigate("Cart", {
+                screen: "Checkout",
+              });
+            } else {
+              Toast.show({
+                type: "error",
+                position: "bottom",
+                text1: "Your cart is empty 🛒",
+                text2: "Add a product to continue with your purchase.",
+              });
+            }
+          }}
+          style={styles.buyButton}
+        >
           <Text style={styles.buyButtonText}>Buy Now</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <AddToCartButton product={product} style={styles.addToCartButton} />
+        <AddToCartButton product={product} style={{ flex: 1 }} />
       </View>
     </View>
   );
@@ -64,7 +78,7 @@ function ProductDetails({ route }) {
 
 // const styles = StyleSheet.create({
 //   homeHeader: {
-//     // backgroundColor: "red",
+//     backgroundColor: "red",
 //     padding: 20,
 //     paddingTop: 45,
 //   },
@@ -126,38 +140,22 @@ function ProductDetails({ route }) {
 // });
 
 const styles = StyleSheet.create({
-  header: {
-    paddingTop: 50,
-    paddingBottom: 15,
-    paddingHorizontal: 20,
-    backgroundColor: "#a2f5f3",
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-    shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowOffset: { width: 0, height: 4 },
-    shadowRadius: 8,
-    elevation: 4,
-  },
-
   carouselContainer: {
-    margin: 15,
-    marginHorizontal: 10,
-    height: 320,
-    borderRadius: 10,
+    marginTop: 20,
+    marginHorizontal: 0,
+    height: 400,
   },
 
   carouselImage: {
     width: width,
-    height: 320,
-    // borderBottomLeftRadius: 20,
-    // borderBottomRightRadius: 20,
+    height: 400,
   },
 
   detailsContainer: {
     flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 16,
+    marginTop: -15,
     marginHorizontal: 8,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -219,12 +217,6 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontWeight: "700",
     fontSize: 16,
-  },
-
-  addToCartButton: {
-    flex: 1,
-    marginLeft: 8,
-    borderRadius: 12,
   },
 });
 

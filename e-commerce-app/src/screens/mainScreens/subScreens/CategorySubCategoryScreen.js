@@ -19,35 +19,35 @@ function CategorySubCategoryScreen({ navigation, route }) {
   const initialCategoryId = route?.params?.categoryId || 1;
   const [cateogries, setCategories] = useState([]);
   const [subCateogries, setSubCategories] = useState([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState(initialCategoryId);
-
+  const [selectedCategoryId, setSelectedCategoryId] =
+    useState(initialCategoryId);
 
   const loadAllCategories = async () => {
     const result = await getAllCategories();
-    setCategories(result);  
+    setCategories(result);
   };
 
   useEffect(() => {
     loadAllCategories();
   }, []);
-  
-  useEffect(()=> {
-    loadSubCategories(selectedCategoryId)
-  },[selectedCategoryId])
 
   useEffect(() => {
-  if (route?.params?.categoryId) {
-    setSelectedCategoryId(route.params.categoryId);
-  }
-}, [route?.params?.categoryId]);
+    loadSubCategories(selectedCategoryId);
+  }, [selectedCategoryId]);
+
+  useEffect(() => {
+    if (route?.params?.categoryId) {
+      setSelectedCategoryId(route.params.categoryId);
+    }
+  }, [route?.params?.categoryId]);
 
   const loadSubCategories = async (categoryId) => {
-    const result = await getAllSubCategoriesByCategory(categoryId)
-    setSubCategories(result)
-  }
+    const result = await getAllSubCategoriesByCategory(categoryId);
+    setSubCategories(result);
+  };
 
   const handleCategoryClick = (categoryId) => {
-    setSelectedCategoryId(categoryId)
+    setSelectedCategoryId(categoryId);
   };
 
   const renderCategories = ({ item }) => {
@@ -55,9 +55,9 @@ function CategorySubCategoryScreen({ navigation, route }) {
     const isSelected = item.categoryId === selectedCategoryId;
     return (
       <TouchableOpacity onPress={() => handleCategoryClick(item.categoryId)}>
-        <View style={[styles.categoryItem, 
-          isSelected && styles.selectedCategory
-        ]}>
+        <View
+          style={[styles.categoryItem, isSelected && styles.selectedCategory]}
+        >
           <Image
             source={{
               uri: img,
@@ -95,7 +95,16 @@ function CategorySubCategoryScreen({ navigation, route }) {
             style={styles.subCatImage}
           />
 
-          <Text style={{ textAlign: "center", marginTop: 5, backgroundColor:"#a2f5f3", borderRadius:10, padding:5, fontWeight:"bold" }}>
+          <Text
+            style={{
+              textAlign: "center",
+              marginTop: 5,
+              backgroundColor: "#a2f5f3",
+              borderRadius: 10,
+              padding: 5,
+              fontWeight: "bold",
+            }}
+          >
             {item.subCategoryName}
           </Text>
         </View>
@@ -120,12 +129,12 @@ function CategorySubCategoryScreen({ navigation, route }) {
           <Text style={styles.subCatHead}>You are looking for...</Text>
           <View>
             <FlatList
-            data={subCateogries}
-            keyExtractor={(item, index) => `${item.subCategoryId}-${index}`}
-            renderItem={renderSubCategories}
-            numColumns={2}
-            showsVerticalScrollIndicator={false}
-          />
+              data={subCateogries}
+              keyExtractor={(item, index) => `${item.subCategoryId}-${index}`}
+              renderItem={renderSubCategories}
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+            />
           </View>
         </View>
       </View>
@@ -135,9 +144,10 @@ function CategorySubCategoryScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
   homeHeader: {
+    marginTop: 15,
     backgroundColor: "#a2f5f3",
     padding: 20,
-    paddingTop: 45,
+    // paddingTop: 45,
   },
   viewContainer: {
     flex: 1,
@@ -154,7 +164,7 @@ const styles = StyleSheet.create({
   subCategoryContainer: {
     flex: 3,
     backgroundColor: "#ffffff",
-    padding:10,
+    padding: 10,
   },
 
   subCatHead: {
@@ -164,13 +174,13 @@ const styles = StyleSheet.create({
     color: "#545756",
   },
   selectedCategory: {
-  backgroundColor: "#a2f5f3",
-  shadowColor: "#000",
-  shadowOpacity: 0.2,
-  shadowOffset: { width: 0, height: 4 },
-  elevation: 10,
-  // borderRadius: 30,
-},
+    backgroundColor: "#a2f5f3",
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 10,
+    // borderRadius: 30,
+  },
   subCategoryItem: {
     padding: 20,
   },
@@ -188,7 +198,7 @@ const styles = StyleSheet.create({
   categoryName: {
     color: "black",
     textAlign: "center",
-    fontWeight:"bold"
+    fontWeight: "bold",
   },
   text: {
     color: "white",
