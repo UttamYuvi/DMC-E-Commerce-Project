@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AppSubHeader, AppText } from "../../../../utils/AppText";
+import { AppHeader, AppSubHeader, AppText } from "../../../../utils/AppText";
 import { Box, CircularProgress, IconButton, Switch } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import Dialog from "@mui/material/Dialog";
@@ -103,7 +103,16 @@ export default function () {
 
   return (
     <>
-      <AddHeader title={"Vendors"} navigateTo={"vendor"} />
+       <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <AppHeader>
+                All Vendors   
+              </AppHeader>
+      </Box>
 
       {loading ? (
         <Box sx={{ textAlign: "center", py: 5 }}>
