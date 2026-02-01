@@ -6,7 +6,7 @@ const config = require("../utils/config");
 const result = require("../utils/result");
 const pool = require("../utils/db");
 
-app.get("/test", (req, res) => {
+router.get("/test", (req, res) => {
   res.send("Backend is running on Render 🚀");
 });
 
