@@ -5,7 +5,8 @@ const result = require("./result");
 function authorization(req, res, next) {
   const url = req.url;
   console.log("authorization: ", url);
-  if (url == "/admin/signin" || url == "/admin/signup") next();
+  if (url == "/admin/signin" || url == "/admin/signup" || url == "/admin/test")
+    next();
   else {
     const token = req.headers.token;
     console.log("token: ", token);

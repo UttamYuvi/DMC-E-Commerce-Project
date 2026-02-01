@@ -6,6 +6,10 @@ const config = require("../utils/config");
 const result = require("../utils/result");
 const pool = require("../utils/db");
 
+app.get("/test", (req, res) => {
+  res.send("Backend is running on Render 🚀");
+});
+
 router.post("/signup", (req, res) => {
   const { firstName, lastName, email, phone, password } = req.body;
   const sql =
@@ -17,7 +21,7 @@ router.post("/signup", (req, res) => {
         [firstName, lastName, email, phone, hasdedPassword],
         (err, data) => {
           res.send(result.createResult(err, data));
-        }
+        },
       );
     } else {
       res.send(result.createResult(err));
@@ -71,7 +75,5 @@ WHERE paymentStatus = 'paid'
     res.send(result.createResult(err, data));
   });
 });
-
-
 
 module.exports = router;
