@@ -43,15 +43,19 @@ export default function CheckoutScreen({ navigation }) {
 
   const fetchAddresses = async () => {
     setLoading(true);
-
     try {
-      // Artificial delay to test loader
-      //   await new Promise((resolve) => setTimeout(resolve, 1000));
-
       const data = await getUserAddresses(user.token);
-      setAddresses(data || []);
+
+      const addressList = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.addresses)
+          ? data.addresses
+          : [];
+
+      setAddresses(addressList);
     } catch (err) {
       console.log("Failed to fetch addresses", err);
+      setAddresses([]);
     } finally {
       setLoading(false);
     }
