@@ -10,108 +10,74 @@ import emptyListImg from "../../../../assets/empty_box.png";
 import serverData from "../../../../services/ServerData";
 import AddHeader from "../../../../components/admin/headers/Header";
 
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
+const label = { inputProps: { "aria-label": "Switch demo" } };
 
-export default function () {
+export default function AllVendors() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [vendors, setVendors] = useState([]);
 
   const loadCategories = async () => {
     try {
-    const res = await serverData.allVendorsList();
-    if (res.data.status) {
-      setVendors(res.data.data); 
+      const res = await serverData.allVendorsList();
+      if (res.data.status) {
+        setVendors(res.data.data);
+      }
+    } catch {
+      toast.error("Failed to load vendors");
+    } finally {
+      setLoading(false);
     }
-  } catch {
-    toast.error("Failed to load vendors");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   useEffect(() => {
     loadCategories();
   }, []);
 
-  const handleDelete = async (e, item) => {
-    const confirm = await Swal.fire({
-      title: "Delete?",
-      text: "deletion is not revertable.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Delete",
-    });
-
-    if (!confirm.isConfirmed) return;
-
-    try {
-      const res = await serverData.deleteCategory(item.vendorId);
-
-      if (res.data.status) {
-        toast.success("Deleted");
-        loadCategories();
-      }
-    } catch {
-      toast.error("Failed to delete");
-    }
-  };
-
-
   const handleStatus = async (event, item) => {
-  const checked = event.target.checked;
-  const statusString = checked ? "active" : "inactive";
+    const checked = event.target.checked;
+    const statusString = checked ? "active" : "inactive";
 
-  // 1️⃣ Update switch UI state
+    // 1️⃣ Update switch UI state
     setVendors((prev) =>
       prev.map((v) =>
-        v.vendorId === item.vendorId
-          ? { ...v, status: statusString }
-          : v
-      )
+        v.vendorId === item.vendorId ? { ...v, status: statusString } : v,
+      ),
     );
 
- 
-  
+    // 3️⃣ Payload for backend
+    const body = {
+      vendorId: item.vendorId,
+      status: statusString,
+    };
 
-  // 3️⃣ Payload for backend
-  const body = {
-    vendorId: item.vendorId,
-    status: statusString,
-  };
+    // 4️⃣ OPTIONAL: call API
+    try {
+      const res = await serverData.updateVendorStatus(body);
+      if (res.data.status) {
+        toast.success("Vendor status updated");
 
-  // 4️⃣ OPTIONAL: call API
-  try {
-    const res = await serverData.updateVendorStatus(body);
-    if (res.data.status) {
-      toast.success("Vendor status updated");
-
-      // sync vendors list text
-      setVendors((prev) =>
-        prev.map((v) =>
-          v.vendorId === item.vendorId
-            ? { ...v, status: statusString }
-            : v
-        )
-      );
+        // sync vendors list text
+        setVendors((prev) =>
+          prev.map((v) =>
+            v.vendorId === item.vendorId ? { ...v, status: statusString } : v,
+          ),
+        );
+      }
+    } catch {
+      toast.error("Failed to update status");
     }
-  } catch {
-    toast.error("Failed to update status");
-  }
-};
-
+  };
 
   return (
     <>
-       <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <AppHeader>
-                All Vendors   
-              </AppHeader>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <AppHeader>All Vendors</AppHeader>
       </Box>
 
       {loading ? (
@@ -136,7 +102,7 @@ export default function () {
                   Contact
                 </AppSubHeader>
               </th>
-              
+
               <th>
                 <AppSubHeader style={{ fontSize: "16px" }}>
                   Created At
@@ -145,8 +111,10 @@ export default function () {
               <th>
                 <AppSubHeader style={{ fontSize: "16px" }}>Status</AppSubHeader>
               </th>
-              <th style={{ display: "flex", justifyContent: "right" }}>
-                <AppSubHeader style={{ fontSize: "16px" }}>Action</AppSubHeader>
+              <th>
+                <AppSubHeader style={{ fontSize: "16px", textAlign: "right" }}>
+                  Action
+                </AppSubHeader>
               </th>
             </tr>
           </thead>
@@ -161,7 +129,6 @@ export default function () {
                   <AppText>{item.email}</AppText>
                   <AppText>{item.mobile}</AppText>
                 </td>
-                
 
                 <td>
                   <AppText>
@@ -170,41 +137,28 @@ export default function () {
                 </td>
 
                 <td>
-                  <AppText>
-                    {item.status?.charAt(0).toUpperCase() + item.status?.slice(1)}
-                  </AppText>
-                  <Switch
-                    {...label}
-                    checked={item.status === "active"}
-
-                    onChange={(e) => handleStatus(e, item)}
-
-                />
-
+                  <div>
+                    <AppText>
+                      {item.status?.charAt(0).toUpperCase() +
+                        item.status?.slice(1)}
+                    </AppText>
+                    <Switch
+                      {...label}
+                      checked={item.status === "active"}
+                      onChange={(e) => handleStatus(e, item)}
+                    />
+                  </div>
                 </td>
 
-                <td
-                  style={{
-                    display: "flex",
-                    justifyContent: "right",
-                    alignItems: "center",
-                  }}
-                >
-                  <div>
-                    <IconButton onClick={(e) => handleDelete(e, item)}>
-                      <Delete />
-                    </IconButton>
-                  </div>
-                  <div>
-                    <IconButton
-                      onClick={() => {
-                        // setEditData(item);
-                        setOpen(true);
-                      }}
-                    >
-                      <Edit />
-                    </IconButton>
-                  </div>
+                <td style={{ textAlign: "right" }}>
+                  <IconButton
+                    onClick={() => {
+                      // setEditData(item);
+                      setOpen(true);
+                    }}
+                  >
+                    <Edit />
+                  </IconButton>
                 </td>
               </tr>
             ))}
