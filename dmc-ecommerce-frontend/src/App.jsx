@@ -30,12 +30,10 @@ import InactiveVendors from "./screens/admin/dashboard/vendor/InactiveVendors";
 import Income from "./screens/admin/income/income";
 import AdminProfile from "./screens/admin/profile/AdminProfile";
 
-
 function App() {
   const { vendor } = useContext(VendorContext);
 
   const { admin } = useContext(AdminContext);
-
 
   return (
     <>
@@ -65,7 +63,6 @@ function App() {
           <Route path="inactivevendors" element={<InactiveVendors />} />
           <Route path="income" element={<Income />} />
           <Route path="profile" element={<AdminProfile />} />
-          
         </Route>
 
         {/* Vendor Routes */}

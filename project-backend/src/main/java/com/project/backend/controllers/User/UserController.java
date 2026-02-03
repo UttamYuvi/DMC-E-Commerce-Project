@@ -27,6 +27,7 @@ public class UserController {
     @PostMapping("/address")
     public ResponseEntity<?> addAddress(@RequestBody AddressReqDTO addressReqDTO, Principal principal){
         userService.addAddress(addressReqDTO, principal.getName());
+        System.out.println(addressReqDTO.getCity());
         return ok("Address Added with email :"+principal.getName());
     }
 

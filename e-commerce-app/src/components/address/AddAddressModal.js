@@ -9,12 +9,13 @@ import {
   Alert,
 } from "react-native";
 import AddressForm from "./AddressForm";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { addUserAddress } from "../../services/address";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function AddAddressModal({ visible, onSave, onClose }) {
   const { user } = useContext(AuthContext);
+
   const [address, setAddress] = useState({
     addressLine: "",
     city: "",
