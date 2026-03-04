@@ -67,8 +67,13 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:5173");
-        config.addAllowedOrigin("http://127.0.0.1:5173");
+        // Add the ports used by React Native Web
+        config.setAllowedOrigins(List.of(
+                "http://localhost:5173",   // Vite/React
+                "http://127.0.0.1:5173",
+                "http://localhost:8081",   // React Native Web (Default Metro)
+                "http://localhost:19006"   // Expo Web (Older versions)
+        ));
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
